@@ -1,8 +1,6 @@
 ## Bknd vs PocketBase Feature Comparison
 
-PocketBase is powerful and paved the way for single-executable backends. 
-
-In this document, I want to explore the comparison and contrast of Bknd versus PocketBase. 
+**Choosing a backend framework can feel overwhelming when you're just starting out.** You want something that won't lock you into complex decisions, but also scales as your skills grow. This comparison breaks down two popular options, Bknd and PocketBase, so you can see not just what they do, but how their different approaches might fit your learning journey and future projects. 
 
 ### Core Architecture & Tech Stack
 
@@ -42,7 +40,7 @@ In this document, I want to explore the comparison and contrast of Bknd versus P
 |-----------|------|------------|
 | **Data Module** | ✅ Modular design, RLS support | ✅ Entity system, RLS |
 | **Auth Module** | ✅ Multi-strategy (password, OAuth, custom) | ✅ Password, OAuth |
-| **Media Module** | ✅ Multiple storage backends (S3, R2, Cloudinary, local) | ✅ Local file storage |
+| **Media Module** | ✅ Multiple storage backends (S3, R2, Cloudinary, local — with the exception of serverless) | ✅ Local file storage |
 | **Workflows** | ✅ Flows system | ❌ Not built-in |
 | **MCP Integration** | ✅ Server, client, UI | ❌ Not supported |
 
