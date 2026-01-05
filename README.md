@@ -24,4 +24,12 @@ That's why I'm taking it upon myself to create some docs in hopes that it helps 
 
 - [Bknd vs Pocketbase](./docs/bknd-comparison-pocketbase.md)
 
+## Things I want to document
+
+- How to set up permissions in Bknd
+- The different ways to use Bknd, whether it's code mode, UI mode, or hybrid mode
+- Bknd vs Firebase Comparison
+- Bknd vs Supabase Comparison
+- Bknd vs Trailblaze Comparison
+
 [Here are resources I am using for inspiration.](./docs/inspiration.md)
