@@ -15,7 +15,13 @@ That's why I'm taking it upon myself to create some docs in hopes that it helps 
 
 ## Docs
 
+### Specifics
+
 - [Drizzle → Prisma → bknd: Complete Schema Comparison](./docs/schema.md)
 - [How Bknd ORM Works - Schema Prototype API](./docs/orm.md)
+
+### Comparisons
+
+- [Bknd vs Pocketbase](./docs/bknd-comparison-pocketbase.md)
 
 [Here are resources I am using for inspiration.](./docs/inspiration.md)
