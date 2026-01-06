@@ -13,7 +13,7 @@ Bknd's schema prototype API provides a **fluent, type-safe interface** for defin
 Fields are created using factory functions that return prototype objects:
 
 ```typescript
-import { text, number, boolean, date, enumm, json, media } from "bknd/data";
+import { text, number, boolean, date, enumm, json, media, medium } from "bknd/data";
 
 // Optional field
 name: text()
@@ -27,7 +27,33 @@ bio: text({ description: "User biography" })
 isActive: boolean({ default_value: true })
 ```
 
+**IMPORTANT**: Default values are **static values only** - they are NOT evaluated as functions. Use literal values:
+
+```typescript
+// ✅ CORRECT - Static value
+joinedAt: date({ default_value: new Date() })
+
+// ❌ INCORRECT - Function form will NOT work
+// joinedAt: date({ default_value: () => new Date() })
+```
+
 Under the hood, these return a `FieldPrototype` object (see [prototype/index.ts#L71-L109](https://github.com/bknd-io/bknd/blob/main/app/src/data/prototype/index.ts#L71-L109)) that gets converted to actual `Field` instances when the entity is constructed.
+
+**Field Types Available**:
+- `text()` - Text/string fields
+- `number()` - Numeric fields
+- `date()` - Date and datetime fields
+- `datetime()` - Alias for date with type="datetime"
+- `week()` - Week-based date fields
+- `boolean()` - Boolean/true-false fields
+- `enumm()` - Enum fields with predefined options
+- `json()` - Generic JSON fields
+- `media()` - Multiple media files (unlimited items)
+- `medium()` - Single media file (max 1 item)
+
+**media() vs medium():**
+- `media()` - Accepts multiple files, no limit on items
+- `medium()` - Single file only, automatically enforces max_items: 1
 
 ### 2. Entity Definition
 
@@ -102,6 +128,134 @@ The `em()` function (see [prototype/index.ts#L309-L356](https://github.com/bknd-
    - `indices` - Array of index objects
    - `proto` - The EntityManager instance
    - `toJSON()` - Serializable schema for config
+
+---
+
+### 3. Field Configuration Reference
+
+**TextField** - Text/string fields with validation
+
+| Option | Type | Default | Description |
+|---------|-------|----------|-------------|
+| `default_value` | string | undefined | Static default value (functions not supported) |
+| `minLength` | number | undefined | Minimum length validation |
+| `maxLength` | number | undefined | Maximum length validation |
+| `pattern` | string | undefined | Regex pattern for validation |
+| `html_config` | object | undefined | Custom HTML element configuration |
+| `required` | boolean | false | Field is required |
+| `description` | string | undefined | Field description |
+| `label` | string | undefined | Display label |
+| `fillable` | boolean \| string[] | true | When field can be modified |
+| `hidden` | boolean \| string[] | false | When field is hidden |
+| `virtual` | boolean | false | Field is not persisted |
+
+```typescript
+email: text({
+  default_value: "user@example.com",
+  minLength: 5,
+  maxLength: 100,
+  pattern: "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,}$"
+})
+```
+
+---
+
+**NumberField** - Numeric fields with constraints
+
+| Option | Type | Default | Description |
+|---------|-------|----------|-------------|
+| `default_value` | number | undefined | Static default value |
+| `minimum` | number | undefined | Minimum allowed value |
+| `maximum` | number | undefined | Maximum allowed value |
+| `exclusiveMinimum` | number | undefined | Minimum (exclusive) |
+| `exclusiveMaximum` | number | undefined | Maximum (exclusive) |
+| `multipleOf` | number | undefined | Must be multiple of this value |
+
+```typescript
+age: number({
+  default_value: 0,
+  minimum: 0,
+  maximum: 120,
+  exclusiveMaximum: true
+})
+```
+
+---
+
+**DateField** - Date and datetime fields
+
+| Option | Type | Default | Description |
+|---------|-------|----------|-------------|
+| `default_value` | Date | undefined | Static default value (Date object, not function) |
+| `type` | "date" \| "datetime" \| "week" | "date" | Date type variant |
+| `timezone` | string | undefined | Timezone string (e.g., "UTC", "America/Chicago") |
+| `min_date` | string | undefined | Minimum date (ISO format) |
+| `max_date` | string | undefined | Maximum date (ISO format) |
+
+```typescript
+joinedAt: date({
+  default_value: new Date(),
+  type: "datetime",
+  timezone: "UTC",
+  min_date: "2020-01-01"
+})
+```
+
+---
+
+**BooleanField** - Boolean/true-false fields
+
+```typescript
+isActive: boolean({
+  default_value: true,
+  description: "User is active"
+})
+```
+
+---
+
+**EnumField** - Fields with predefined options
+
+| Option | Type | Default | Description |
+|---------|-------|----------|-------------|
+| `default_value` | string | undefined | Default option value |
+| `enum` | object | required | Enum options array |
+| `type` | "strings" \| "objects" | "strings" | Option value types |
+
+```typescript
+role: enumm({
+  enum: [
+    { label: "Administrator", value: "admin" },
+    { label: "Regular User", value: "user" },
+    { label: "Guest", value: "guest" }
+  ],
+  type: "strings" // or "objects" for label/value objects
+})
+```
+
+---
+
+**JsonField** - Generic JSON fields
+
+```typescript
+metadata: json<{
+  preferences: { theme: string; notifications: boolean };
+  lastLogin: string;
+}>({
+  default_value: { theme: "dark", notifications: true }
+})
+```
+
+---
+
+**media() and medium()** - Media file fields
+
+```typescript
+avatar: medium()  // Single file
+gallery: media()  // Multiple files
+```
+
+---
 
 ### 4. Defining Relations
 
@@ -199,7 +353,7 @@ const { DB, proto, entities } = em(
       bio: text(),
       age: number({ default_value: 0 }),
       isActive: boolean({ default_value: true }),
-      joinedAt: date({ default_value: () => new Date() }),
+      joinedAt: date({ default_value: new Date() }),
     }),
     posts: entity("posts", {
       title: text().required(),
