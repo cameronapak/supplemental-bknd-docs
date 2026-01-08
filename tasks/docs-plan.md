@@ -62,10 +62,11 @@ Update the file after completing each sub-task, not just after completing an ent
     - Clarify "embeddable" architecture (server-side, not client-side)
     - Create architecture diagram
     - Explain when to use Bknd vs alternatives
-  - [ ] 1.3 Write "Choose Your Mode" decision tree (P1)
-    - Create decision tree with scenarios (CodeMode vs HybridMode vs UIMode)
-    - Document when to use each mode
-    - Provide code examples for each mode
+  - [x] 1.3 Write "Choose Your Mode" decision tree (P1)
+    - Create decision tree for configuration modes (db mode vs code mode)
+    - Document deployment approaches (CLI standalone, Framework Embedded, Serverless/Edge)
+    - Provide code examples for each approach
+    - Explain mode switching workflow (development in db mode, production in code mode)
   - [ ] 1.4 Write "Seed Database" guide (P1)
     - Document seeding process for each mode
     - Include workaround for CodeMode initial seed bug
