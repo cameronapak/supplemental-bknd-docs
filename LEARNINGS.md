@@ -2593,6 +2593,156 @@ This pattern:
 3. **Race condition timing** - Exact timing of plugin vs index initialization
 4. **Browser opening mechanism** - How CLI detects browser availability
 
+## Task 4.3: Cloudflare Workers Integration Guide
+
+### Key Discovery: Cloudflare Workers Integration is Minimal and Edge-Native
+
+Bknd's Cloudflare Workers integration provides a simple, zero-configuration setup for edge deployment with D1 database bindings. The integration is designed specifically for Cloudflare's edge computing model.
+
+### What I know:
+
+**Core Integration Components:**
+
+1. **Minimal entry point** - `src/index.ts` with single `serve()` call from `bknd/adapter/cloudflare`
+
+2. **Configuration files:**
+   - `wrangler.json` - Cloudflare Workers configuration
+   - `bknd.config.ts` - Bknd configuration with `CloudflareBkndConfig` type
+   - Optional `config.ts` - Separate app configuration
+
+3. **D1 Database Configuration:**
+   - D1 bindings in `wrangler.json`: `d1_databases` array with `binding`, `database_name`, `database_id`
+   - Bknd config: `d1: { session: true }` option for transaction state
+   - `serve()` function automatically connects to D1 via bindings
+
+4. **R2 Storage Support:**
+   - R2 buckets configured in `wrangler.json`: `r2_buckets` array
+   - Binding name (e.g., "BUCKET") used internally
+   - Used for media storage if configured
+
+5. **Platform Proxy (optional):**
+   - `withPlatformProxy()` wrapper in `bknd.config.ts`
+   - Enables programmatic access to bindings
+   - Used for type generation: `npm run typegen`
+   - Separates config from Worker entry point
+
+6. **Static Assets:**
+   - `assets.directory` in `wrangler.json` points to `../../app/dist/static`
+   - Serves Admin UI and other static files
+   - Critical for Admin UI to work
+
+7. **Development:**
+   - `npm run dev` uses Wrangler dev server at `localhost:8787`
+   - Live reload on file changes
+   - Local D1 database for testing
+
+8. **Deployment:**
+   - `npx wrangler deploy` builds and uploads Worker
+   - Automatic deployment to Cloudflare's 300+ edge locations
+   - D1 database and R2 bucket configured via bindings
+
+**D1 Database Characteristics:**
+
+From Zread documentation:
+- Edge-native SQLite database
+- Zero-configuration via bindings (no connection strings)
+- Automatic scaling and replication
+- Transaction support with D1 sessions (`d1.session: true`)
+- Compatible with SQLite queries
+
+**Cloudflare Workers Adapter Features:**
+
+From Zread documentation:
+- Supports D1 sessions for transaction state across requests
+- Leverages Cloudflare's `waitUntil()` API for async operations
+- Optimized for edge execution model
+- No connection pooling needed (binding is managed by runtime)
+
+### What I don't know:
+
+1. **Mode Selection for Edge Deployment:**
+   - Which Bknd mode (db/code/hybrid) is recommended for Cloudflare Workers?
+   - Performance impact of different modes at the edge
+   - How mode switching works with D1 bindings
+
+2. **Environment Variables:**
+   - How to access environment variables in Bknd config
+   - Integration with Wrangler's `[vars]` configuration
+   - Whether `process.env` works in Workers environment
+
+3. **R2 Media Storage Configuration:**
+   - How to enable R2 storage for media module
+   - `media.adapter` configuration for R2
+   - Whether R2 is automatic when bucket is configured
+
+4. **Local Testing with Miniflare:**
+   - How to test D1 database locally
+   - Wrangler dev vs Miniflare for local development
+   - Testing R2 bucket operations locally
+
+5. **Production Best Practices:**
+   - Migration strategies for existing databases to D1
+   - Performance optimization for edge deployment
+   - Error handling and retry logic for edge failures
+
+6. **D1 Session Behavior:**
+   - What `d1.session: true` actually does internally
+   - When to enable vs disable sessions
+   - Performance impact of sessions
+
+7. **Custom Middleware:**
+   - How to add custom middleware to Cloudflare Worker
+   - Interceptors for logging, auth, etc.
+   - Whether Hono middleware works with `serve()` function
+
+### Documentation Pattern: Edge-Specific Considerations
+
+For edge deployment guides:
+- Highlight platform-specific features (D1 bindings, R2, waitUntil)
+- Document limitations (execution time, memory, no filesystem)
+- Provide production checklist (wrangler.json updates, environment setup)
+- Include troubleshooting for edge-specific issues
+- Be explicit about what we don't know (requires testing at the edge)
+
+### Key Learnings
+
+1. **Minimal setup** - Cloudflare Workers integration is intentionally simple with single `serve()` call
+2. **Binding-based architecture** - D1 and R2 accessed via bindings, not connection strings
+3. **Edge-native design** - Everything optimized for Cloudflare's execution model
+4. **Static asset serving** - Must configure `assets.directory` for Admin UI to work
+5. **Optional platform proxy** - Only needed for type generation, not basic deployment
+6. **Type generation support** - Wrangler types can be generated with `npm run typegen`
+7. **Zero cold starts** - Cloudflare Workers provides instant response times
+
+### Unknowns Requiring Further Research
+
+1. **Mode selection for edge** - Best practices for db vs code mode at the edge
+2. **Environment variable integration** - How Wrangler vars work with Bknd config
+3. **R2 media storage** - Configuration details and best practices
+4. **Local testing strategies** - Miniflare vs Wrangler dev for D1/R2
+5. **Edge performance** - Benchmarks and optimization strategies
+6. **D1 sessions** - Internal behavior and when to use
+7. **Custom middleware** - Adding logging, auth checks, etc. to Worker
+
+### Source Code Locations
+
+Key files for Cloudflare Workers integration:
+- `app/src/adapter/cloudflare/cloudflare-workers.adapter.ts` - Main adapter implementation
+- `app/src/adapter/cloudflare/connection/D1Connection.ts` - D1 database connection
+- `app/src/adapter/cloudflare/storage/StorageR2Adapter.ts` - R2 storage adapter
+- `app/src/adapter/cloudflare/config.ts` - Cloudflare-specific configuration
+- `examples/cloudflare-worker/` - Complete working example
+
+### Next Steps for Better Documentation
+
+1. Test actual Cloudflare Workers deployment
+2. Research R2 media storage configuration
+3. Document mode selection best practices for edge
+4. Add performance benchmarks for edge vs traditional deployment
+5. Explore custom middleware patterns
+6. Investigate D1 session behavior through testing
+7. Create troubleshooting guide for edge-specific issues
+
 ### Critical Learning: Official Docs Don't Cover All Issues
 
 While official Bknd documentation is good, it doesn't comprehensively document all known issues. Users need to:
