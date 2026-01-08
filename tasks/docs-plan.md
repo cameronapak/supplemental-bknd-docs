@@ -36,6 +36,7 @@ We are improving the documentation for bknd-io/bknd: https://github.com/bknd-io/
 - All tutorials must include working, tested code examples
 - Each guide should have clear outcomes and prerequisites
 - Use the testing checklist format (`.test.md`) for tutorials to validate each step
+- Search https://docs.bknd.io and use Zread MCP server to research Bknd properly
 
 **IMPORTANT:** you must read https://www.mintlify.com/blog/how-to-write-documentation-that-developers-want-to-read and https://docs.divio.com/documentation-system/ before doing research.
 
@@ -62,8 +63,8 @@ Update the file after completing each sub-task, not just after completing an ent
     - Clarify "embeddable" architecture (server-side, not client-side)
     - Create architecture diagram
     - Explain when to use Bknd vs alternatives
-  - [x] 1.3 Write "Choose Your Mode" decision tree (P1)
-    - Create decision tree for configuration modes (db mode vs code mode)
+  - [ ] 1.3 Write "Choose Your Mode" decision tree (P1)
+    - Create decision tree for configuration modes (db mode vs code mode vs ui mode) https://docs.bknd.io/usage/introduction/#modes
     - Document deployment approaches (CLI standalone, Framework Embedded, Serverless/Edge)
     - Provide code examples for each approach
     - Explain mode switching workflow (development in db mode, production in code mode)
