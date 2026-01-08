@@ -1214,6 +1214,177 @@ const checkEndReached = (previousPageData: any, pageSize: number) => {
 4. **Performance optimization** - Memory usage with large datasets?
 5. **Server-side rendering** - Is SSR supported for infinite scroll?
 
+## Task 7.3: Create Onboarding Flow (RESOLVED)
+
+### Key Discovery: Progressive Disclosure Drives User Activation
+
+Based on research from user onboarding best practices (Userpilot, Stripe, and industry examples), an effective documentation onboarding flow should:
+
+### Core Onboarding Principles
+
+**1. Goal-Oriented Path Selection**
+- Users arrive with different backgrounds (new to backend, experienced devs, integrating into existing apps)
+- Offer clear paths based on user intent, not just linear progression
+- Each path should have clear time commitment and outcomes
+- Example: "I'm New to Backend Development" vs "I Know Backend, New to Bknd"
+
+**2. Checklist-Based Progress Tracking**
+- Checklists create sense of accomplishment
+- Pre-check simple tasks to encourage completion (e.g., "Sign up" already checked)
+- Break complex onboarding into manageable steps
+- Show estimated time for each step (15 min, 20 min, etc.)
+
+**3. Progressive Disclosure**
+- Start with "just enough" information to get started
+- Reveal advanced concepts only after completing basics
+- Use learning levels (Fundamentals → Core Concepts → Advanced → Production)
+- Avoid overwhelming users with all options upfront
+
+**4. Quick Wins First**
+- "Build Your First API" should be the first actionable step
+- Provide immediate value (working API in 15 minutes)
+- Celebrate completion with clear "what's next" guidance
+- Maintain momentum with short tutorial completion times
+
+### Onboarding Flow Structure
+
+Based on research from Stripe and industry examples, the onboarding flow should include:
+
+**1. Path Selection**
+- 3 distinct paths based on user experience level
+- Clear time estimates for each path
+- Value proposition for each path
+- Immediate call-to-action
+
+**2. Core Checklist**
+- 3-5 essential steps (not overwhelming)
+- Each step links to specific tutorial
+- Clear progression (Step 1 → Step 2 → Step 3)
+- Total time estimate across all steps
+
+**3. Differentiation Section**
+- What makes this product unique? (for Bknd: embeddable architecture, type safety)
+- Comparison with alternatives helps users understand value
+- Use simple language, not jargon
+
+**4. Use Case Mapping**
+- Real-world scenarios (SaaS, content website, mobile app)
+- Map use case to specific tutorial sequence
+- Help users identify their needs
+
+**5. Progressive Learning Path**
+- Level-based system (Fundamentals → Core → Advanced → Production)
+- Allow users to track their progress
+- Show what's available as they advance
+
+### Navigation Best Practices
+
+**1. Multiple Entry Points**
+- Users should be able to start from multiple contexts
+- Include onboarding flow in top navigation
+- Link from homepage/main index
+- Mention in "Next Steps" sections
+
+**2. Cross-Linking**
+- Connect onboarding flow to relevant tutorials
+- Link back to onboarding flow from tutorials
+- Create loops that keep users engaged
+- Reduce navigation friction
+
+**3. FAQ Integration**
+- Anticipate common questions (Do I need a backend server? What databases?)
+- Provide quick answers before they ask
+- Link to detailed troubleshooting for complex issues
+- Reduce cognitive load
+
+### Content Writing Best Practices
+
+**1. Action-Oriented Language**
+- Use verbs: "Build", "Create", "Deploy", "Learn"
+- Make benefits explicit: "You'll learn how to..."
+- Avoid passive voice
+- Keep descriptions concise
+
+**2. Time Estimates**
+- Always include time estimates for tutorials
+- Be realistic (slightly overestimate is better than under)
+- Use consistent time units (15 min, 20 min)
+- Group time: "Total Time: ~50 minutes"
+
+**3. Visual Hierarchy**
+- Use cards/boxes for path selection
+- Consistent formatting across sections
+- Clear headings and subheadings
+- Use Mintlify grid components for layouts
+
+### What Worked Well
+
+**1. Three-Column Layout**
+- Grid layout for path selection works well on desktop
+- Responsive design (stacks on mobile)
+- Visual separation reduces cognitive load
+
+**2. Checklist Format**
+- Checkbox markdown ([ ], [x]) creates sense of progress
+- Bold text for step titles improves scanability
+- Arrow links (→) make calls-to-action obvious
+
+**3. Learning Levels**
+- Clear progression creates motivation
+- Users can see what's available ahead
+- Encourages continued engagement
+
+**4. Use Case Scenarios**
+- Real-world scenarios help users identify needs
+- Scenario-based paths reduce decision paralysis
+- Concrete examples are more engaging than abstract descriptions
+
+### Unknown Areas (Documented Clearly)
+
+While researching Bknd, I documented unknown areas explicitly:
+- Auth module configuration details (marked as UNKNOWN in tutorial)
+- CLI command syntax for user creation
+- Some advanced React SDK features (mountOnce, mutateRaw)
+- End detection for infinite scroll with API metadata
+
+**Why this is important:**
+- Transparency builds trust
+- Users know what's documented vs. experimental
+- Encourages community contributions
+- Reduces frustration when features aren't fully documented
+
+### Comparison with Industry Examples
+
+**Stripe Onboarding:**
+- Pros: Very focused, "What you learn" section, multiple language quickstarts
+- Cons: Can be overwhelming with too many options upfront
+- Bknd improvement: Fewer paths, clearer use cases
+
+**Supabase Onboarding:**
+- Pros: Good use case mapping (SaaS, content site, mobile app)
+- Cons: Less guidance on which path to choose
+- Bknd improvement: Clear path selection based on experience level
+
+**Userpilot Best Practices:**
+- Gamification elements (checklists, progress bars)
+- Interactive walkthroughs (not applicable to docs, but principle applies)
+- Personalization based on user input
+- Bknd adaptation: Used checklist format and path selection
+
+### Key Takeaways
+
+1. **Onboarding is about momentum** - Keep users moving forward with quick wins
+2. **Context matters** - Different users need different paths, not one-size-fits-all
+3. **Transparency works** - Be honest about what's documented and what isn't
+4. **Progress is motivating** - Checklists and levels create sense of achievement
+5. **Reduce friction** - Multiple entry points, clear next steps, helpful FAQs
+
+### Files Created
+
+1. `docs/onboarding-flow.md` - Complete first-time visitor guide with progressive learning paths
+2. Updated `docs.json` - Added onboarding-flow to navigation
+3. Updated `docs/index.md` - Added link to onboarding flow as primary entry point
+
 ## Task 6.2: Validate All Guide Examples (RESOLVED)
 
 ### Key Discovery: Event-Based Seeding Requires Correct Context Access

@@ -123,8 +123,9 @@ Running into issues? Check our troubleshooting resources:
 
 ## Next Steps
 
-1. **New to Bknd?** Start with [Build Your First API](./getting-started/build-your-first-api)
-2. **Exploring Bknd?** Read [What is Bknd?](./architecture-and-concepts/what-is-bknd)
-3. **Integrating Bknd?** Choose your integration: [Next.js](./how-to-guides/setup/integrations/nextjs), [Vite + React](./how-to-guides/setup/integrations/vite-react), [React Router](./how-to-guides/setup/integrations/react-router), or [Astro](./how-to-guides/setup/integrations/astro)
-4. **Need authentication?** Follow [Add Authentication](./getting-started/add-authentication)
-5. **Ready to deploy?** Read [Deploy to Production](./getting-started/deploy-to-production)
+1. **New to Bknd?** Follow the [Onboarding Flow](./onboarding-flow) for a guided experience
+2. **Start building?** [Build Your First API](./getting-started/build-your-first-api)
+3. **Exploring Bknd?** Read [What is Bknd?](./architecture-and-concepts/what-is-bknd)
+4. **Integrating Bknd?** Choose your integration: [Next.js](./how-to-guides/setup/integrations/nextjs), [Vite + React](./how-to-guides/setup/integrations/vite-react), [React Router](./how-to-guides/setup/integrations/react-router), or [Astro](./how-to-guides/setup/integrations/astro)
+5. **Need authentication?** Follow [Add Authentication](./getting-started/add-authentication)
+6. **Ready to deploy?** Read [Deploy to Production](./getting-started/deploy-to-production)

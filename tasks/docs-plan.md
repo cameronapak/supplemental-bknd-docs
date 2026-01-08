@@ -212,24 +212,24 @@ Update the file after completing each sub-task, not just after completing an ent
      - Verify information hierarchy
      - Check for dead links
 
-  - [ ] 7.0 Launch Preparation
-   - [x] 7.1 Create documentation index
-     - Quick start links
-     - Popular resources
-     - Getting help section
+  - [x] 7.0 Launch Preparation
+    - [x] 7.1 Create documentation index
+      - Quick start links
+      - Popular resources
+      - Getting help section
    - [x] 7.2 Set up search optimization
-     - Add meta descriptions
-     - Configure search terms
-     - Add keywords
-  - [ ] 7.3 Create onboarding flow
-    - Define first-time visitor path
-    - Highlight key resources
-    - Create progressive disclosure
-  - [ ] 7.4 Prepare launch checklist
-    - Technical validation complete
-    - All P0 and P1 deliverables shipped
-    - Navigation tested
-    - Examples verified
+      - Add meta descriptions
+      - Configure search terms
+      - Add keywords
+   - [x] 7.3 Create onboarding flow
+     - Define first-time visitor path
+     - Highlight key resources
+     - Create progressive disclosure
+   - [ ] 7.4 Prepare launch checklist
+     - Technical validation complete
+     - All P0 and P1 deliverables shipped
+     - Navigation tested
+     - Examples verified
 
  - [x] 8.0 Find answers to `LEARNINGS.md` and see if we can update any docs
       - [x] Research and document `useApiInfiniteQuery` (experimental infinite scroll hook)
