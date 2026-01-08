@@ -13,9 +13,12 @@ Use this checklist to validate that the tutorial works end-to-end.
 - [ ] Dependencies installed without errors
 - [ ] `bknd` and `@hono/vite-dev-server` are in `package.json`
 
-## Step 2: Configure Bknd
+## Step 2: Configure Bknd with Schema
 
 - [ ] `bknd.config.ts` file exists
+- [ ] Schema is defined with `todos` entity
+- [ ] `title` field is defined (text, required)
+- [ ] `done` field is defined (boolean)
 - [ ] `server.ts` file exists
 - [ ] `vite.config.ts` updated with devServer plugin
 - [ ] No TypeScript errors
@@ -32,14 +35,17 @@ Use this checklist to validate that the tutorial works end-to-end.
 - [ ] `http://localhost:5174/` shows Admin UI
 - [ ] Admin UI is interactive (no console errors)
 
-## Step 5: Define Data Model
+## Step 5: Access Admin UI
 
-**CANNOT TEST - Workflow unknown**
-
-- [ ] Can create a new entity in Admin UI
-- [ ] Can add fields to the entity
-- [ ] Entity is saved to database
-- [ ] Entity appears in API schema
+- [ ] `App.tsx` renders Admin component
+- [ ] `http://localhost:5174/` shows Admin UI
+- [ ] Admin UI is interactive (no console errors)
+- [ ] Can see `todos` entity in sidebar
+- [ ] Can view existing todos (empty list initially)
+- [ ] Can add new todo via Admin UI
+- [ ] Can edit existing todos
+- [ ] Can delete todos
+- [ ] Changes persist in database
 
 ## Step 6: Enable Auth Module
 

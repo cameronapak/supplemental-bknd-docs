@@ -27,19 +27,36 @@ npm install
 npm install bknd @hono/vite-dev-server
 ```
 
-## Step 2: Configure Bknd
+## Step 2: Configure Bknd with Schema
 
 Create a `bknd.config.ts` file in the root of your project:
 
 ```typescript
+import { createApp, em, entity, text, boolean } from "bknd";
 import type { ViteBkndConfig } from "bknd/adapter/vite";
+
+// Define your data model
+const schema = em({
+  todos: entity("todos", {
+    title: text().required(),
+    done: boolean(),
+  }),
+});
 
 export default {
   connection: {
     url: "file:data.db",
   },
+  config: {
+    data: schema.toJSON(),
+  },
 } satisfies ViteBkndConfig;
 ```
+
+This configures:
+- SQLite database stored in `data.db`
+- A `todos` entity with `title` (text) and `done` (boolean) fields
+- The `id` field is automatically added by Bknd
 
 Create a `server.ts` file to serve the API:
 
@@ -92,27 +109,19 @@ export default function App() {
 
 Visit `http://localhost:5174/` to access the Admin UI.
 
-## Step 5: Define Your Data Model
+## Step 5: Manage Data with Admin UI
 
-**UNKNOWN: This section requires more research.**
+Visit `http://localhost:5174/` to access the Admin UI.
 
-Based on available documentation, you should be able to:
-1. Navigate to the Admin UI
-2. Create entities with fields using a visual interface
-3. Save the configuration to the database
+The Admin UI allows you to:
+- View and edit all `todos` records
+- Add new todos with the form interface
+- Delete existing todos
+- Filter and sort your data
 
-However, the exact steps and UI flow for creating entities in the Admin UI are not documented. The Admin UI documentation focuses on customization options rather than basic entity creation workflow.
+Since we defined our `todos` entity in `bknd.config.ts`, it's automatically available in the Admin UI. No additional configuration needed.
 
-**What I know:**
-- The Admin UI can manage backend configuration visually in `db` mode
-- You can customize entity rendering and behavior
-- Configuration is stored in the database
-
-**What I don't know:**
-- The exact menu/flow to create a new entity
-- The field types available in the UI (text, number, boolean, etc.)
-- How to set field properties (required, unique, etc.)
-- How to create relationships between entities
+**Note:** In this tutorial, we're using `code mode` (schema defined in code). If you prefer to define entities visually, you can switch to `db mode` by removing the `config` object from your `bknd.config.ts` and creating entities through the Admin UI. See [Choose Your Mode](/how-to-guides/setup/choose-your-mode) for details.
 
 ## Step 6: Enable Auth Module
 
@@ -213,6 +222,9 @@ If you encounter issues with entity creation or user management, please:
 
 In this tutorial, you learned:
 - How to set up Bknd with Vite + React
+- How to define your data model using `em()` and `entity()` in code
 - How to serve the API and Admin UI
+- How to use the Admin UI to manage your data
 - How to use the Bknd SDK in your React components
-- What areas of the documentation need more research (entity creation workflow, user management)
+
+**Note:** This tutorial uses `code mode` (schema defined in code). For visual schema creation in Admin UI, see [Choose Your Mode](/how-to-guides/setup/choose-your-mode) to learn about `db mode`.

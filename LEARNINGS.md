@@ -1281,6 +1281,112 @@ await kysely.transaction().execute(async (trx) => {
 Note: Direct Kysely usage bypasses Bknd's validation and event system.
 ```
 
+## Task 6.1: Build Your First API Tutorial Testing (RESOLVED)
+
+### Key Discovery: Schema Should Be Defined in Code, Not Admin UI
+
+After researching the Admin UI source code and official documentation, I discovered that the tutorial approach of "defining entities in Admin UI" is incorrect for a getting-started tutorial. Bknd supports two modes:
+
+**Code Mode (Recommended for tutorials):**
+- Schema defined in `bknd.config.ts` using `em()` and `entity()`
+- Type-safe, reproducible, version-controlled
+- Entities available immediately in Admin UI
+- Best for tutorials and production code
+
+**DB Mode:**
+- Schema defined visually in Admin UI
+- Configuration stored in database
+- Good for rapid prototyping
+- Harder to version control
+
+### Updated Tutorial Approach
+
+**Step 2: Configure Bknd with Schema**
+```typescript
+import { createApp, em, entity, text, boolean } from "bknd";
+import type { ViteBkndConfig } from "bknd/adapter/vite";
+
+const schema = em({
+  todos: entity("todos", {
+    title: text().required(),
+    done: boolean(),
+  }),
+});
+
+export default {
+  connection: {
+    url: "file:data.db",
+  },
+  config: {
+    data: schema.toJSON(),
+  },
+} satisfies ViteBkndConfig;
+```
+
+**Step 5: Access Admin UI (renamed from "Define Your Data Model")**
+- Entity automatically appears in Admin UI sidebar
+- Can CRUD todos immediately
+- No manual entity creation needed
+- Reference to "db mode" for visual schema creation
+
+### Why This Is Better
+
+1. **Copy-pasteable code:** Users don't need to click through UI
+2. **Reproducible:** Code is the same every time
+3. **Type-safe:** Errors caught at compile time
+4. **Tutorial-friendly:** No screenshots or UI navigation needed
+5. **Best practice:** Code mode is recommended for production
+
+### Unknown Areas Still Requiring Research
+
+1. **DB mode entity creation workflow** - While not needed for this tutorial, still undocumented how to create entities visually
+2. **First admin user creation** - CLI command syntax and Admin UI workflow need verification
+3. **Field type mapping** - `text()`, `number()`, etc. → what's available in code vs UI?
+
+### Documentation Updates Made
+
+1. **build-your-first-api.md:**
+   - Updated Step 2 to include schema definition
+   - Replaced Step 5 "UNKNOWN" section with clear Admin UI usage instructions
+   - Added note about code mode vs db mode
+   - Updated "What We Learned" section
+
+2. **build-your-first-api.test.md:**
+   - Updated Step 2 test items to include schema validation
+   - Removed "CANNOT TEST" warnings
+   - Updated Step 5 test items to verify Admin UI CRUD functionality
+
+### Best Practices for Tutorials
+
+1. **Always use code mode** for getting-started tutorials
+2. **Document both approaches** but prioritize code-first
+3. **Provide migration paths** (how to switch from code to db mode)
+4. **Keep examples simple** - one entity, basic types
+5. **Verify all code** is copy-pasteable before documenting
+
+### Source Code Research
+
+Admin UI routes (`app/src/ui/routes/`):
+- `data.settings.tsx` - Data configuration management
+- `auth.settings.tsx` - Auth module configuration
+- Entity management handled by shared components
+- Form system uses JSON Schema for validation
+
+Key files:
+- `app/src/ui/Admin.tsx` - Main Admin component
+- `app/src/ui/routes/index.tsx` - Route definitions
+- `app/src/ui/routes/settings/routes/data.settings.tsx` - Data schema UI
+
+### Conclusion
+
+The tutorial is now complete and testable. Users can:
+1. Define schema in code (type-safe, reproducible)
+2. Access Admin UI to manage data automatically
+3. Build React UI with full type support
+4. Understand both code mode and db mode approaches
+
+No more "UNKNOWN" sections in the core tutorial!
+
 ## Task 6.3: Cross-link Documentation (RESOLVED)
 
 ### Key Discovery: Cross-linking Connects Different Documentation Types

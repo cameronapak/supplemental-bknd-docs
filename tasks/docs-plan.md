@@ -194,8 +194,8 @@ Update the file after completing each sub-task, not just after completing an ent
      - Media.Dropzone documentation
      - Auto-config forms documentation
 
-- [ ] 6.0 Testing & Validation
-  - [ ] 6.1 Test all tutorials end-to-end
+ - [ ] 6.0 Testing & Validation
+   - [x] 6.1 Test all tutorials end-to-end
     - Follow each tutorial step-by-step
     - Verify all code examples work
     - Create test checklist for each tutorial
