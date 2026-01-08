@@ -1095,7 +1095,441 @@ const checkEndReached = (previousPageData: any, pageSize: number) => {
 ### Unknown Areas Still Requiring Research
 
 1. ~~**End detection with API metadata**~~ - **RESOLVED** ✅
-2. **Error recovery** - How to handle failed page loads gracefully?
+2. ~~**Error recovery**~~ - **RESOLVED** ✅
+3. **Prefetching** - Can we prefetch next page for smoother scrolling?
+4. **Performance optimization** - Memory usage with large datasets?
+5. **Server-side rendering** - Is SSR supported for infinite scroll?
+
+## Task 8.5: Error Recovery Research (RESOLVED)
+
+### Key Discovery: SWR Provides Built-in Error Recovery with Customizable Retry Logic
+
+SWR (which useApiInfiniteQuery uses under the hood) includes comprehensive error handling and recovery mechanisms out of the box.
+
+### Automatic Error Retry (Exponential Backoff)
+
+**Default Behavior:**
+- SWR automatically retries failed requests using exponential backoff algorithm
+- Retries happen automatically without any configuration
+- Algorithm balances quick recovery with resource efficiency
+
+**From SWR Source (`src/_internal/utils/config.ts`, lines 13-50):**
+```typescript
+const onErrorRetry = (
+  _: unknown,
+  __: string,
+  config: Readonly<PublicConfiguration>,
+  revalidate: Revalidator,
+  opts: Required<RevalidatorOptions>
+) => {
+  // Exponential backoff implementation
+  // Default: retries up to certain limit with increasing delays
+}
+```
+
+### Customizing Retry Behavior
+
+**Using `onErrorRetry` option:**
+```typescript
+const { data, error, setSize, size } = useApiInfiniteQuery(
+  (api, page) => api.data.readMany("posts", {
+    limit: 20,
+    offset: page * 20,
+  }),
+  {
+    pageSize: 20,
+    onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+      // Never retry on 404 (resource not found)
+      if (error.status === 404) return;
+
+      // Never retry on 401/403 (auth errors)
+      if (error.status === 401 || error.status === 403) return;
+
+      // Never retry for specific keys/endpoints
+      if (key.includes("/api/sensitive")) return;
+
+      // Only retry up to 10 times
+      if (retryCount >= 10) return;
+
+      // Custom retry delay (e.g., 5 seconds)
+      setTimeout(() => revalidate({ retryCount }), 5000);
+    },
+  }
+);
+```
+
+**Disabling retries:**
+```typescript
+const { data } = useApiInfiniteQuery(
+  (api, page) => api.data.readMany("posts", {
+    limit: 20,
+    offset: page * 20,
+  }),
+  {
+    pageSize: 20,
+    shouldRetryOnError: false,  // Disable automatic retries
+  }
+);
+```
+
+### Error Object Structure
+
+**From SWR Error Handling docs:**
+
+Error objects can include status codes and additional information:
+```typescript
+// Customize fetcher to return detailed error info
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    const error = new Error('An error occurred while fetching data.');
+    error.info = await res.json();  // Attach API error response
+    error.status = res.status;        // HTTP status code
+    throw error;
+  }
+
+  return res.json();
+};
+
+// Usage
+const { data, error } = useApiQuery((api) => api.data.readMany("posts"));
+
+// error.info === { message: "You are not authorized", ... }
+// error.status === 403
+```
+
+**Note:** `data` and `error` can exist simultaneously, allowing UI to display existing data while knowing of the failed request.
+
+### Per-Page Error Handling
+
+useApiInfiniteQuery handles errors on a per-page basis:
+
+```typescript
+const {
+  data,      // Array of page results (some may be undefined if failed)
+  error,     // Error from the most recent failed page
+  isValidating,  // Boolean indicating any page is currently fetching
+  isLoading       // Boolean indicating initial page load
+} = useApiInfiniteQuery((api, page) => api.data.readMany("posts", {
+  limit: 20,
+  offset: page * 20,
+}), { pageSize: 20 });
+
+// Handle error states
+if (error) {
+  // Show error UI
+  return <ErrorDisplay error={error} />;
+}
+
+// Show data (some pages may have failed)
+return (
+  <div>
+    {data?.map((page, pageIndex) => (
+      <div key={pageIndex}>
+        {page ? (
+          // Page loaded successfully
+          page.map(post => <PostCard key={post.id} post={post} />)
+        ) : (
+          // Page failed to load
+          <div className="error-page">Failed to load page {pageIndex}</div>
+        )}
+      </div>
+    ))}
+    {!isValidating && !error && (
+      <button onClick={() => setSize(size + 1)}>Load More</button>
+    )}
+  </div>
+);
+```
+
+### Global Error Handling
+
+**Using SWRConfig for app-wide error handling:**
+```typescript
+import { SWRConfig } from "swr";
+
+function App() {
+  return (
+    <SWRConfig
+      value={{
+        onError: (error, key) => {
+          // Handle errors globally
+          if (error.status === 401) {
+            // Redirect to login
+            window.location.href = "/login";
+          } else if (error.status === 404) {
+            // Show not found toast
+            showToast("Resource not found");
+          } else if (error.status >= 500) {
+            // Report server errors to Sentry
+            Sentry.captureException(error);
+          }
+        },
+        onErrorRetry: (error, key, config, revalidate, { retryCount }) => {
+          // Global retry strategy
+          if (error.status === 429) {
+            // Rate limited: retry after 10 seconds
+            setTimeout(() => revalidate({ retryCount }), 10000);
+            return;
+          }
+
+          // Default retry behavior
+          // SWR's default exponential backoff will be used
+        },
+      }}
+    >
+      <YourApp />
+    </SWRConfig>
+  );
+}
+```
+
+### Error Recovery Patterns
+
+**1. Retry Failed Pages Manually:**
+```typescript
+const { data, error, size, setSize } = useApiInfiniteQuery(
+  (api, page) => api.data.readMany("posts", {
+    limit: 20,
+    offset: page * 20,
+  }),
+  { pageSize: 20 }
+);
+
+// Function to retry loading all pages
+const retryAll = () => {
+  setSize(size);  // Reset size to current value triggers revalidation
+};
+
+// Function to retry only failed pages
+const retryFailed = () => {
+  mutate();  // Revalidate all pages (SWR default behavior)
+};
+```
+
+**2. Show Retry Button on Error:**
+```typescript
+function InfiniteScroll() {
+  const { data, error, setSize, size, endReached, isValidating } = useApiInfiniteQuery(
+    (api, page) => api.data.readMany("posts", {
+      limit: 20,
+      offset: page * 20,
+    }),
+    { pageSize: 20 }
+  );
+
+  return (
+    <div>
+      {error && (
+        <div className="error-message">
+          <p>Failed to load data: {error.message}</p>
+          <button
+            onClick={() => setSize(size)}  // Retry
+            disabled={isValidating}
+          >
+            {isValidating ? "Retrying..." : "Retry"}
+          </button>
+        </div>
+      )}
+
+      {data?.map((page, pageIndex) => (
+        <div key={pageIndex}>
+          {page?.map(post => <PostCard key={post.id} post={post} />)}
+        </div>
+      ))}
+
+      {!error && !endReached && (
+        <button
+          onClick={() => setSize(size + 1)}
+          disabled={isValidating}
+        >
+          {isValidating ? "Loading..." : "Load More"}
+        </button>
+      )}
+    </div>
+  );
+}
+```
+
+**3. Graceful Degradation (Show Loaded Data):**
+```typescript
+function Feed() {
+  const { data, error, isLoading, setSize, size, endReached } = useApiInfiniteQuery(
+    (api, page) => api.data.readMany("feed", {
+      limit: 20,
+      offset: page * 20,
+    }),
+    { pageSize: 20 }
+  );
+
+  return (
+    <div>
+      {isLoading && data?.length === 0 ? (
+        <LoadingSpinner />
+      ) : (
+        data?.map((page, pageIndex) => (
+          <FeedItems key={pageIndex} items={page} />
+        ))
+      )}
+
+      {error && data?.length > 0 && (
+        <div className="warning">
+          <p>Some content failed to load</p>
+          <button onClick={() => setSize(size)}>Retry</button>
+        </div>
+      )}
+
+      {!endReached && !error && (
+        <LoadMoreButton
+          onClick={() => setSize(size + 1)}
+          disabled={isLoading}
+        />
+      )}
+    </div>
+  );
+}
+```
+
+### Infinite Scroll-Specific Error Handling
+
+**1. Intersection Observer with Error Handling:**
+```typescript
+export function InfiniteScroll() {
+  const { data, setSize, endReached, isValidating, error } = useApiInfiniteQuery(
+    (api, page) => api.data.readMany("posts", {
+      limit: 20,
+      offset: page * 20,
+    }),
+    { pageSize: 20 }
+  );
+
+  const observer = useRef<IntersectionObserver>();
+  const lastElementRef = (node: HTMLElement | null) => {
+    // Don't load more if there's an error
+    if (error || endReached || isValidating) return;
+
+    if (observer.current) observer.current.disconnect();
+
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && !error) {
+        setSize(prev => prev + 1);
+      }
+    });
+
+    if (node) observer.current.observe(node);
+  };
+
+  return (
+    <div>
+      {data?.map((page, index) => (
+        <div key={index}>
+          {page?.map((post, postIndex) => (
+            <PostCard
+              key={post.id}
+              post={post}
+              ref={index === data.length - 1 && postIndex === page.length - 1
+                ? lastElementRef
+                : undefined}
+            />
+          ))}
+        </div>
+      ))}
+
+      {error && (
+        <div className="error-banner">
+          <p>Failed to load more content</p>
+          <button onClick={() => setSize(data.length)}>Retry</button>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+**2. Error Boundaries for Infinite Scroll:**
+```typescript
+class InfiniteScrollErrorBoundary extends React.Component<
+  { children: React.ReactNode; onRetry: () => void },
+  { hasError: boolean; error: Error | null }
+> {
+  state = { hasError: false, error: null };
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="error-boundary">
+          <h2>Something went wrong loading the feed</h2>
+          <p>{this.state.error?.message}</p>
+          <button onClick={this.props.onRetry}>Try Again</button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// Usage
+function App() {
+  const { data, setSize, size } = useApiInfiniteQuery(
+    (api, page) => api.data.readMany("posts", {
+      limit: 20,
+      offset: page * 20,
+    }),
+    { pageSize: 20 }
+  );
+
+  return (
+    <InfiniteScrollErrorBoundary
+      onRetry={() => setSize(size)}
+    >
+      {data?.map((page, pageIndex) => (
+        <FeedItems key={pageIndex} items={page} />
+      ))}
+    </InfiniteScrollErrorBoundary>
+  );
+}
+```
+
+### Parallel Fetching with Error Handling
+
+**When using `parallel: true` (SWR >= 2.1.0):**
+```typescript
+const { data, error } = useApiInfiniteQuery(
+  (api, page) => api.data.readMany("posts", {
+    limit: 20,
+    offset: page * 20,
+  }),
+  {
+    pageSize: 20,
+    parallel: true,  // Fetch pages independently
+  }
+);
+
+// With parallel fetching, failed pages don't block other pages
+// error will be set if ANY page fails, but other pages still load
+```
+
+### Best Practices for Error Recovery
+
+1. **Don't disable retries entirely** - Let SWR handle transient errors automatically
+2. **Customize for specific status codes** - Skip retries for 404/401/403, retry for 500/503
+3. **Show existing data during errors** - `data` and `error` can coexist
+4. **Provide manual retry buttons** - Give users control when automatic retries fail
+5. **Use global error reporting** - Report errors to Sentry/bug tracking
+6. **Set reasonable retry limits** - Prevent infinite retry loops (default is 10)
+7. **Handle loading vs error states** - Use `isValidating` for active requests
+8. **Graceful degradation** - Show what you have even if new content fails
+
+### Unknown Areas Still Requiring Research
+
+1. ~~**End detection with API metadata**~~ - **RESOLVED** ✅
+2. ~~**Error recovery**~~ - **RESOLVED** ✅
 3. **Prefetching** - Can we prefetch next page for smoother scrolling?
 4. **Performance optimization** - Memory usage with large datasets?
 5. **Server-side rendering** - Is SSR supported for infinite scroll?
