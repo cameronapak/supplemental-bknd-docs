@@ -1,3 +1,8 @@
+---
+title: "Create First User"
+description: "Learn how to create users in Bknd via Admin UI, CLI, or programmatic methods."
+---
+
 # Create Your First User
 
 Learn how to create users in Bknd using different methods. Users are stored in the entity configured for authentication (default: `users`).

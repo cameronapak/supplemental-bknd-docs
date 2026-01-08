@@ -1,3 +1,8 @@
+---
+title: "Entity-Media Relationships"
+description: "Associate media files with entities using polymorphic relationships and one-to-many patterns."
+---
+
 # Entity-Media Relationships
 
 Associate media files (images, videos, documents) with your entities using Bknd's polymorphic media relations.

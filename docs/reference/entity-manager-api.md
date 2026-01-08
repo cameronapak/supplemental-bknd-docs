@@ -1,3 +1,8 @@
+---
+title: "EntityManager API"
+description: "Low-level API for managing entities, repositories, and database connections in Bknd."
+---
+
 # EntityManager API Reference
 
 The EntityManager is the central interface for all data operations in Bknd. It manages entities, relations, indices, and provides access to Repository and Mutator instances for querying and mutating data.

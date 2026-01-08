@@ -1,3 +1,8 @@
+---
+title: "Choose Your Mode"
+description: "Decision tree for choosing configuration mode (db, code, hybrid) and deployment approach for your Bknd project."
+---
+
 # Choose Your Mode
 
 Bknd offers two key decisions to make when setting up your project:

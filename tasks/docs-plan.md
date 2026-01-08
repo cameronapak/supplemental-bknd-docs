@@ -212,15 +212,15 @@ Update the file after completing each sub-task, not just after completing an ent
     - Verify information hierarchy
     - Check for dead links
 
-- [ ] 7.0 Launch Preparation
-  - [x] 7.1 Create documentation index
-    - Quick start links
-    - Popular resources
-    - Getting help section
-  - [ ] 7.2 Set up search optimization
-    - Add meta descriptions
-    - Configure search terms
-    - Add keywords
+  - [ ] 7.0 Launch Preparation
+   - [x] 7.1 Create documentation index
+     - Quick start links
+     - Popular resources
+     - Getting help section
+   - [x] 7.2 Set up search optimization
+     - Add meta descriptions
+     - Configure search terms
+     - Add keywords
   - [ ] 7.3 Create onboarding flow
     - Define first-time visitor path
     - Highlight key resources

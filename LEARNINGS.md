@@ -1,5 +1,44 @@
 # Learnings
 
+## Task 7.2: Set Up Search Optimization
+
+### SEO Best Practices for Documentation
+
+**Meta Tags Structure:**
+- `title`: SEO-friendly titles (50-60 characters)
+- `description`: Page descriptions (150-160 characters)
+- Frontmatter format: `---\ntitle: "..."\ndescription: "..."`
+
+**Implementation:**
+- Added frontmatter to 16 documentation files missing meta tags
+- Used concise, keyword-rich descriptions for discoverability
+- Focused on developer intent and search terms
+
+**Files Updated:**
+1. `architecture-and-concepts/what-is-bknd.md` - "Lightweight embeddable backend framework..."
+2. `architecture-and-concepts/how-bknd-works.md` - "Deep dive into Bknd's request lifecycle..."
+3. `reference/data-module.md` - "Complete reference for CRUD operations..."
+4. `reference/query-system.md` - "Advanced querying with where filters..."
+5. `reference/entity-manager-api.md` - "Low-level API for managing entities..."
+6. `reference/schema.md` - "Type-safe entity definition with fields..."
+7. `reference/orm.md` - "Object-relational mapping layer..."
+8. `comparisons/bknd-comparison-pocketbase.md` - "Feature comparison between Bknd and PocketBase..."
+9. `how-to-guides/auth/create-first-user.md` - "Learn how to create users..."
+10. `how-to-guides/setup/choose-your-mode.md` - "Decision tree for choosing configuration mode..."
+11. `how-to-guides/setup/integrations/bun-node.md` - "Run Bknd as a standalone server..."
+12. `how-to-guides/setup/integrations/nextjs.md` - "Complete guide for integrating Bknd with Next.js..."
+13. `how-to-guides/setup/integrations/framework-comparison.md` - "Compare integration approaches..."
+14. `how-to-guides/data/entity-media-relationships.md` - "Associate media files with entities..."
+15. `how-to-guides/data/seed-database.md` - "Populate database with initial data..."
+16. `getting-started/build-your-first-api.test.md` - "Validation checklist to verify..."
+17. `inspiration.md` - "Resources and documentation that inspired..."
+
+**Key Learning:**
+- Mintlify automatically handles most SEO (sitemap, robots.txt, semantic HTML)
+- Frontmatter meta tags are the main manual optimization needed
+- Descriptions should include primary keywords and clear value proposition
+- Titles should be descriptive but concise (under 60 chars)
+
 ## Task 5.4: Complete React SDK Reference
 
 ### React SDK Structure Overview

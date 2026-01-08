@@ -1,3 +1,8 @@
+---
+title: "Bknd vs PocketBase"
+description: "Feature comparison between Bknd and PocketBase backend frameworks for JavaScript applications."
+---
+
 ## Bknd vs PocketBase Feature Comparison
 
 ![Bknd vs PocketBase](../assets/bknd-vs-pocketbase.png)

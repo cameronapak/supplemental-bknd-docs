@@ -1,3 +1,8 @@
+---
+title: "Inspiration"
+description: "Resources and documentation that inspired Bknd's design and philosophy."
+---
+
 ## Inspiration Resources
 
 ### Full-stack Frameworks

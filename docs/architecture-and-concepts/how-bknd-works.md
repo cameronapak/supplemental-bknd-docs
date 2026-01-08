@@ -1,3 +1,8 @@
+---
+title: "How Bknd Works"
+description: "Deep dive into Bknd's request lifecycle, architecture, and data flow from API to database."
+---
+
 # How Bknd Works: Request Lifecycle & Architecture
 
 Understanding how requests flow through Bknd is essential for building efficient applications and troubleshooting issues effectively. This document explains the complete request lifecycle, from initialization to response.

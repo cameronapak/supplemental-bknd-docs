@@ -1,3 +1,8 @@
+---
+title: "ORM"
+description: "Object-relational mapping layer for Bknd with entity definitions, migrations, and database adapters."
+---
+
 # How Bknd ORM Works - Schema Prototype API
 
 ## The Schema Prototype Pattern
