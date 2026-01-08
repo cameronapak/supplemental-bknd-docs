@@ -74,7 +74,7 @@ Update the file after completing each sub-task, not just after completing an ent
     - Document seeding process for each mode
     - Include workaround for CodeMode initial seed bug
     - Provide example seed scripts
-  - [ ] 1.5 Write "Create First User" guide (P1)
+  - [x] 1.5 Write "Create First User" guide (P1)
     - Document Admin UI method
     - Document CLI method
     - Document programmatic method
