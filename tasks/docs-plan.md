@@ -116,8 +116,8 @@ Update the file after completing each sub-task, not just after completing an ent
     - Explain auth flow (JWT, sessions)
     - Explain permission evaluation (RLS + RBAC)
 
-- [ ] 3.0 Phase 3: Integration Guides (Week 5-6)
-  - [ ] 3.1 Write Next.js integration guide (P2)
+  - [ ] 3.0 Phase 3: Integration Guides (Week 5-6)
+  - [x] 3.1 Write Next.js integration guide (P2)
     - Complete working example
     - Server component integration
     - App router configuration

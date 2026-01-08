@@ -958,6 +958,141 @@ For understanding request lifecycle:
 5. Research error handling and retry logic
 6. Add concrete examples for complex scenarios (multi-entity policies, etc.)
 
+## Task 3.1: Next.js Integration Guide
+
+### Key Discovery: Next.js Integration is Well-Documented
+
+Bknd's official Next.js documentation is comprehensive and accurate. This task required:
+- Reading official docs at docs.bknd.io/integration/nextjs/
+- Cross-referencing React SDK documentation at docs.bknd.io/usage/react/
+- Verifying configuration patterns with Zread MCP server
+
+### Next.js Integration Components
+
+**What I know:**
+
+1. **Installation methods:**
+   - CLI starter: `npx bknd create -i nextjs` (recommended)
+   - Manual: `npm create next-app` + `npm install bknd`
+
+2. **Configuration:**
+   - `bknd.config.ts` with `NextjsBkndConfig` type
+   - Database connection via `connection.url` property
+   - Optional `cleanRequest.searchParams` for catch-all route
+
+3. **API setup:**
+   - Helper file pattern (`src/bknd.ts`) with `getApp()` and `getApi()` functions
+   - Catch-all route at `src/app/api/[[...bknd]]/route.ts`
+   - Uses `serve()` from `bknd/adapter/nextjs`
+   - Optional edge runtime support for performance
+
+4. **Server-side data fetching:**
+   - Direct API access in server components via `getApi()`
+   - Full type safety with TypeScript
+   - Auth verification with `getApi({ verify: true })`
+
+5. **Admin UI:**
+   - Server component at `src/app/admin/[[...admin]]/page.tsx`
+   - Uses `<Admin>` component from `bknd/ui`
+   - Requires auth verification and `bknd/dist/styles.css`
+
+6. **Client-side React SDK:**
+   - Wrap app with `<ClientProvider>` in layout
+   - `useAuth()` hook for authentication
+   - `useEntityQuery()` for data fetching with SWR caching
+   - `useApiQuery()` for custom API queries
+
+**What I don't know:**
+
+1. **Edge runtime limitations:** What features don't work with edge runtime?
+2. **Custom route protection:** How to protect plugin-created routes in Next.js?
+3. **Middleware patterns:** How to use Next.js middleware with Bknd?
+4. **Static generation:** How does Bknd work with `getStaticProps`/ISR?
+
+### React SDK Hook Patterns
+
+**useAuth hook:**
+```typescript
+const { user, login, logout, verified } = useAuth();
+```
+- Returns user object (null if unauthenticated)
+- Provides login/logout/register functions
+- Tracks verification state
+
+**useEntityQuery hook:**
+```typescript
+const { data, create, update, _delete, isLoading } = useEntityQuery("todos");
+```
+- Auto-fetches data with SWR caching
+- CRUD actions automatically revalidate cache
+- Supports query options (limit, sort, where, with)
+- Different behavior with/without ID parameter
+
+**useApiQuery hook:**
+```typescript
+const { data, mutate } = useApiQuery((api) => api.data.readMany("posts"));
+```
+- Flexible - can query any API endpoint
+- SWR-based caching and revalidation
+- Supports `refine` function to filter response
+- Manual `mutate()` for optimistic updates
+
+### Documentation Pattern: Official Docs as Primary Source
+
+This task revealed that Bknd's official documentation is high-quality and accurate. For integration guides:
+
+1. **Start with official docs** - docs.bknd.io has comprehensive integration guides
+2. **Cross-reference Zread** - For code-level details and implementation specifics
+3. **Add practical examples** - Official docs sometimes lack concrete usage patterns
+4. **Document unknowns explicitly** - When something isn't clear, mark it as unknown
+
+### Guide Structure Strategy
+
+Created Next.js integration guide with:
+1. Overview - What Bknd provides for Next.js
+2. Installation - CLI vs manual setup
+3. Configuration - Config file options
+4. API Setup - Helper file and catch-all route
+5. Server-Side Fetching - Server component examples
+6. Admin UI - Setup and configuration
+7. Client-Side SDK - React hooks usage
+8. Deployment - Environment variables and production tips
+9. Common Patterns - Authentication, type-safe queries
+10. Troubleshooting - Common issues and fixes
+
+### Key Learnings
+
+1. **Next.js + Bknd is a strong combination** - The integration is seamless with type safety throughout
+2. **Edge runtime support is a bonus** - Better performance for global deployments
+3. **React SDK is mature** - SWR integration provides excellent caching and revalidation
+4. **Authentication is flexible** - Works with localStorage, cookies, or server-side (embedded mode)
+5. **Type safety is pervasive** - From config to API calls to client components
+
+### Unknown Areas Requiring Research
+
+1. **Edge runtime limitations** - Which Bknd features don't work with edge runtime?
+2. **Middleware integration** - How to use Next.js middleware with Bknd auth?
+3. **Static generation support** - How does Bknd work with SSG/ISR?
+4. **Custom route protection** - How to protect plugin-created routes in Next.js context?
+5. **API route optimization** - Best practices for caching and performance?
+
+### Source Code Locations
+
+Key files for Next.js integration:
+- `app/src/adapter/nextjs/index.ts` - Next.js adapter implementation
+- `app/src/adapter/nextjs/types.ts` - NextjsBkndConfig type definition
+- `app/src/client/index.ts` - Client-side SDK (React hooks)
+- `app/src/ui/admin/` - Admin UI React components
+
+### Documentation Best Practices
+
+1. **Provide multiple examples** - Show simple, intermediate, and advanced usage
+2. **Include type annotations** - TypeScript users benefit from seeing types
+3. **Document unknowns clearly** - Don't guess; mark what needs more research
+4. **Cross-reference other guides** - Link to related documentation
+5. **Use code fences with language** - Highlight syntax correctly
+6. **Include troubleshooting** - Common issues and their fixes
+
 ## Task 1.7: Organize Docs into Correct Folders
 
 ### Documentation Organization Strategy
