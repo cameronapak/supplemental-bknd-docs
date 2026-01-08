@@ -232,7 +232,8 @@ Update the file after completing each sub-task, not just after completing an ent
     - Examples verified
 
  - [x] 8.0 Find answers to `LEARNINGS.md` and see if we can update any docs
-    - [x] Research and document `useApiInfiniteQuery` (experimental infinite scroll hook)
-    - [x] Research and document `mountOnce` middleware
-    - [x] Research and document `mutateRaw` implementation
-    - [x] Research and document end detection with API metadata (count/total)
+     - [x] Research and document `useApiInfiniteQuery` (experimental infinite scroll hook)
+     - [x] Research and document `mountOnce` middleware
+     - [x] Research and document `mutateRaw` implementation
+     - [x] Research and document end detection with API metadata (count/total)
+     - [x] Research and document health check endpoint (`/api/system/ping`)

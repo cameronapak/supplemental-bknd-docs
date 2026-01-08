@@ -4947,7 +4947,12 @@ volumes:
 
 ### Critical Unknowns Requiring Research
 
-1. **Health Check Endpoint**: The exact health endpoint URL is not documented. Common patterns would be `/api/health` or `/health`, but this needs verification.
+1. ~~**Health Check Endpoint**~~ - **RESOLVED** ✅
+   - **Endpoint**: `/api/system/ping`
+   - **Response**: `{ pong: true }`
+   - **Method**: GET
+   - **Authentication**: Not required (public endpoint)
+   - **Source**: SystemController.ts:462-470
 
 2. **Media Storage Configuration**: How to configure media storage adapters (local vs cloud) in Docker CLI mode is not documented. For local storage, likely needs volume mount for uploads directory.
 
@@ -5059,3 +5064,229 @@ For most users:
 5. Test thoroughly in staging before production
 
 The official Docker image is well-optimized for production use with PM2 and minimal base image. Customization should only be pursued when the default CLI mode doesn't meet requirements.
+
+## Task: Health Check Endpoint Research (RESOLVED)
+
+### Key Discovery: Bknd Provides `/api/system/ping` Endpoint
+
+Bknd includes a built-in health check endpoint that is publicly accessible and requires no authentication.
+
+### Health Check Endpoint Details
+
+**Endpoint**: `GET /api/system/ping`
+
+**Response**: 
+```json
+{
+  "pong": true
+}
+```
+
+**Features**:
+- No authentication required (public endpoint)
+- Returns simple JSON response
+- Fast to execute (minimal overhead)
+- Always available once server is running
+
+### Source Code Implementation
+
+From `app/src/modules/server/SystemController.ts` (lines 462-470):
+```typescript
+hono.get(
+  "/ping",
+  mcpTool("system_ping"),
+  describeRoute({
+    summary: "Ping server",
+    tags: ["system"],
+  }),
+  (c) => c.json({ pong: true }),
+);
+```
+
+### Test Usage
+
+From test files, the endpoint is used like:
+```typescript
+await app.server.request("/api/system/ping");
+```
+
+### Usage Examples
+
+**Curl**:
+```bash
+curl http://localhost:3000/api/system/ping
+# Response: {"pong":true}
+```
+
+**HTTP client**:
+```typescript
+const response = await fetch('http://localhost:3000/api/system/ping');
+const data = await response.json();
+console.log(data.pong); // true
+```
+
+**Health check monitoring**:
+```typescript
+async function checkHealth(baseUrl: string): Promise<boolean> {
+  try {
+    const response = await fetch(`${baseUrl}/api/system/ping`);
+    const data = await response.json();
+    return data.pong === true;
+  } catch {
+    return false;
+  }
+}
+```
+
+### Production Deployment Usage
+
+**Kubernetes liveness probe**:
+```yaml
+livenessProbe:
+  httpGet:
+    path: /api/system/ping
+    port: 3000
+  initialDelaySeconds: 5
+  periodSeconds: 10
+```
+
+**Kubernetes readiness probe**:
+```yaml
+readinessProbe:
+  httpGet:
+    path: /api/system/ping
+    port: 3000
+  initialDelaySeconds: 5
+  periodSeconds: 10
+```
+
+**Docker health check**:
+```dockerfile
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000/api/system/ping || exit 1
+```
+
+### Related Endpoints
+
+**System Info** (`GET /api/system/info`):
+- More detailed health and status information
+- Includes version, mode, runtime, connection status
+- Also publicly accessible
+- Use for detailed diagnostics
+
+### Best Practices
+
+1. **Use `/api/system/ping` for**:
+   - Simple health checks (is server up?)
+   - Load balancer health probes
+   - Container health checks
+   - Minimal overhead monitoring
+
+2. **Use `/api/system/info` for**:
+   - Detailed diagnostics
+   - Version verification
+   - Configuration validation
+   - Troubleshooting
+
+3. **Monitor response time**:
+   - Fast response (< 50ms) indicates healthy server
+   - Slow response (> 500ms) may indicate database issues
+
+4. **Don't rely solely on ping**:
+   - Ping only checks server is running
+   - Add database-specific health checks for critical services
+   - Monitor application-level metrics (errors, latency, throughput)
+
+### Integration Examples
+
+**Docker Compose health check**:
+```yaml
+services:
+  bknd:
+    image: bknd/bknd:latest
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/system/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+```
+
+**Vercel health check**:
+Configure in `vercel.json`:
+```json
+{
+  "healthCheckPath": "/api/system/ping"
+}
+```
+
+**AWS ELB target health check**:
+- Protocol: HTTP
+- Path: `/api/system/ping`
+- Interval: 30 seconds
+- Timeout: 5 seconds
+- Healthy threshold: 3
+- Unhealthy threshold: 3
+
+### Unknown Areas (Remaining)
+
+1. **Database-specific health checks** - How to check if database connection is healthy?
+2. **Module-specific health** - Can individual modules (auth, data, media) be checked separately?
+3. **Custom health metrics** - Can we add custom health status to the ping response?
+4. **Graceful shutdown** - How does ping endpoint behave during shutdown?
+
+### Key Learnings
+
+1. **Health check is simple and reliable** - The `/api/system/ping` endpoint is perfect for basic monitoring
+2. **No auth required** - Simplifies monitoring setup significantly
+3. **Always available** - Works in all modes (db, code, hybrid, CLI, embedded)
+4. **Minimal overhead** - Fast response time suitable for frequent polling
+5. **Well-documented in source code** - Implementation is clean and easy to understand
+6. **MCP tool integration** - The ping endpoint is also available as an MCP tool (`system_ping`)
+
+### Source Code Locations
+
+- `app/src/modules/server/SystemController.ts` - Ping endpoint implementation (lines 462-470)
+- `app/__test__/modules/AppAuth.spec.ts` - Test usage example
+- `app/__test__/app/mcp/mcp.system.test.ts` - MCP tool test (`system_ping`)
+
+### Documentation Recommendation
+
+**Add to Troubleshooting/Common Issues guide:**
+```markdown
+## Health Check Endpoint
+
+Bknd provides a built-in health check endpoint for monitoring:
+
+**Endpoint**: `GET /api/system/ping`
+
+**Response**: `{"pong": true}`
+
+**Usage**:
+- Container health checks
+- Load balancer probes
+- Simple monitoring
+```
+
+**Add to Docker guide**:
+```markdown
+### Health Check
+
+Add to your Dockerfile or docker-compose.yml:
+
+```dockerfile
+HEALTHCHECK CMD curl -f http://localhost:3000/api/system/ping || exit 1
+```
+```
+
+**Add to Deployment guide**:
+```markdown
+### Production Monitoring
+
+Configure health checks for your platform:
+
+- **Kubernetes**: Use `/api/system/ping` for liveness/readiness probes
+- **Docker**: Add HEALTHCHECK instruction
+- **Load Balancers**: Configure health check path
+```
+
