@@ -11,6 +11,8 @@ That's why I'm taking it upon myself to create some docs in hopes that it helps 
 > [!NOTE]
 > I'm no expert. However, I am a student who loves to learn and to help unlock others. 
 
+Here's the [potential Docs roadmap](./DOCUMENTATION_ROADMAP.md)
+
 — Cam
 
 ## Docs
