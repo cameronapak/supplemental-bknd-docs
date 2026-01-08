@@ -260,3 +260,69 @@ For the next tutorial iteration:
 5. Identify where docs need improvement upstream
 
 This approach ensures accuracy and reveals gaps that pure documentation reading cannot.
+
+## Task 1.6: Set up Documentation Structure
+
+### Mintlify Configuration: docs.json
+
+Mintlify uses `docs.json` as the primary configuration file (replaced `mint.json`). This file controls:
+
+**Required Properties:**
+- `name` - Documentation site name
+- `logo` - Light/dark logo variants
+- `favicon` - Site favicon
+- `colors` - Primary, light, dark colors for theming
+- `navigation` - Complete navigation structure
+
+**Navigation Structure:**
+- `groups` - Main sidebar sections with icons
+- Nested `groups` within `groups` - Multi-level organization
+- `pages` - Array of file paths (relative to docs root)
+- Top-level `groups` are always expanded
+- Nested `groups` have optional `expanded: false` to collapse by default
+
+**Directory Organization:**
+Based on Mintlify docs, organize by documentation types:
+- `getting-started/` - Tutorials (15 min step-by-step)
+- `how-to-guides/` - Task-oriented guides with subdirectories
+- `architecture-and-concepts/` - Explanations of how Bknd works
+- `reference/` - API/module documentation
+- `troubleshooting/` - FAQ and known issues
+- `comparisons/` - Bknd vs alternatives
+
+**Key Files Required:**
+- `docs.json` - Navigation configuration
+- Logo files in `logo/` directory
+- MDX files for each page (not markdown)
+- Frontmatter in each page with `title` and `description`
+
+**Navigation Best Practices:**
+1. Keep main sections to ~5-7 top-level groups
+2. Nest related guides under logical subgroups
+3. Use consistent ordering across docs
+4. Add stub pages for planned content to visualize structure
+
+**Unknown Areas:**
+- How to add custom icons for navigation groups
+- Whether to use `.mdx` or `.md` (Mintlify docs mention `.mdx`)
+- Meta.json vs frontmatter configuration
+- OpenAPI integration for API reference section
+
+### Mintlify CLI Commands
+
+Based on quickstart docs:
+- `npm i -g mint` - Install CLI globally (requires Node.js v20.17+)
+- `mint dev` - Preview documentation locally at `http://localhost:3000`
+- Web editor available at `mintlify.com/editor` for browser-based editing
+- Automatic deployment on git push when GitHub App installed
+
+### Critical Insight: Bknd Doesn't Use Mintlify
+
+After reviewing the Bknd repository's `docs/source.config.ts`, Bknd uses **Fumadocs** (not Mintlify) for their official documentation:
+- Uses `fumadocs-mdx/config` and related packages
+- Custom configuration with remark/rehype plugins
+- Next.js-based documentation site
+- MDX support with twoslash for TypeScript examples
+
+**Implication:**
+Our supplemental docs can use Mintlify independently of Bknd's official docs. The structure I created (`docs.json`) is correct for a Mintlify-based site that complements the official documentation.
