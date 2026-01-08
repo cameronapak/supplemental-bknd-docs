@@ -39,6 +39,7 @@ We are improving the documentation for bknd-io/bknd: https://github.com/bknd-io/
 - Each guide should have clear outcomes and prerequisites
 - Use the testing checklist format (`.test.md`) for tutorials to validate each step
 - Search https://docs.bknd.io and use Zread MCP server to research Bknd properly
+- You can also use the `opensrc` tool available to search the bknd codebase! If you need to look at the codebase, this is the tool to use!
 
 **IMPORTANT:** you must read https://www.mintlify.com/blog/how-to-write-documentation-that-developers-want-to-read and https://docs.divio.com/documentation-system/ before doing research.
 
@@ -135,11 +136,11 @@ Update the file after completing each sub-task, not just after completing an ent
     - [x] 3.5 Write Bun/Node standalone guide (P3)
      - Server setup
      - Basic configuration
-  - [ ] 3.6 Create "Deploy to Production" tutorial (P2)
-    - Deploy to Vercel (15 min)
-    - Choose mode guidance
-    - Set environment variables
-    - Configure database connection
+   - [x] 3.6 Create "Deploy to Production" tutorial (P2)
+     - Deploy to Vercel (15 min)
+     - Choose mode guidance
+     - Set environment variables
+     - Configure database connection
   - [ ] 3.7 Create framework comparison matrix
     - Compare integration approaches across frameworks
     - Document framework-specific considerations

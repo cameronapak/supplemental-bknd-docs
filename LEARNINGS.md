@@ -2492,3 +2492,83 @@ Key files for comprehensive auth module understanding:
 7. **Use code fences** - Clear, runnable code examples
 8. **Organize logically** - Configuration → Endpoints → Programmatic API → Best Practices
 
+
+## Task 3.6: "Deploy to Production" Tutorial
+
+### Key Discovery: Production Database Choice is Critical
+
+While local development works with file-based SQLite, production deployment requires a persistent database solution. Bknd supports multiple production databases but requires careful configuration.
+
+**What I know:**
+
+1. **Database options for production:**
+   - **Turso (LibSQL)**: Recommended for edge deployment, HTTP-based SQLite, free tier available
+   - **PostgreSQL**: Traditional choice, supports Neon/Supabase/Railway, better for complex queries
+   - **File-based SQLite**: Not recommended for production (doesn't persist across deployments)
+
+2. **Vercel deployment workflow:**
+   - Push code to GitHub
+   - Import project in Vercel
+   - Configure environment variables (`DATABASE_URL`, `TURSO_AUTH_TOKEN` if using Turso)
+   - Deploy with automatic preview + production environments
+
+3. **Mode switching pattern:**
+   - Development: Use database mode (`options.mode: "db"`) for quick iteration
+   - Production: Switch to code mode (`options.mode: "code"`) with exported schema
+   - Export schema via Admin UI or CLI: `npx bknd config --out appconfig.json`
+
+4. **Edge runtime considerations:**
+   - Enable `export const runtime = "edge"` in API routes for better performance
+   - File-based SQLite doesn't work with edge runtime
+   - Turso/LibSQL designed for edge deployment
+   - PostgreSQL may have latency from edge locations
+
+**What I don't know:**
+
+1. **Database migrations:** How to handle schema changes in production without downtime
+2. **Backup strategies:** Automated backup recommendations for Turso/PostgreSQL
+3. **Rollback procedures:** How to roll back deployments if issues occur
+4. **Database connection pooling:** Configuration for high-traffic scenarios
+5. **Multi-region deployment:** How Turso replication works with Vercel edge
+
+### Documentation Pattern: Production Readiness Checklist
+
+For production deployment guides, include:
+- Prerequisites (GitHub repo, Vercel account)
+- Database selection guidance with trade-offs
+- Step-by-step Vercel configuration
+- Environment variable setup
+- Production checklist (what to verify before going live)
+- Common issues and solutions
+- Next steps for scaling
+
+### Best Practices Documented
+
+1. **Use environment variables** for all sensitive configuration
+2. **Never commit** database credentials or API keys
+3. **Test in preview deployments** before promoting to production
+4. **Enable edge runtime** for better global performance
+5. **Monitor database connection errors** after deployment
+6. **Set up database backups** before handling production data
+
+### Source Code Locations
+
+Key files for production deployment:
+- `app/src/adapter/nextjs/nextjs.adapter.ts` - Next.js runtime integration
+- `app/src/data/adapters/` - Database adapter implementations
+- `examples/nextjs/bknd.config.ts` - Production configuration example
+
+### Research Approach
+
+1. **Zread MCP** for Bknd-specific deployment guidance
+2. **Firecrawl search** for Vercel-specific environment variable setup
+3. **Existing integration guides** to understand deployment patterns
+4. **Official docs** cross-reference for verification
+
+### Next Steps for Better Documentation
+
+1. Test actual Turso deployment to verify connection setup
+2. Document database migration workflows
+3. Add monitoring and logging recommendations
+4. Create comparison table for different database providers
+5. Investigate edge runtime limitations with specific features
