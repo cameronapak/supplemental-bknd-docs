@@ -187,12 +187,12 @@ Update the file after completing each sub-task, not just after completing an ent
     - Mutator API examples
     - Query system examples (where, with, sort)
     - Event hooks documentation
-  - [ ] 5.4 Complete React SDK Reference (P1)
-    - useAuth hook examples
-    - useEntity hook examples
-    - useApiQuery hook examples
-    - Media.Dropzone documentation
-    - Auto-config forms documentation
+   - [x] 5.4 Complete React SDK Reference (P1)
+     - useAuth hook examples
+     - useEntity hook examples
+     - useApiQuery hook examples
+     - Media.Dropzone documentation
+     - Auto-config forms documentation
 
 - [ ] 6.0 Testing & Validation
   - [ ] 6.1 Test all tutorials end-to-end

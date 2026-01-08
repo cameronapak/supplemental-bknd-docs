@@ -1,5 +1,233 @@
 # Learnings
 
+## Task 5.4: Complete React SDK Reference
+
+### React SDK Structure Overview
+
+Bknd's React SDK (`bknd/client`) is built on three layers:
+
+1. **TypeScript SDK** (`bknd`) - Low-level API class for server/browser
+2. **React Hooks** (`bknd/client`) - React hooks that wrap the SDK
+3. **SWR Integration** - Automatic caching and revalidation for data fetching
+
+### Key Hooks Discovered
+
+**Simple Hooks (Direct SDK access):**
+- `useApi()` - Returns Api instance for direct API access
+- `useAuth()` - Authentication state and helpers (login, register, logout, verify)
+- `useEntity()` - CRUD operations without caching
+
+**Query Hooks (SWR-based caching):**
+- `useApiQuery()` - Query any API endpoint with caching
+- `useEntityQuery()` - Entity CRUD with automatic cache revalidation
+
+**Utility Hooks:**
+- `useInvalidate()` - Manual cache invalidation
+- `useEntityMutate()` - Mutations without fetching data
+
+### useAuth Hook Implementation
+
+From source code (`app/src/ui/client/schema/auth/use-auth.ts`):
+
+**Return Values:**
+- `data: Partial<AuthState>` - Full auth state
+- `user: SafeUser | undefined` - Current authenticated user
+- `token: string | undefined` - JWT token
+- `verified: boolean` - Whether token has been verified
+- `login: (data) => Promise<AuthResponse>` - Login with password strategy
+- `register: (data) => Promise<AuthResponse>` - Register with password strategy
+- `logout: () => Promise<void>` - Logout and invalidate all caches
+- `verify: () => Promise<void>` - Verify current token is valid
+- `setToken: (token) => void` - Manually set auth token
+
+**Key Behavior:**
+- `login` and `register` use password strategy by default: `api.auth.login("password", input)`
+- `logout` calls `api.auth.logout()` then invalidates all SWR caches
+- `verify` calls `api.verifyAuth()` then invalidates caches
+
+### useEntity and useEntityQuery Hooks
+
+From source code (`app/src/ui/client/api/use-entity.ts`):
+
+**useEntity (No caching):**
+- Returns: `create`, `read`, `update`, `_delete` methods
+- Throws `UseEntityApiError` on API failures
+- Manual execution required (no automatic fetching)
+
+**useEntityQuery (SWR-based):**
+- Extends SWR with CRUD actions
+- Automatic cache revalidation after mutations (`revalidateOnMutate: true` by default)
+- Supports both single-item and list modes based on `id` parameter
+- Returns SWR properties plus CRUD actions and cache management tools
+
+**CRUD Action Types:**
+```typescript
+// Single item mode (id provided)
+useEntityQuery("comments", 1)
+// update and _delete don't require id parameter
+await update({ content: "new text" });
+await _delete();
+
+// List mode (no id)
+useEntityQuery("comments")
+// update and _delete require id parameter
+await update({ content: "new text" }, 1);
+await _delete(1);
+```
+
+**Query Parameters (RepoQueryIn):**
+- `limit: number` - Max results (default: 10)
+- `offset: number` - Skip N results (default: 0)
+- `sort: string | string[]` - Sort field(s), prefix with `-` for descending (default: "id")
+- `where: object` - Filter conditions
+- `with: string[]` - Relations to include
+
+### useApiQuery Hook
+
+From source code (`app/src/ui/client/api/use-api.ts`):
+
+**Parameters:**
+- `fn: (api: Api) => FetchPromise<Data>` - Selector function
+- `options: SWRConfiguration & { enabled?, refine? }` - SWR options
+
+**Returns:**
+- All SWR properties (`data`, `error`, `isLoading`, `isValidating`)
+- `promise: FetchPromise` - The fetch promise
+- `key: string` - Cache key
+- `api: Api` - API instance
+
+**refine Function:**
+Transforms response data before caching:
+```typescript
+useApiQuery(
+  (api) => api.data.readMany("comments"),
+  {
+    refine: (data) => data.data, // Extract nested data
+  }
+)
+```
+
+### Cache Management
+
+**Automatic Invalidation:**
+- Mutations in `useEntityQuery` automatically revalidate entity queries
+- `useAuth.logout()` invalidates all SWR cache entries
+
+**Manual Invalidation:**
+```typescript
+const invalidate = useInvalidate();
+await invalidate("/data/comments"); // By key prefix
+await invalidate((api) => api.data.readMany("comments")); // By API selector
+```
+
+**Exact Match:**
+```typescript
+await invalidate((api) => api.data.readOne("comments", 1), { exact: true });
+```
+
+### React Elements
+
+From `app/src/ui/elements/index.ts`:
+- `AuthForm` - Pre-built authentication form (login/register)
+- `Media.Dropzone` - File upload dropzone with progress tracking
+- `NativeForm` - Auto-configured form component
+
+**AuthForm Props:**
+- `action: "login" | "register"` - Form action
+- `method: "POST" | "GET"` - HTTP method (default: "POST")
+- `auth: Partial<AppAuthSchema>` - Auth configuration (basepath, strategies)
+- `buttonLabel: string` - Submit button text (default: "Sign in"/"Sign up")
+
+**Media.Dropzone Features:**
+- Progress tracking for uploads
+- Max files limit with overwrite option
+- Allowed MIME types filtering
+- Auto-upload or manual upload
+- State management: pending, uploading, uploaded, failed, initial, deleting
+- Supports both drag-drop and file selection
+
+**Dropzone Props:**
+- `getUploadInfo: (file) => { url, headers?, method? }` - Get upload endpoint
+- `handleDelete: (file) => Promise<boolean>` - Delete file handler
+- `maxItems?: number` - Maximum files
+- `allowedMimeTypes?: string[]` - File type filter
+- `overwrite?: boolean` - Overwrite existing files
+- `autoUpload?: boolean` - Upload automatically
+- `flow?: "start" | "end"` - Add to start or end (default: "start")
+- `onUploaded?: (file) => void` - Single file uploaded callback
+- `onUploadedAll?: (files) => void` - All files uploaded callback
+- `onDeleted?: (file) => void` - Deleted callback
+- `children: ReactNode | (props) => ReactNode` - Custom render function
+
+### Type Safety
+
+**Auto-generated Types:**
+```typescript
+import type { DB, RepoQueryIn } from "bknd";
+
+// Entity types from generated schema
+type Post = DB["posts"];
+
+// Query types with full type safety
+const query: RepoQueryIn = {
+  limit: 10,
+  where: { published: true },
+};
+```
+
+### ClientProvider Configuration
+
+From `app/src/ui/client/index.ts`:
+- `baseUrl?: string` - API base URL (defaults to window.location.origin)
+- All Api options supported: `token`, `storage`, `onAuthStateChange`, `fetcher`, `credentials`
+
+**Authentication Patterns:**
+1. **SPA with localStorage** - Independent deployments, token stored in localStorage
+2. **SPA with cookies** - Same domain, credentials: "include"
+3. **Full-stack embedded** - No baseUrl, user passed from server-side
+
+### Unknown Areas Requiring Research
+
+1. **useApiInfiniteQuery** - Marked as "highly experimental" in source code
+2. **mountOnce middleware** - Purpose and usage not fully documented
+3. **Optimistic updates with mutateRaw** - Implementation details unclear
+4. **Custom fetcher configuration** - Edge cases and error handling patterns
+
+### Official Documentation Quality
+
+Bknd's official React SDK documentation is **comprehensive and well-structured**:
+- Clear separation of hook types (simple, query, utility)
+- Detailed parameter and return value tables
+- Practical examples for each hook
+- Authentication patterns for different deployment architectures
+- Complete CRUD examples with query parameters
+
+**Gap in Official Docs:**
+- No documentation for experimental features (`useApiInfiniteQuery`)
+- Limited guidance on advanced SWR patterns (optimistic updates, custom middleware)
+- Missing performance optimization tips (cache size, revalidation strategies)
+
+### Best Practices Discovered
+
+1. **Use `useEntityQuery`** for most data fetching (automatic caching + revalidation)
+2. **Use `useEntity`** for one-off operations where caching isn't needed
+3. **Call `mutate()`** after manual mutations to keep UI in sync
+4. **Set `revalidateOnMutate: false`** for batch operations to avoid excessive revalidation
+5. **Use `refine` function** to transform API responses before caching
+6. **Verify auth on mount** in SPA mode: `useEffect(() => auth.verify(), [])`
+7. **Handle errors** with `UseEntityApiError` for detailed error information
+
+### Source Code Locations
+
+Key files for understanding React SDK:
+- `app/src/ui/client/index.ts` - Main exports
+- `app/src/ui/client/ClientProvider.ts` - Provider component
+- `app/src/ui/client/schema/auth/use-auth.ts` - Auth hook implementation
+- `app/src/ui/client/api/use-entity.ts` - Entity hooks
+- `app/src/ui/client/api/use-api.ts` - Query hooks
+- `app/src/ui/elements/auth/AuthForm.tsx` - Auth form component
+- `app/src/ui/elements/media/Dropzone.tsx` - Dropzone component
+
 ## Task 1.3: "Choose Your Mode" Decision Tree
 
 ### Bknd Mode Terminology

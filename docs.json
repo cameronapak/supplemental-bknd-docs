@@ -76,13 +76,14 @@
           "architecture-and-concepts/how-bknd-works"
         ]
       },
-      {
-        "group": "Reference",
-        "pages": [
-          "reference/auth-module",
-          "reference/data-module"
-        ]
-      },
+       {
+         "group": "Reference",
+         "pages": [
+           "reference/auth-module",
+           "reference/data-module",
+           "reference/react-sdk-reference"
+         ]
+       },
       {
         "group": "Troubleshooting",
         "pages": [
