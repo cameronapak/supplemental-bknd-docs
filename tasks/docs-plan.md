@@ -127,12 +127,12 @@ Update the file after completing each sub-task, not just after completing an ent
      - API integration patterns
      - State management approach
    - [x] 3.3 Write React Router integration guide (P3)
-     - Loader/Action pattern integration
-     - Route-based authentication
-  - [ ] 3.4 Write Astro integration guide (P3)
-    - SSR integration
-    - Endpoint configuration
-   - [x] 3.5 Write Bun/Node standalone guide (P3)
+      - Loader/Action pattern integration
+      - Route-based authentication
+   - [x] 3.4 Write Astro integration guide (P3)
+     - SSR integration
+     - Endpoint configuration
+    - [x] 3.5 Write Bun/Node standalone guide (P3)
      - Server setup
      - Basic configuration
   - [ ] 3.6 Create "Deploy to Production" tutorial (P2)

@@ -1071,6 +1071,102 @@ Key files for React Router integration:
 4. Add examples for complex scenarios (multi-entity forms, optimistic updates)
 5. Investigate React Router middleware integration for auth
 
+## Task 3.4: Astro Integration Guide
+
+### Key Discovery: Two Integration Patterns
+
+Bknd supports two distinct integration approaches with Astro:
+
+1. **Page-Based Integration** (Standard/Simple):
+   - `src/pages/api/[...api].astro` - API catch-all route
+   - `src/pages/admin/[...admin].astro` - Admin UI route
+   - Server-side data fetching via `getApi()` in frontmatter
+   - Automatic static asset serving
+
+2. **Middleware Integration** (Advanced):
+   - `src/middleware.ts` routes requests to Bknd
+   - Centralized routing logic for `/api/*` and `/admin/*`
+   - Manual static asset handling via `onBuilt` handler
+   - Cleaner separation of concerns
+
+### What I know:
+
+**Page-Based Integration:**
+- Helper file pattern at `src/bknd.ts` with `getApp()` and `getApi()`
+- API routes return JSON directly via `api.fetch(Astro.request)`
+- Admin UI requires `client:only` directive and `bknd/dist/styles.css`
+- Server-side data fetching in Astro frontmatter: `const api = await getApi(Astro)`
+- `export const prerender = false;` required for dynamic routes
+
+**Middleware Integration (from GitHub Issue #317):**
+- Remove bknd-related pages (admin, api) - middleware handles routing
+- Postinstall script copies static assets: `cp -r node_modules/bknd/dist/public public/_bknd`
+- `onBuilt` handler in `bknd.config.ts` registers admin controller
+- Middleware routes `/api*` and `/admin*` to Bknd
+- Better for complex routing scenarios
+
+**Configuration:**
+- `bknd.config.ts` uses `AstroBkndConfig` type
+- Environment variables via `import.meta.env`
+- Database connection in `connection.url` property
+- Optional `onBuilt` handler for advanced setups
+
+### What I don't know:
+
+1. **Client-Side SDK Integration:**
+   - Whether React SDK hooks (`useAuth`, `useEntityQuery`) work with Astro islands
+   - How to combine server-side rendering with client-side state
+   - Best practices for optimistic updates in Astro context
+
+2. **Middleware Pattern Best Practices:**
+   - When to use middleware vs page-based integration
+   - Performance implications of middleware routing
+   - How middleware affects Astro's caching and optimization
+
+3. **Authentication Flow:**
+   - Whether Astro middleware is the best place for auth checks
+   - How to handle JWT token validation in middleware
+   - Session persistence across Astro route transitions
+
+4. **Static Asset Handling:**
+   - Why middleware requires manual asset copying
+   - How to properly configure asset paths
+   - CDN integration for static assets
+
+### Documentation Pattern: Multiple Integration Approaches
+
+For frameworks supporting multiple integration patterns:
+- Document both approaches with clear trade-offs
+- Label one as "Standard" and one as "Advanced"
+- Provide comparison table showing when to use each
+- Include unknown details for each approach
+
+### Source Code Locations
+
+Key files for Astro integration:
+- `app/src/adapter/astro/astro.adapter.ts` - Adapter implementation
+- `examples/astro/bknd.config.ts` - Configuration example
+- `examples/astro/src/pages/admin/[...admin].astro` - Admin UI route
+- `examples/astro/src/pages/index.astro` - Server-side data fetching
+- GitHub Issue #317 - Middleware integration pattern
+
+### Critical Gap: Client-Side SDK Compatibility
+
+Bknd's React SDK may not work seamlessly with Astro's island architecture. This is a significant unknown because:
+- Astro uses partial hydration for client components
+- React SDK assumes full React environment
+- Client-side state management needs careful consideration
+
+**Recommendation:** Focus on server-side data fetching for Astro, document React SDK as experimental.
+
+### Next Steps for Better Documentation
+
+1. Test actual middleware integration in Astro project
+2. Verify React SDK compatibility with Astro islands
+3. Add performance benchmarks for both integration patterns
+4. Document authentication middleware best practices
+5. Create decision matrix for choosing integration approach
+
 ## Task 3.1: Next.js Integration Guide
 
 ### Key Discovery: Next.js Integration is Well-Documented
