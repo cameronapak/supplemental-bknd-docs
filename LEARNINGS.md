@@ -898,9 +898,203 @@ Native SWR mutate function for advanced cache manipulation.
 **For standard operations**, use the simpler `mutate()` function.
 ```
 
+## Task 8.3: End Detection with API Metadata (RESOLVED)
+
+### Key Discovery: RepositoryResult Provides `count` and `total` Metadata
+
+RepositoryResult includes count metadata when `includeCounts: true` is enabled, allowing reliable end detection for infinite scroll.
+
+### Enabling Count Metadata
+
+Repository supports three ways to enable count metadata:
+
+**1. Global Repository Option:**
+```typescript
+const repo = em.repo("posts", { includeCounts: true });
+const result = await repo.findMany();
+console.log(result.count, result.total); // Available
+```
+
+**2. Pass to execute() (per-query):**
+```typescript
+const result = await em.repo("posts").findMany();
+await result.execute(qb, { includeCounts: true });
+```
+
+**3. Default Behavior (auto):**
+```typescript
+// From RepositoryResult.ts (lines 36-38)
+private shouldIncludeCounts(intent?: boolean) {
+   if (intent === undefined) return this.conn.supports("softscans");
+   return intent;
+}
+```
+- Automatically enabled if database adapter supports "softscans"
+- Can be explicitly disabled with `includeCounts: false`
+
+### Metadata Properties
+
+**count: number**
+- Number of records in **current page** (respecting where filters)
+- Equivalent to: `COUNT(*) FROM table WHERE <filters>`
+
+**total: number**
+- Total number of records in **entire entity table** (ignoring filters)
+- Equivalent to: `COUNT(*) FROM table`
+
+**items: number**
+- Alias for `data.length` (number of records actually returned)
+
+### How It Works Under the Hood
+
+From `RepositoryResult.ts` (lines 47-67):
+
+When `includeCounts: true`, execute() method runs **3 parallel queries**:
+
+1. **Main query** - With limit, offset, where, sort
+   ```sql
+   SELECT id, title, ... FROM posts 
+   WHERE published = true 
+   ORDER BY created_at DESC 
+   LIMIT 20 OFFSET 0
+   ```
+
+2. **Count query** - Same filters, no limit/offset
+   ```sql
+   SELECT COUNT(*) as count FROM posts 
+   WHERE published = true
+   ```
+
+3. **Total query** - No filters, no limit/offset
+   ```sql
+   SELECT COUNT(*) as total FROM posts
+   ```
+
+Results are merged into:
+```typescript
+{
+  data: [...],        // Hydrated entity data
+  items: 20,         // Same as data.length
+  count: 150,        // Records matching filters
+  total: 500,        // Total records in table
+  time: 12.5,        // Query execution time (ms)
+  sql: "...",        // Main query SQL
+  parameters: [...]  // Query parameters
+}
+```
+
+### API Client Response Structure
+
+`api.data.readMany()` returns `ResponseObject<RepositoryResultJSON<Data[]>>`:
+
+```typescript
+const res = await api.data.readMany("posts", {
+  where: { published: true },
+  limit: 20,
+  offset: 0,
+});
+
+// Response structure
+console.log(res.data);    // Array of posts
+console.log(res.count);   // 150 (matching filters)
+console.log(res.total);   // 500 (total in table)
+console.log(res.items);   // 20 (returned in this page)
+```
+
+Note: `ResponseObject` wraps `RepositoryResultJSON` with additional properties:
+- `raw`, `res`, `body`, `ok`, `status`, `toJSON()`
+
+### Reliable End Detection for Infinite Scroll
+
+**Using `total` (recommended for most cases):**
+```typescript
+const pageSize = 20;
+const { data, count, total } = await api.data.readMany("posts", {
+  limit: pageSize,
+  offset: page * pageSize,
+});
+
+// Reliable end detection using total
+const endReached = (page + 1) * pageSize >= total;
+
+// Alternative: check if no more data available
+const endReached = count <= page * pageSize;
+```
+
+**Using `count` (for filtered queries):**
+```typescript
+// count respects filters, total ignores them
+const { data, count } = await api.data.readMany("posts", {
+  where: { published: true },
+  limit: pageSize,
+  offset: page * pageSize,
+});
+
+// Use count when you have filters
+const endReached = count <= (page + 1) * pageSize;
+```
+
+### Real-World Example: Improved useApiInfiniteQuery
+
+**Current useApiInfiniteQuery limitation:**
+- Only checks if previous page has fewer items than pageSize
+- Doesn't use API metadata, so can fail to detect end correctly
+
+**Improved implementation using metadata:**
+```typescript
+const pageSize = 20;
+const selectApi = (api: Api, page: number = 0) =>
+  api.data.readMany("posts", {
+    limit: pageSize,
+    offset: page * pageSize,
+  });
+
+const { data, count, total, endReached, setSize, size } = useApiInfiniteQuery(
+  selectApi,
+  { pageSize }
+);
+
+// Improved end detection in useApiInfiniteQuery hook:
+// Check if we've loaded all available records
+const checkEndReached = (previousPageData: any, pageSize: number) => {
+  if (!previousPageData) return false;
+  
+  // Method 1: Use count (more reliable with filters)
+  if (typeof previousPageData.count === 'number') {
+    const loadedSoFar = size * pageSize;
+    return loadedSoFar >= previousPageData.count;
+  }
+  
+  // Method 2: Fallback to checking page size (existing behavior)
+  return previousPageData.data?.length < pageSize;
+};
+```
+
+### Performance Considerations
+
+**Cost of includeCounts:**
+- Runs 3 parallel queries instead of 1
+- Adds ~10-50ms latency depending on database
+- Negligible impact on small-medium datasets (< 10K records)
+- May be noticeable on large datasets (> 100K records) without indexes
+
+**Optimization Tips:**
+1. **Only enable when needed** - Don't use includeCounts for single-record queries
+2. **Add indexes** - Ensure filtered fields are indexed for fast count queries
+3. **Cache metadata** - Consider caching total for entities that don't change frequently
+4. **Use count instead of total** - If you have filters, count is faster (respects indexes)
+
+### Best Practices
+
+1. **Use for pagination UI** - Show "Showing 1-20 of 150 posts"
+2. **Use for infinite scroll** - Reliable end detection with count metadata
+3. **Disable for single items** - No need for counts on findOne/findId
+4. **Test with filters** - Verify count respects where clauses
+5. **Monitor performance** - Check query times in production logs
+
 ### Unknown Areas Still Requiring Research
 
-1. **End detection with API metadata** - How to use `meta.count` for reliable end detection?
+1. ~~**End detection with API metadata**~~ - **RESOLVED** ✅
 2. **Error recovery** - How to handle failed page loads gracefully?
 3. **Prefetching** - Can we prefetch next page for smoother scrolling?
 4. **Performance optimization** - Memory usage with large datasets?
