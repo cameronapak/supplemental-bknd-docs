@@ -80,6 +80,12 @@ Update the file after completing each sub-task, not just after completing an ent
     - Create directory structure for 5 main sections
     - Configure Mintlify navigation
     - Create stub pages for all planned content
+  - [ ] 1.7 Organize docs into correct folders
+    - docs/bknd-comparison-pocketbase.md
+    - docs/orm.md
+    - docs/query-system.md
+    - docs/schema.md
+    - Then, update README that references those
 
 - [ ] 2.0 Phase 2: Core Task Guides (Week 3-4)
   - [ ] 2.1 Write "Enable Public Access with Guard" guide (P1)
