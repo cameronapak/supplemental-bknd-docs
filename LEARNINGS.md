@@ -451,6 +451,455 @@ export function InfiniteScroll() {
 
 ### Unknown Areas Still Requiring Research
 
+1. ~~**mountOnce middleware**~~ - **RESOLVED** ✅
+2. ~~**Optimistic updates with mutateRaw**~~ - **RESOLVED** ✅
+3. **End detection with API metadata** - How to use `meta.count` for reliable end detection?
+4. **Error recovery** - How to handle failed page loads gracefully?
+5. **Prefetching** - Can we prefetch next page for smoother scrolling?
+6. **Performance optimization** - Memory usage with large datasets?
+7. **Server-side rendering** - Is SSR supported for infinite scroll?
+
+## Task 8.1: mountOnce Middleware Research (RESOLVED)
+
+### Key Discovery: mountOnce is a SWR Middleware for Single-Load Data
+
+`mountOnce` is a custom SWR middleware that ensures data is only loaded once per cache key, preventing unnecessary revalidation on component re-mounts.
+
+### Implementation
+
+From `app/src/ui/client/api/use-api.ts` (lines 93-113):
+
+```typescript
+const mountOnceCache = new Map<string, any>();
+
+/**
+ * Simple middleware to only load on first mount.
+ */
+export const mountOnce: Middleware = (useSWRNext: SWRHook) => (key, fetcher, config) => {
+   if (typeof key === "string") {
+      if (mountOnceCache.has(key)) {
+         return useSWRNext(key, fetcher, {
+            ...config,
+            revalidateOnMount: false,
+         });
+      }
+      const swr = useSWRNext(key, fetcher, config);
+      if (swr.data) {
+         mountOnceCache.set(key, true);
+      }
+      return swr;
+   }
+   return useSWRNext(key, fetcher, config);
+};
+```
+
+### How It Works
+
+**Cache Tracking:**
+- Uses a global `Map<string, any>` to track which cache keys have been loaded
+- Marks a key as "loaded" when `swr.data` becomes truthy (successful fetch)
+
+**Revalidation Prevention:**
+- On subsequent mounts with the same key, sets `revalidateOnMount: false`
+- This prevents SWR from re-fetching data when component re-mounts
+
+**Key Limitations:**
+- Only works with string keys (checks `typeof key === "string"`)
+- Cache persists across component unmounts (global Map)
+- Not documented in official React SDK docs
+- No manual cache clearing mechanism provided
+
+### Real-World Usage
+
+From `app/src/ui/routes/auth/auth.roles.edit.$role.tsx` (line 390-392):
+
+```typescript
+const $permissions = useApiQuery((api) => api.system.permissions(), {
+   use: [mountOnce],
+});
+```
+
+**Use Case:**
+Fetching system permissions that rarely change during user session. Using `mountOnce` ensures permissions are fetched once and cached, preventing unnecessary API calls when the component re-renders due to parent state changes.
+
+### When to Use mountOnce
+
+**Use `mountOnce` when:**
+- Data is static or rarely changes during user session (e.g., permissions, enums, system config)
+- Component frequently re-mounts due to navigation or parent updates
+- You want to minimize API calls for reference data
+- You don't need real-time updates for this data
+
+**Don't use `mountOnce` when:**
+- Data changes frequently and needs to stay in sync
+- You need background revalidation for data freshness
+- Component lifecycle is tied to data updates
+- You're building real-time features (chat, notifications)
+
+### Comparison: mountOnce vs Standard SWR
+
+| Feature | mountOnce | Standard SWR |
+|---------|-----------|--------------|
+| **Revalidation on mount** | ❌ Prevented | ✅ Enabled by default |
+| **Cache persistence** | ✅ Global (shared) | ✅ Component-scoped |
+| **Revalidation on focus** | ✅ Controlled by config | ✅ Enabled by default |
+| **Manual invalidation** | ❌ Requires custom | ✅ Supported |
+| **Documentation** | ❌ None | ✅ Complete |
+| **Cache clearing** | ❌ Not provided | ✅ Built-in |
+
+### Implementation Details
+
+**Middleware Pattern:**
+```typescript
+export type Middleware = (useSWRNext: SWRHook) => SWRHook;
+```
+
+- Receives `useSWRNext` (the next middleware/hook in chain)
+- Returns a function that wraps the SWR call
+- Can modify config before passing to next middleware
+- Can modify return value after SWR call completes
+
+**Key Inspection:**
+- Middleware only activates for string keys
+- Non-string keys pass through unchanged
+- This allows flexibility for different cache key strategies
+
+### Potential Issues
+
+**1. Stale Data Risk:**
+- No automatic revalidation means data may become stale
+- Requires manual cache invalidation or page refresh for updates
+- Consider using `mutate()` to update cache when data changes
+
+**2. Global Cache:**
+- Shared across all components using same key
+- May cause unexpected behavior if different components have different expectations
+- No isolation between component instances
+
+**3. No Clear Method:**
+- Once data is loaded, it stays loaded until page refresh
+- No way to force reload without clearing entire cache
+- Workaround: Use `useInvalidate()` to manually revalidate
+
+**4. TypeScript:**
+- Type only defined as `Middleware` from SWR
+- No custom type signature specific to mountOnce behavior
+
+### Best Practices
+
+1. **Combine with manual invalidation** for critical data updates
+2. **Document clearly** when using mountOnce to avoid confusion
+3. **Consider alternatives** like `revalidateIfStale: false` for simpler use cases
+4. **Test with navigation** to ensure behavior matches expectations
+5. **Use for truly static data** - permissions, enums, configuration, reference tables
+
+### Alternative Approaches
+
+**SWR Built-in Option:**
+```typescript
+useApiQuery(api => api.system.permissions(), {
+   revalidateOnMount: false,
+   revalidateOnFocus: false,
+   revalidateOnReconnect: false,
+});
+```
+- Simpler, more explicit
+- Component-scoped cache
+- Standard SWR configuration
+
+**Manual Cache Control:**
+```typescript
+const { data, mutate } = useApiQuery(api => api.system.permissions());
+
+// Manually refresh when needed
+const refresh = () => mutate();
+```
+- Full control over refresh timing
+- Clearer intent in code
+
+### Source Code Locations
+
+- `app/src/ui/client/api/use-api.ts` - mountOnce implementation (lines 93-113)
+- `app/src/ui/routes/auth/auth.roles.edit.$role.tsx` - Usage example (line 390-392)
+
+### Documentation Recommendation
+
+**Add to React SDK Reference:**
+```
+### mountOnce Middleware
+
+A custom SWR middleware that prevents data re-fetching on component re-mounts.
+
+**Usage:**
+```typescript
+useApiQuery((api) => api.system.permissions(), {
+  use: [mountOnce],
+});
+```
+
+**Best for:** Static or rarely-changing data (permissions, enums, system config)
+**Not for:** Real-time data, frequently-updating content
+```
+
+## Task 8.2: mutateRaw Implementation Details (RESOLVED)
+
+### Key Discovery: mutateRaw Exposes Native SWR mutate
+
+`mutateRaw` is the native SWR `mutate` function exposed through `useEntityQuery`, allowing direct SWR cache manipulation without automatic entity key prefixing.
+
+### Implementation
+
+From `app/src/ui/client/api/use-entity.ts` (lines 125, 177):
+
+```typescript
+export interface UseEntityQueryReturn<
+   Entity extends keyof DB | string,
+   Id extends PrimaryFieldType | undefined = undefined,
+   Data = Entity extends keyof DB ? Selectable<DB[Entity]> : EntityData,
+   Return = Id extends undefined ? ResponseObject<Data[]> : ResponseObject<Data>,
+> extends Omit<SWRResponse<Return>, "mutate">,
+      Omit<ReturnType<typeof useEntity<Entity, Id>>, "read"> {
+   mutate: (id?: PrimaryFieldType) => Promise<any>;  // Bknd's custom mutate
+   mutateRaw: SWRResponse<Return>["mutate"];          // Native SWR mutate
+   api: Api["data"];
+   key: string;
+}
+
+// In useEntityQuery implementation:
+return {
+   ...swr,
+   ...mapped,
+   mutate: mutateFn,
+   // @ts-ignore
+   mutateRaw: swr.mutate,
+   api,
+   key,
+};
+```
+
+### mutate vs mutateRaw
+
+**mutate (Bknd's custom):**
+```typescript
+mutate: (id?: PrimaryFieldType) => Promise<any>
+```
+- Automatically invalidates all entity-related cache keys
+- Uses entity key prefix: `/data/${entity}`
+- Revalidates by default: `revalidate: true`
+- Simplified API (no need to specify keys manually)
+- Used for "invalidate and reload" pattern
+
+**mutateRaw (SWR native):**
+```typescript
+mutateRaw: SWRResponse<Return>["mutate"]
+```
+- Direct access to SWR's `mutate` function
+- Works with exact cache key (including query params)
+- Supports optimistic updates with data transformation
+- Full SWR mutate API: `mutate(key, data?, options?)`
+- Used for advanced cache manipulation
+
+### Use Cases
+
+**Use mutate when:**
+- Simple "invalidate and reload" after CRUD operations
+- Want to refresh all related entity caches
+- Don't need precise control over which keys update
+- Standard Bknd entity operations (create, update, delete)
+
+**Use mutateRaw when:**
+- Optimistic UI updates (update cache before API response)
+- Selective cache invalidation (specific keys only)
+- Complex cache transformations
+- Custom revalidation strategies
+- Manual cache population
+
+### Optimistic Update Example
+
+```typescript
+const { data, mutateRaw } = useEntityQuery("posts");
+
+async function updatePostOptimistically(postId: number, updates: Partial<Post>) {
+   // Update cache immediately
+   mutateRaw(
+      (key) => typeof key === "string" && key.includes(`/posts/${postId}`),
+      (current) => ({ ...current, ...updates }),
+      { revalidate: false }  // Don't fetch yet
+   );
+
+   // Call API
+   const res = await api.data.updateOne("posts", postId, updates);
+
+   if (!res.ok) {
+      // Rollback on error
+      mutateRaw(undefined, false, { revalidate: true });
+      throw new Error("Update failed");
+   }
+
+   // Revalidate to get final data
+   mutateRaw(undefined, undefined, { revalidate: true });
+}
+```
+
+### Selective Cache Invalidation
+
+```typescript
+const { mutate, mutateRaw, key } = useEntityQuery("comments", undefined, {
+   where: { post_id: 123 }
+});
+
+// mutate: Invalidates ALL comment caches
+await mutate();
+
+// mutateRaw: Invalidates only this specific query
+await mutateRaw(key, undefined, { revalidate: true });
+
+// mutateRaw: Invalidates all queries matching pattern
+await mutateRaw(
+   (k) => typeof k === "string" && k.startsWith("/comments"),
+   undefined,
+   { revalidate: true }
+);
+```
+
+### Cache Population Without Fetching
+
+```typescript
+const { mutateRaw, data } = useEntityQuery("users", 1);
+
+// Populate cache with known data (no API call)
+mutateRaw({ id: 1, name: "John", email: "john@example.com" }, false);
+// Now data is available without fetching
+```
+
+### SWR Mutate API Reference
+
+**Signature:**
+```typescript
+mutate(key, data?, options?)
+```
+
+**Parameters:**
+- `key: Key` - Cache key (can be string, array, function)
+- `data: any | ((currentData) => newData)` - New data or transform function
+- `options: { revalidate?, populateCache?, rollbackOnError? }` - Options
+
+**Options:**
+- `revalidate: boolean` - Revalidate after mutation (default: true)
+- `populateCache: boolean | (result, current) => newData` - How to merge data
+- `rollbackOnError: boolean` - Rollback on error (default: true)
+
+**Return:** Promise<void> - Resolves when mutation completes
+
+### Advanced Patterns
+
+**Batch Optimistic Updates:**
+```typescript
+async function batchUpdate(updates: Array<{ id: number; changes: Partial<Post> }>) {
+   const rollbackData = [];
+
+   // Apply all updates optimistically
+   updates.forEach(({ id, changes }) => {
+      mutateRaw(
+         (key) => typeof key === "string" && key.includes(`/posts/${id}`),
+         (current) => {
+            rollbackData.push({ id, current });
+            return { ...current, ...changes };
+         },
+         { revalidate: false }
+      );
+   });
+
+   try {
+      // Call batch API
+      await api.batchUpdate(updates);
+      mutateRaw(undefined, undefined, { revalidate: true });
+   } catch (error) {
+      // Rollback all
+      rollbackData.forEach(({ id, current }) => {
+         mutateRaw(
+            (key) => typeof key === "string" && key.includes(`/posts/${id}`),
+            current,
+            { revalidate: false }
+         );
+      });
+      throw error;
+   }
+}
+```
+
+**Cache Merging Strategy:**
+```typescript
+mutateRaw(
+   key,
+   (result, current) => {
+      // Custom merge: append new comments, keep existing
+      if (Array.isArray(result) && Array.isArray(current)) {
+         return [...current, ...result];
+      }
+      return result;
+   },
+   { populateCache: true, revalidate: false }
+);
+```
+
+### Limitations
+
+1. **Requires key knowledge:** Must understand SWR cache key structure
+2. **Complex error handling:** Need to manage rollback manually for optimistic updates
+3. **Type safety:** Loose typing with `any` in some cases
+4. **Not documented:** Not mentioned in official React SDK docs
+
+### Best Practices
+
+1. **Prefer mutate** for standard CRUD operations (simpler, safer)
+2. **Use mutateRaw** only when you need advanced cache control
+3. **Always rollback** optimistic updates on error
+4. **Test thoroughly** - cache bugs can be hard to debug
+5. **Document custom patterns** - mutateRaw usage can be confusing to others
+6. **Consider useEntityMutate** for simple cache updates without fetching
+
+### Comparison Table
+
+| Feature | mutate | mutateRaw |
+|---------|--------|-----------|
+| **Complexity** | Low | High |
+| **Key handling** | Automatic | Manual |
+| **Optimistic updates** | ❌ No | ✅ Yes |
+| **Selective invalidation** | ❌ No | ✅ Yes |
+| **Cache transformation** | ❌ No | ✅ Yes |
+| **Documentation** | ✅ Yes | ❌ No |
+| **Type safety** | ✅ Good | ⚠️ Looser |
+| **Error handling** | ✅ Automatic | ⚠️ Manual |
+| **Best for** | CRUD operations | Advanced patterns |
+
+### Source Code Locations
+
+- `app/src/ui/client/api/use-entity.ts` - Interface definition (line 125)
+- `app/src/ui/client/api/use-entity.ts` - Implementation (line 177)
+- `app/src/ui/client/api/use-entity.ts` - mutateEntityCache helper (lines 183-215)
+
+### Documentation Recommendation
+
+**Add to React SDK Reference:**
+```
+### mutateRaw: SWR Mutate Function
+
+Native SWR mutate function for advanced cache manipulation.
+
+**Signature:** `mutateRaw: SWRResponse<Return>["mutate"]`
+
+**When to use:**
+- Optimistic UI updates
+- Selective cache invalidation
+- Custom cache transformations
+- Manual cache population
+
+**For standard operations**, use the simpler `mutate()` function.
+```
+
+### Unknown Areas Still Requiring Research
+
 1. **End detection with API metadata** - How to use `meta.count` for reliable end detection?
 2. **Error recovery** - How to handle failed page loads gracefully?
 3. **Prefetching** - Can we prefetch next page for smoother scrolling?
