@@ -147,13 +147,13 @@ Update the file after completing each sub-task, not just after completing an ent
     - Provide recommendation guidance
 
 - [ ] 4.0 Phase 4: Troubleshooting & Advanced (Week 7-8)
-  - [ ] 4.1 Write Troubleshooting FAQ (P2)
-    - Database connection errors
-    - Type generation issues
-    - Auth token expiration
-    - CORS issues
-    - Deployment problems
-    - Mode switching issues
+   - [x] 4.1 Write Troubleshooting FAQ (P2)
+     - Database connection errors
+     - Type generation issues
+     - Auth token expiration
+     - CORS issues
+     - Deployment problems
+     - Mode switching issues
   - [x] 4.2 Document Known Issues & Workarounds (P2)
      - CodeMode prevents initial seed (with workaround)
      - Password length validation

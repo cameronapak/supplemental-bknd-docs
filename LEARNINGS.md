@@ -165,12 +165,63 @@ The most significant finding is that the official documentation does not provide
 
 ### What We Don't Know (Critical Gaps)
 
-1. **Admin UI Entity Creation Workflow**:
-   - Where is the "Create Entity" button/menu?
-   - What field types are available in the UI? (Text, Number, Boolean, Date, Enum, JSON, JSONSchema)
-   - How do you set field properties (required, unique, default value)?
-   - How do you create relationships between entities in the UI?
-   - Is there a schema preview or validation before saving?
+1. ~~**Admin UI Entity Creation Workflow**~~ - **RESOLVED** ✅
+   - ~~Where is the "Create Entity" button/menu?~~ → Schema Overview page has "Create new" button
+   - ~~What field types are available in the UI?~~ → Documented (see below)
+   - ~~How do you set field properties (required, unique, default value)?~~ → Via EntityFieldsForm component
+   - ~~How do you create relationships between entities in the UI?~~ → Relation modal available
+   - ~~Is there a schema preview or validation before saving?~~ → Form validation before submission
+
+### Admin UI Entity Creation Workflow (RESOLVED)
+
+**Entity Creation Flow:**
+
+1. Navigate to **Schema Overview** (`/admin/schema`)
+2. Click **"Create new"** button (only visible in DB Mode with schema edit permission)
+3. Choose creation type:
+   - **Entity** - Create new entity with fields
+   - **Relation** - Create relation between entities
+   - **Quick templates** - Pre-built templates (e.g., user, post, etc.)
+
+4. For Entity creation, follow wizard:
+   - **Step 1:** Entity name (plural, lowercase) and display labels
+   - **Step 2:** Add fields to entity
+   - **Step 3:** Confirm creation
+
+**Available Field Types:**
+1. **Primary** - Auto-generated ID field (not addable, name fixed to "id")
+2. **Text** - String/text fields
+3. **Number** - Numeric values
+4. **Boolean** - True/false values
+5. **Date** - Date/time values
+6. **Enum** - Fixed set of options
+7. **JSON** - Flexible JSON data
+8. **JSON Schema** - Validated JSON with schema
+9. **Relation** - Links to other entities
+10. **Media** - File attachments
+
+**Field Configuration:**
+Each field can be configured with:
+- `name` - Field identifier (camelCase)
+- `label` - Display label in UI
+- `description` - Help text
+- `required` - Field is mandatory
+- `fillable` - Can be set via API
+- `hidden` - Hidden from UI
+- `virtual` - Computed field (not stored)
+
+**Entity Settings:**
+- `name` - Plural form (used as table name)
+- `name_singular` - Singular form for display
+- `description` - Entity description
+- `sort_field` - Default sort field
+- `sort_dir` - Default sort direction (asc/desc)
+
+**Source Code Evidence:**
+- Route: `opensrc/.../app/src/ui/routes/data/data.schema.index.tsx`
+- Create Modal: `opensrc/.../app/src/ui/modules/data/components/schema/create-modal/CreateModal.tsx`
+- Field Specs: `opensrc/.../app/src/ui/modules/data/components/fields-specs.ts`
+- Entity Form: `opensrc/.../app/src/ui/routes/data/forms/entity.fields.form.tsx`
 
 2. **Admin UI User Management**:
    - How do you create the first admin user through the Admin UI (not CLI)?
