@@ -170,11 +170,11 @@ Update the file after completing each sub-task, not just after completing an ent
     - Volume mounting
 
 - [ ] 5.0 Phase 5: Complete Reference Documentation
-   - [ ] 5.1 Complete Auth module documentation (P0)
-     - Replace "work in progress" placeholder
-     - Document all auth methods
-     - Include practical examples
-     - Document configuration options
+   - [x] 5.1 Complete Auth module documentation (P0)
+      - Replace "work in progress" placeholder
+      - Document all auth methods
+      - Include practical examples
+      - Document configuration options
    - [x] 5.2 Complete Data module documentation (P0)
      - Replace "work in progress" placeholder
      - Document CRUD operations

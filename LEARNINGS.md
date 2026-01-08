@@ -2292,3 +2292,203 @@ Key files for understanding standalone adapters:
 3. Add performance benchmarks comparing Bun vs Node.js
 4. Document error handling and recovery strategies
 5. Add examples for common scenarios (HTTPS, custom middleware, logging)
+
+## Task 5.1: Complete Auth Module Documentation
+
+### Key Discovery: Comprehensive Auth Module Documentation Possible via Source Code
+
+The auth module documentation can be completed by thoroughly analyzing source code and cross-referencing with Zread documentation. While official docs at docs.bknd.io are incomplete, source code provides all necessary details.
+
+### What I Learned:
+
+**1. Auth Configuration is Extensive**
+
+The auth module has detailed configuration across multiple areas:
+- JWT configuration (secret, algorithm, expiration, fields)
+- Cookie configuration (domain, path, sameSite, secure, httpOnly, expires, partitioned, renew, redirect paths)
+- Strategy configuration (password, OAuth, custom OAuth)
+- Roles and permissions configuration
+- Guard configuration
+
+**2. Three Built-in Strategy Types**
+
+- Password Strategy: Email/password with configurable hashing (plain, sha256, bcrypt)
+- OAuth Strategy: Built-in providers (Google, GitHub, Discord, Facebook) with OIDC/OAuth2 support
+- Custom OAuth Strategy: Full control over OAuth server, client, and profile mapping
+
+**3. Session Management with Sliding Expiration**
+
+Bknd implements sliding session expiration via `cookie.renew` configuration:
+- When enabled (default), cookie refreshes on every authenticated request
+- Resets expiration timer to configured duration (e.g., 1 week)
+- Session expires after N seconds of **inactivity**, not N seconds from login
+- Defense-in-depth with JWT expiration (shorter) + cookie expiration (longer)
+
+**4. No Refresh Token Rotation**
+
+Based on source code analysis:
+- Bknd does **not** implement refresh token rotation
+- Only sliding session expiration is supported
+- No `/api/auth/refresh` endpoint exists
+- Cookie renewal happens automatically on authenticated requests
+
+**5. Comprehensive API Endpoints**
+
+The auth module registers many endpoints automatically:
+
+**Authentication:**
+- `GET /api/auth/strategies` - List available strategies
+- `GET /api/auth/me` - Get current user
+- `GET /api/auth/logout` - Clear session
+
+**Password Strategy:**
+- `POST /api/auth/password/login` - Login with email/password
+- `POST /api/auth/password/register` - Register new user
+
+**OAuth Strategies (per provider):**
+- `GET /api/auth/{strategy}/login` - Initiate OAuth flow (redirect)
+- `POST /api/auth/{strategy}/login` - Initiate OAuth flow (programmatic)
+- `GET /api/auth/{strategy}/register` - OAuth registration
+- `GET /api/auth/{strategy}/callback` - Handle OAuth callback
+- `GET /api/auth/{strategy}/token` - Exchange code for token (programmatic)
+
+**User Management (protected):**
+- `POST /api/auth/{strategy}/create` - Create user (requires permission)
+- `GET /api/auth/{strategy}/create/schema.json` - Get user creation schema
+
+**6. Programmatic User Creation Methods**
+
+Three levels of control for creating users:
+
+**Level 1: App.createUser (simplest)**
+\`\`\`typescript
+await app.auth.createUser({ email, password, role });
+\`\`\`
+
+**Level 2: UserPool (more control)**
+\`\`\`typescript
+await app.auth.authenticator.userPool.create("password", { email, strategy_value: hashedPassword });
+\`\`\`
+
+**Level 3: EntityManager (full control)**
+\`\`\`typescript
+await em.mutator("users").insertOne({ email, strategy: "password", strategy_value: hashedPassword });
+\`\`\`
+
+**7. Password Management**
+
+Programmatic password change available:
+
+\`\`\`typescript
+await app.auth.changePassword(userId, newPassword);
+\`\`\`
+
+Requirements:
+- User must be using password strategy
+- Password hashed automatically using configured PasswordStrategy
+
+**8. Known Limitations from Source Code**
+
+Based on TODO comments and implementation:
+
+1. **Password length hardcoded:** Minimum 8 characters, not configurable (TODO in PasswordStrategy.ts:17)
+2. **Password strategy required:** Cannot disable password strategy (TODO in AppAuth.ts:40)
+3. **No refresh token rotation:** Only sliding session via cookie renewal
+4. **No password change HTTP endpoint:** Only programmatic method available
+5. **Limited user fields:** Default fields are email, role, strategy, strategy_value (plus custom fields)
+6. **No token/cookie interchangeability:** System comment warns about using both interchangeably
+
+**9. Cookie Configuration Defaults**
+
+\`\`\`typescript
+{
+  domain: undefined,
+  path: "/",
+  sameSite: "lax",
+  secure: true,
+  httpOnly: true,
+  expires: 604800, // 1 week in seconds
+  partitioned: false,
+  renew: true, // Sliding session
+  pathSuccess: "/",
+  pathLoggedOut: "/",
+}
+\`\`\`
+
+**10. JWT Configuration Defaults**
+
+\`\`\`typescript
+{
+  secret: "", // Auto-generated if empty
+  alg: "HS256", // Can be HS256, HS384, HS512
+  expires: undefined, // Inherits from cookie.expires
+  issuer: undefined,
+  fields: ["id", "email", "role"], // User fields in JWT payload
+}
+\`\`\`
+
+### Documentation Pattern: Comprehensive Reference Docs
+
+For module reference documentation (task 5.1), include:
+
+1. **Complete Configuration Reference** - All options with types, defaults, and descriptions
+2. **API Endpoint Documentation** - All endpoints with methods, parameters, request/response formats
+3. **Programmatic API Reference** - All methods for TypeScript/JavaScript code
+4. **Code Examples** - Practical examples for common use cases
+5. **Comparison Tables** - Strategy comparisons, security options
+6. **Security Best Practices** - Recommendations for production use
+7. **Troubleshooting** - Common issues and solutions
+8. **Limitations and TODOs** - Known limitations from source code
+
+### Research Approach
+
+1. **Start with Zread docs** - Get high-level understanding and examples
+2. **Read source code** - Auth module files for complete implementation details
+3. **Cross-reference** - Compare docs with source to ensure accuracy
+4. **Test assumptions** - When unclear, look for test files or examples
+5. **Document unknowns** - Be explicit about what's not documented
+
+### What I Don't Know (Documented in Reference)
+
+1. **OAuth provider details:** Exact endpoints for each built-in provider (Google, GitHub, etc.) - documented as "built-in" but implementation details in `app/src/auth/authenticate/strategies/oauth/issuers/` not fully explored
+2. **Custom strategy examples:** Real-world custom OAuth strategy examples beyond code structure
+3. **Password validation best practices:** Production-ready password complexity requirements (beyond minimum 8 chars)
+4. **Session concurrency:** Behavior when user logs in from multiple devices
+5. **Token revocation:** How to revoke specific sessions (logout revokes all)
+
+### Next Steps for Better Documentation
+
+1. Explore OAuth issuer configurations for built-in providers
+2. Find real-world custom OAuth strategy examples
+3. Test password management in actual application
+4. Document session behavior with multiple concurrent logins
+5. Research token revocation mechanisms
+
+### Source Code Locations for Auth Module
+
+Key files for comprehensive auth module understanding:
+- `app/src/auth/AppAuth.ts` - Main auth module class with build lifecycle
+- `app/src/auth/auth-schema.ts` - All configuration schemas (auth, jwt, cookie, roles, guard)
+- `app/src/auth/auth-permissions.ts` - Built-in permission definitions
+- `app/src/auth/authenticate/Authenticator.ts` - JWT signing/verification, cookie management, session handling
+- `app/src/auth/AppUserPool.ts` - UserPool implementation (findBy, create, field visibility)
+- `app/src/auth/api/AuthController.ts` - All HTTP endpoints and MCP tools
+- `app/src/auth/authenticate/strategies/PasswordStrategy.ts` - Password hashing (sha256, bcrypt), login/register flow
+- `app/src/auth/authenticate/strategies/oauth/OAuthStrategy.ts` - OAuth flow, PKCE, callback handling
+- `app/src/auth/authenticate/strategies/Strategy.ts` - Base strategy class for custom implementations
+- `app/src/auth/authorize/Guard.ts` - Permission evaluation engine
+- `app/src/auth/authorize/Role.ts` - Role implementation with is_default, implicit_allow
+- `app/src/auth/authorize/Permission.ts` - Permission definitions
+- `app/src/auth/authorize/Policy.ts` - Policy implementation with effects (allow, deny, filter)
+
+### Best Practices for Auth Documentation
+
+1. **Provide complete examples** - Show full configuration for common scenarios
+2. **Explain trade-offs** - Hashing algorithms, session expiration, security vs UX
+3. **Document all options** - Every configuration property with type and default
+4. **Include error scenarios** - What goes wrong and how to fix it
+5. **Be honest about limitations** - Document TODOs and known issues
+6. **Link to related docs** - Tutorials, guides, reference docs
+7. **Use code fences** - Clear, runnable code examples
+8. **Organize logically** - Configuration → Endpoints → Programmatic API → Best Practices
+
