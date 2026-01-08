@@ -732,3 +732,228 @@ Key files for understanding primary key configuration:
 - `app/src/data/entities/Entity.ts` - Entity config with `primary_format`
 - `app/src/data/data-schema.ts` - Global config with `default_primary_format`
 - `app/src/data/entities/EntityManager.ts` - Entity management
+
+## Task 2.5: "Request Lifecycle" Explanation
+
+### Key Discovery: Request Lifecycle is Multi-Layered
+
+Bknd's request processing flows through several distinct layers, each with specific responsibilities. Understanding this flow is critical for debugging, performance optimization, and customizing behavior.
+
+### Application Lifecycle Phases
+
+From Zread docs on "App Class and Lifecycle":
+1. **Creation** - `createApp(config)` instantiates App class with all module configurations
+2. **Build** - `await app.build()` initializes modules, establishes DB connections, and handles first boot
+3. **Ready** - App can process HTTP requests
+4. **HandlingRequest** - Active request processing
+5. **RequestProcessed** - Request completed, response sent
+
+### First Boot Detection
+
+The build process includes smart first boot detection:
+- Checks if database is empty
+- If empty: executes seed function, emits `AppFirstBoot` event
+- If not empty: skips seed, emits `AppBuiltEvent`
+- Critical for initial data seeding strategies
+
+### HTTP Request Processing Flow
+
+**Layers in order:**
+
+1. **Framework Adapter** - Platform-specific request handling (Next.js, Bun, Cloudflare Workers, etc.)
+2. **App.fetch() Entry Point** - Creates Api instance with request context
+3. **Middleware Chain** - Authentication, permission, custom middleware
+4. **Controller** - Business logic (AuthController, DataController, MediaController, FlowsController)
+5. **EntityManager** - Database operations via query builder
+6. **Database** - Actual data persistence
+
+**Adapter Pattern:**
+All adapters follow a consistent pattern:
+```typescript
+export async function GET(request: Request) {
+  const app = await getApp();
+  return app.server.fetch(request);
+}
+```
+
+This enables single-deployment across different runtimes/frameworks.
+
+### Authentication Flow
+
+**Registration Flow:**
+```
+Client → AuthController → Authenticator → Strategy → UserPool → Database → JWT → Response
+```
+
+**Login Flow:**
+```
+Client → AuthController → Authenticator → Strategy → UserPool → JWT → Response
+```
+
+**Key Implementation Details:**
+- **Strategy pattern** - Multiple auth methods (password, OAuth, custom) use consistent interface
+- **Authenticator coordinates** - Manages strategy resolution, user creation/verification, JWT generation
+- **UserPool handles DB operations** - Inserts user records, retrieves existing users
+- **JWT generation** - Creates signed token with user profile and optional claims using HS256 algorithm
+- **Secure cookie management** - Tokens stored in httpOnly cookies by default
+
+**JWT Configuration:**
+- Uses HS256 algorithm with configurable secret
+- Supports `expires` and `issuer` configuration
+- Token verification happens on every subsequent request
+- User profile embedded in JWT payload for stateless auth
+
+### Permission Evaluation System
+
+**Architecture:**
+```
+User → Role → Permissions + Policies → Guard → Access Decision
+```
+
+**Components:**
+1. **Permission** - Named granular action (`posts.create`, `posts.read`, etc.)
+2. **Policy** - Conditional logic with effects: `allow`, `deny`, `filter`
+3. **Role** - Collection of permissions with optional policies
+4. **Guard** - Enforcement mechanism that evaluates permissions in context
+
+**Two-Level Enforcement:**
+
+1. **API Endpoint Level:**
+   - `permission()` middleware checks access before controller
+   - Evaluates user's role permissions
+   - Applies policy conditions
+   - Throws `GuardPermissionsException` if denied
+
+2. **Data Operation Level (RLS):**
+   - Data controller intercepts queries/mutations
+   - Guard generates WHERE clause filters based on permissions
+   - Filters applied automatically to ensure data isolation
+   - Only authorized records returned/modified
+
+**Policy Effects:**
+- `allow` - Grants access when condition met (explicit permission)
+- `deny` - Revokes access (takes precedence, security override)
+- `filter` - Filters data based on query criteria (row-level security)
+
+### Database Interaction Pattern
+
+**Connection Management:**
+Bknd uses adapter-based connection system:
+- **SQLite (Node)** - `nodeSqlite()` with `DatabaseSync`
+- **SQLite (Bun)** - `bunSqlite()` with `Database`
+- **PostgreSQL** - `postgresJs()` with `node-postgres`
+- **Cloudflare D1** - Built-in D1 binding
+- **Turso/LibSQL** - Built-in HTTP client
+
+**Transaction Behavior (UNKNOWN):**
+The documentation does not specify:
+- Transaction isolation levels (read committed, serializable, etc.)
+- Automatic rollback behavior on errors
+- Connection pooling configuration
+- How long connections are held open
+
+This is a significant gap for users needing strong consistency guarantees.
+
+### Event System Architecture
+
+**Application Events:**
+- `AppFirstBoot` - Database empty on first run (for seeding)
+- `AppBuiltEvent` - Build process completes (for initialization)
+- `AppConfigUpdatedEvent` - Module config changes (for reactions)
+- `AppRequest` - Incoming HTTP request (for logging/tracking)
+
+**Data Events:**
+- `EntityCreated` - New entity inserted
+- `EntityUpdated` - Entity modified
+- `EntityDeleted` - Entity removed
+
+**Event Characteristics:**
+- Asynchronous execution (webhooks) - Non-blocking
+- Synchronous execution with blocking - For operations that must complete
+- JSON-serializable workflows - Enables automated business logic
+- Decoupled communication - Modules don't need direct references
+
+### Performance Optimization Insights
+
+**Mode Performance Comparison:**
+| Mode | Config Lookup | Type Generation | Performance |
+|------|---------------|-----------------|-------------|
+| UI Mode (db) | Database per request | Dynamic | Slowest |
+| Hybrid Mode | Database (dev), Code (prod) | Synced | Balanced |
+| Code Mode | In-memory once | Static | Fastest |
+
+**Optimization Strategies:**
+1. Use Code Mode in production (eliminates DB lookups)
+2. Enable database indices on queried fields
+3. Cache JWT verification results
+4. Batch operations with `createMany`
+5. Use `select` to limit returned fields
+
+### Critical Unknowns
+
+The following aspects are not documented in available resources:
+
+1. **Transaction isolation levels** - How are concurrent reads/writes isolated?
+2. **Connection pooling** - How does Bknd manage DB connections under load?
+3. **Query optimization internals** - How does query builder optimize SQL?
+4. **Event propagation order** - Guaranteed order of event handler execution
+5. **Error propagation** - How do errors flow through middleware chain?
+6. **Caching strategies** - Are there built-in caches for frequently accessed data?
+7. **Retry logic** - What happens on transient failures?
+8. **Request timeout behavior** - How are long-running requests handled?
+
+### Documentation Pattern: Explicit Unknowns Section
+
+For complex technical topics where documentation is incomplete:
+
+1. **Be honest about gaps** - Don't guess or speculate
+2. **Document what we know** - Provide all verified information
+3. **Create dedicated "Unknown Details" section** - Clear what's missing
+4. **Suggest research approaches** - How to find answers (source code, testing, community)
+5. **Use TODO markers** - Clear what needs follow-up
+
+Example structure:
+```markdown
+## Unknown Details
+
+The following aspects are not documented in available resources:
+
+1. **Specific behavior** - Why it matters
+2. **Another behavior** - Why it matters
+
+To understand these aspects, consult:
+- Source code at `app/src/...`
+- Community discussions
+- Issue tracker
+```
+
+### Key Source Code Locations
+
+For understanding request lifecycle:
+- `app/src/App.ts` - App class and lifecycle management
+- `app/src/index.ts` - Entry point and initialization
+- `app/src/auth/Authenticator.ts` - JWT generation and validation
+- `app/src/auth/AppUserPool.ts` - User creation and retrieval
+- `app/src/auth/authorize/Guard.ts` - Permission evaluation engine
+- `app/src/auth/authorize/Role.ts` - Role implementation
+- `app/src/auth/authorize/Permission.ts` - Permission definition
+- `app/src/auth/authorize/Policy.ts` - Policy implementation
+- `app/src/data/entities/EntityManager.ts` - Database operations
+- `app/src/adapter/*/` - Runtime/framework adapters
+
+### Research Approach
+
+1. **Start with Zread** - Use MCP server for code-level documentation
+2. **Cross-reference official docs** - docs.bknd.io for high-level concepts
+3. **Search source code** - When docs are incomplete or unclear
+4. **Use Firecrawl** - For web search when needed
+5. **Be systematic** - Map out flow end-to-end before writing
+
+### Next Steps for Better Understanding
+
+1. Test actual request flow with logging enabled
+2. Profile performance in different modes
+3. Investigate transaction behavior through integration tests
+4. Document connection pooling configuration
+5. Research error handling and retry logic
+6. Add concrete examples for complex scenarios (multi-entity policies, etc.)

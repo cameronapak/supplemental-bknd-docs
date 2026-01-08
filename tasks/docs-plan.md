@@ -108,7 +108,7 @@ Update the file after completing each sub-task, not just after completing an ent
     - Create roles (admin, user, guest)
     - Assign permissions
     - Protect endpoints
-  - [ ] 2.5 Write "Request Lifecycle" explanation (P2)
+  - [x] 2.5 Write "Request Lifecycle" explanation (P2)
     - Document how requests flow through Bknd
     - Explain database interaction
     - Explain auth flow (JWT, sessions)
