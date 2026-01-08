@@ -99,7 +99,7 @@ Update the file after completing each sub-task, not just after completing an ent
     - Document one-to-many relationships
     - Document many-to-many relationships
     - Provide complete code examples
-  - [ ] 2.3 Write "Schema IDs vs UUIDs" guide (P2)
+  - [x] 2.3 Write "Schema IDs vs UUIDs" guide (P2)
     - Explain when to use each type
     - Provide configuration examples
     - Document trade-offs

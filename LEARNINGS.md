@@ -560,3 +560,175 @@ Key files for understanding Guard and RBAC:
 - `app/src/auth/authorize/Policy.ts` - Policy implementation
 - `app/src/auth/auth-schema.ts` - Auth module configuration schema
 - `app/src/auth/auth-permissions.ts` - Built-in permissions
+
+## Task 2.3: "Schema IDs vs UUIDs" Guide
+
+### Key Discovery: Only Two Primary Key Formats
+
+Bknd supports a limited set of primary key formats - simpler than expected:
+
+**Supported Formats:**
+1. **Integer** - Auto-incrementing numbers (default)
+2. **UUID v7** - Time-based UUIDs (sortable, globally unique)
+
+**Not Supported:**
+- UUID v4 (random)
+- Nanoid
+- Custom ID formats
+- CUIDs
+
+### Source Code Evidence
+
+From `app/src/data/fields/PrimaryField.ts`:
+```typescript
+export const primaryFieldTypes = ["integer", "uuid"] as const;
+export type TPrimaryFieldFormat = (typeof primaryFieldTypes)[number];
+```
+
+This means the primary key format is strictly limited to these two options.
+
+### UUID v7 Implementation
+
+Bknd uses **UUID v7** specifically, not UUID v4. From code references:
+- Uses `uuidv7` utility from `bknd/utils`
+- UUID v7 combines timestamp + randomness
+- Result: Sortable UUIDs (maintains chronological order)
+
+**Benefits of UUID v7 over UUID v4:**
+- **Sortable**: Can be sorted chronologically (v4 is random)
+- **Database-friendly**: Better for indexing than v4
+- **Globally unique**: Still provides global uniqueness
+- **Time-based ordering**: Useful for time-series data
+
+### Entity Configuration Pattern
+
+Primary key format is configured per-entity using `primary_format` in entity config:
+
+```typescript
+const schema = em({
+  // Default (integer IDs)
+  users: entity("users", {
+    username: text().required(),
+  }),
+
+  // UUIDs
+  posts: entity("posts", {
+    title: text().required(),
+  }, {
+    primary_format: "uuid",
+  }),
+});
+```
+
+### Global Configuration
+
+Can also set default format for all entities:
+
+```typescript
+const app = createApp({
+  config: {
+    data: {
+      default_primary_format: "uuid", // All entities use UUIDs
+      entities: {
+        internal: {
+          fields: { name: { type: "text", required: true } },
+          config: { primary_format: "integer" }, // Override
+        },
+      },
+    },
+  },
+});
+```
+
+### Field Types for Primary Keys
+
+From source code analysis:
+- **Integer format**: Stored as database integer (4-8 bytes)
+- **UUID format**: Stored as text (36 characters, 36 bytes)
+- Both use `PrimaryField` class internally
+- Primary field is automatically added if not explicitly defined
+
+### Trade-offs Summary
+
+| Aspect | Integer | UUID v7 |
+|--------|----------|----------|
+| **Storage** | 4-8 bytes | 36 bytes |
+| **Performance** | Faster (smaller keys) | Slightly slower |
+| **Indexing** | More efficient | Less efficient |
+| **Uniqueness** | Database-scoped | Globally unique |
+| **Public Exposure** | Risks enumeration | Safe to expose |
+| **URLs** | Shorter | Longer |
+| **Ordering** | Natural (sequential) | Chronological (v7) |
+
+### Practical Recommendations
+
+**When to use each:**
+
+**Integer IDs:**
+- Single-instance applications
+- Performance-critical systems
+- Internal resources
+- When you want sequential ordering
+- Smaller database size matters
+
+**UUIDs:**
+- Multi-tenant/distributed systems
+- Public-facing IDs in URLs/APIs
+- Preventing enumeration attacks
+- Data synchronization across databases
+- Future-proofing for sharding
+
+**Common pattern:** Mix both
+- Internal entities (logs, roles, settings) → Integers
+- Public entities (posts, users, documents) → UUIDs
+
+### Documentation Pattern: Comparison Tables
+
+For technical decisions with trade-offs, use comparison tables:
+- List all relevant dimensions
+- Show pros/cons for each option
+- Provide concrete examples of when to use each
+- Be honest about limitations
+
+### Code Examples Strategy
+
+Include three levels of examples:
+1. **Simple**: Default usage (what 80% of users need)
+2. **Intermediate**: Per-entity configuration (customization)
+3. **Advanced**: Global config + overrides (complex setups)
+
+### Unknown Areas Requiring Research
+
+1. **Migration from Integer to UUID**: Best practices for existing data
+2. **Performance benchmarks**: Actual performance difference in production
+3. **Database-specific behavior**: Does behavior differ between SQLite/Postgres/LibSQL?
+4. **UUID v7 collision risk**: Theoretical vs practical collision probability
+5. **Custom ID generation**: Can users provide their own ID generator?
+
+### Technical Details for Advanced Users
+
+**UUID v7 Structure:**
+- First 48 bits: Unix timestamp (milliseconds since epoch)
+- Next 12 bits: Sub-millisecond precision
+- Last 62 bits: Random bits for uniqueness
+
+**Result:**
+- Sortable by creation time
+- Globally unique (practically impossible to collide)
+- Still readable as UUID string format
+
+### Best Practices Documented
+
+1. **Start with integers** for simplicity, migrate to UUIDs if needed
+2. **Use UUIDs for public APIs** to prevent enumeration
+3. **Mixed approach**: Internal = integers, public = UUIDs
+4. **Consider future needs** (sharding, multi-tenant) when choosing
+5. **Test performance** if database size will be large
+
+### Source Code Locations
+
+Key files for understanding primary key configuration:
+- `app/src/data/fields/PrimaryField.ts` - PrimaryField implementation and format types
+- `app/src/data/entities/Entity.ts` - Entity config with `primary_format`
+- `app/src/data/data-schema.ts` - Global config with `default_primary_format`
+- `app/src/data/entities/EntityManager.ts` - Entity management
