@@ -958,6 +958,119 @@ For understanding request lifecycle:
 5. Research error handling and retry logic
 6. Add concrete examples for complex scenarios (multi-entity policies, etc.)
 
+## Task 3.3: React Router Integration Guide
+
+### Key Discovery: React Router Integration Uses Loader/Action Pattern
+
+Bknd's React Router integration leverages React Router v7's native data loading and mutation patterns (loaders and actions) with a helper-based API access pattern.
+
+**What I know:**
+
+1. **Core helper pattern:**
+   - `app/bknd.ts` helper file with `getApp()` and `getApi(args, { verify })` functions
+   - `getApp()` caches and returns Bknd application instance
+   - `getApi()` optionally verifies authentication when `{ verify: true }` is passed
+
+2. **Loader pattern:**
+   ```typescript
+   export const loader = async (args: LoaderFunctionArgs) => {
+     const api = await getApi(args, { verify: true });
+     const { data: posts } = await api.data.readMany("posts");
+     return { posts, user: api.getUser() };
+   };
+   ```
+
+3. **Action pattern:**
+   ```typescript
+   export const action = async (args: ActionFunctionArgs) => {
+     const api = await getApi();
+     const formData = await args.request.formData();
+     const action = formData.get("action");
+     // Handle create/update/delete operations
+   };
+   ```
+
+4. **Admin UI integration:**
+   - Lazy-loaded with `lazy(() => import("bknd/ui").then(...))`
+   - Wrapped in `<Suspense>` for loading state
+   - Requires `bknd/dist/styles.css` import
+   - Configuration: `<Admin withProvider={{ user }} config={{ basepath: "/admin" }} />`
+
+5. **Configuration:**
+   - `bknd.config.ts` uses `ReactRouterBkndConfig` type
+   - Extends base `BkndConfig` with environment variables support
+   - Environment variables accessed via `process.env` in `getBkndApp(config, process.env)`
+
+6. **Form handling:**
+   - Uses React Router's `<Form>` and `useFetcher()` components
+   - Form data handled in action via `await args.request.formData()`
+   - Actions typically don't require `{ verify: true }` (protected by Bknd permissions)
+
+7. **Authentication:**
+   - Use `verifyAuth()` in `getApi({ verify: true })` for protected routes
+   - `api.getUser()` returns current user (null if not authenticated)
+   - Redirect on auth failure with `throw redirect("/login")`
+
+**What I don't know:**
+
+1. **API catch-all route setup:** 
+   - README mentions `api.$.tsx` but file not found in repository
+   - How to set up catch-all API route in React Router
+   - Whether `serve()` from `bknd/adapter/react-router` is used
+   - How to handle different API endpoints (auth, data, media)
+
+2. **Authentication best practices:**
+   - Whether to use React Router middleware for auth checks
+   - How to persist auth state across route transitions
+   - Best practices for handling auth failures vs `verifyAuth()` throws
+
+3. **Client-side SDK integration:**
+   - Whether to use `useAuth()`, `useEntityQuery()` hooks in React Router
+   - How to combine server-side loaders with client-side hooks
+   - Best practices for data fetching (server vs client)
+
+### React Router vs Next.js Integration Comparison
+
+| Aspect | Next.js | React Router |
+|--------|---------|--------------|
+| **Route structure** | `app/api/[[...bknd]]/route.ts` catch-all | Unknown (`api.$.tsx` mentioned but not found) |
+| **Server function** | `serve()` from `bknd/adapter/nextjs` | Helper-based (`getApi()` in `app/bknd.ts`) |
+| **Data fetching** | Server components + loaders | Loaders only |
+| **Type safety** | Full (config to client) | Full (config to client) |
+| **Admin UI** | Server component at `/admin/[[...admin]]/page.tsx` | Lazy-loaded at `admin.$.tsx` |
+
+### Documentation Pattern: Explicit Unknowns Section
+
+For integration guides where workflow is unclear:
+- Document what you know from source code and examples
+- Create dedicated "Unknown Details" section for unclear workflows
+- Mark unclear sections with "⚠️ Unclear workflow" or "⚠️ Best practices unclear"
+- Use TODO markers for sections needing follow-up
+- Don't guess at workflows you haven't tested
+
+This pattern:
+- Is honest about documentation gaps
+- Provides the verified information we have
+- Makes it clear what's missing for users
+- Doesn't mislead users with untested workflows
+- Encourages community contributions to fill gaps
+
+### Source Code Locations
+
+Key files for React Router integration:
+- `app/src/adapter/react-router/react-router.adapter.ts` - Adapter implementation and types
+- `examples/react-router/app/bknd.ts` - Helper file pattern
+- `examples/react-router/app/routes/_index.tsx` - Loader/action CRUD example
+- `examples/react-router/app/routes/admin.$.tsx` - Admin UI integration
+
+### Next Steps for Better Documentation
+
+1. Test actual React Router app to verify API catch-all route setup
+2. Document client-side SDK usage patterns with React Router
+3. Clarify authentication best practices (middleware vs loader checks)
+4. Add examples for complex scenarios (multi-entity forms, optimistic updates)
+5. Investigate React Router middleware integration for auth
+
 ## Task 3.1: Next.js Integration Guide
 
 ### Key Discovery: Next.js Integration is Well-Documented

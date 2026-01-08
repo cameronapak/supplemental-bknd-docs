@@ -126,9 +126,9 @@ Update the file after completing each sub-task, not just after completing an ent
      - Standalone SPA setup
      - API integration patterns
      - State management approach
-  - [ ] 3.3 Write React Router integration guide (P3)
-    - Loader/Action pattern integration
-    - Route-based authentication
+   - [x] 3.3 Write React Router integration guide (P3)
+     - Loader/Action pattern integration
+     - Route-based authentication
   - [ ] 3.4 Write Astro integration guide (P3)
     - SSR integration
     - Endpoint configuration
