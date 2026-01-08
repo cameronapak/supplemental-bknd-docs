@@ -230,3 +230,5 @@ Update the file after completing each sub-task, not just after completing an ent
     - All P0 and P1 deliverables shipped
     - Navigation tested
     - Examples verified
+
+- [ ] 8.0 Find answers to `LEARNINGS.md` and see if we can update any docs
