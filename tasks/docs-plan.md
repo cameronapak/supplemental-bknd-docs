@@ -153,11 +153,11 @@ Update the file after completing each sub-task, not just after completing an ent
     - CORS issues
     - Deployment problems
     - Mode switching issues
-  - [ ] 4.2 Document Known Issues & Workarounds (P2)
-    - CodeMode prevents initial seed (with workaround)
-    - Password length validation
-    - Timestamp indexing limitations
-    - Other discovered bugs
+  - [x] 4.2 Document Known Issues & Workarounds (P2)
+     - CodeMode prevents initial seed (with workaround)
+     - Password length validation
+     - Timestamp indexing limitations
+     - Other discovered bugs
   - [ ] 4.3 Write Cloudflare Workers guide (P3)
     - Edge deployment setup
     - D1 database configuration

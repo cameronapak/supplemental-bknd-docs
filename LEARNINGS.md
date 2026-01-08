@@ -2094,6 +2094,115 @@ Key files for understanding Data module:
 6. Document error handling patterns with try-catch examples
 7. Research connection pooling configuration options
 
+## Task 4.2: Document Known Issues & Workarounds
+
+### Key Discovery: Bknd Has Several Active Bugs
+
+From research using Zread MCP server and official docs, I identified several active issues that users need to be aware of:
+
+**What I know:**
+
+1. **Timestamps Plugin Indexing Bug** (#325):
+   - Race condition between plugin system and index initialization
+   - Cannot index `created_at` or `updated_at` fields from timestamps plugin
+   - Three workarounds available (don't index, add fields manually, use database-level indexing)
+
+2. **Password Length Validation Inconsistency** (#318):
+   - Signup allows passwords < 8 characters
+   - Login fails with those same passwords
+   - CLI only validates minimum 3 characters
+   - Workaround: client-side validation before API calls
+
+3. **Admin UI Route 404** (#216):
+   - Sidebar navigation returns 404 errors
+   - Long-standing issue (since July 2025)
+   - Workarounds: use main entry point, avoid direct URLs, refresh page
+
+4. **xdg-open Crash on Headless Systems** (#300):
+   - CLI commands crash when trying to open browser
+   - Affects Docker containers, CI/CD, headless servers
+   - Workaround: set `BROWSER=none` environment variable
+
+**What I don't know:**
+
+1. **CodeMode initial seed bug**: The task plan mentions "CodeMode prevents initial seed (with workaround)" but I couldn't find specific documentation about this issue through Zread or web search. The official docs show that CodeMode requires manual `npx bknd sync --seed --force` command, which might be the "workaround" mentioned in the task plan. I documented what's known about seeding in different modes but couldn't confirm a specific bug.
+
+2. **Other discovered bugs**: The task plan mentions "Other discovered bugs" but without specifics. I documented all known issues I could find through research.
+
+### Documentation Pattern: Workaround Documentation Structure
+
+For known issues with workarounds, use this structure:
+
+```markdown
+### Issue Name
+
+**Issue:** #123
+
+**Status:** Open/Closed (Date)
+
+**Problem:**
+Clear description of what goes wrong, with code example if applicable
+
+**Root Cause:**
+Technical explanation (if known)
+
+**Workarounds:**
+1. Workaround 1 - Explanation + code
+2. Workaround 2 - Explanation + code
+3. Workaround 3 - Explanation + code
+```
+
+This pattern:
+- Provides clear problem statement
+- Links to GitHub issue for tracking
+- Explains why it happens
+- Gives actionable workarounds
+- Makes it easy to check if issue is resolved
+
+### Best Practices for Issue Documentation
+
+1. **Categorize by severity** - Critical, Validation, UI, Environment-Specific
+2. **Include issue numbers** - Makes it easy to track resolution
+3. **Provide multiple workarounds** - Give users options
+4. **Be honest about unknowns** - If issue isn't documented well, say so
+5. **Link to related resources** - GitHub issues, Discord, other docs
+6. **Include reproduction steps** - Help users confirm if they have same issue
+
+### Unknown Areas Requiring Research
+
+1. **CodeMode initial seed bug** - Not documented in available resources, may need community investigation
+2. **Password hashing algorithm details** - How bcrypt vs sha256 works internally
+3. **Race condition timing** - Exact timing of plugin vs index initialization
+4. **Browser opening mechanism** - How CLI detects browser availability
+
+### Critical Learning: Official Docs Don't Cover All Issues
+
+While official Bknd documentation is good, it doesn't comprehensively document all known issues. Users need to:
+
+1. **Check GitHub Issues** - For active bugs and workarounds
+2. **Join Discord** - For real-time help from community
+3. **Search before reporting** - Avoid duplicate issue reports
+4. **Provide detailed reports** - Steps to reproduce, environment details, error messages
+
+The community is actively working on these issues, but documentation lags behind code changes.
+
+### Source Code Locations
+
+For understanding these issues:
+- `app/src/plugins/timestamps/` - Timestamps plugin implementation
+- `app/src/data/indexing/` - Index system (for race condition)
+- `app/src/auth/Authenticator.ts` - Password validation logic
+- `app/src/ui/admin/` - Admin UI routing code
+- `app/src/cli/` - CLI browser opening logic
+
+### Next Steps for Better Documentation
+
+1. Test actual bugs to verify workarounds
+2. Monitor GitHub issues for new bugs and resolutions
+3. Update documentation when bugs are fixed
+4. Create test cases that fail with known bugs (for regression testing)
+5. Contribute fixes or PRs for high-priority bugs if possible
+
 
 ## Task 3.5: Bun/Node Standalone Guide
 
