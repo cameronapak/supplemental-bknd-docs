@@ -1,5 +1,7 @@
 # Bknd Documentation Improvement - PRD Task List
 
+We are improving the documentation for bknd-io/bknd: https://github.com/bknd-io/bknd
+
 ## Relevant Files
 
 - `docs/getting-started/build-your-first-api.md` - Core tutorial for onboarding new developers
