@@ -53,7 +53,7 @@ Update the file after completing each sub-task, not just after completing an ent
     - Enable Auth module and create admin user
     - Build React UI to consume API
     - Test complete application end-to-end
-  - [ ] 1.2 Write "Architecture & Concepts" page (P0)
+  - [x] 1.2 Write "Architecture & Concepts" page (P0)
     - Explain what Bknd IS conceptually (grand unifying context)
     - Clarify "embeddable" architecture (server-side, not client-side)
     - Create architecture diagram
