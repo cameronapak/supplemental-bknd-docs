@@ -72,6 +72,12 @@
             ]
           },
           {
+            "group": "Integrations",
+            "pages": [
+              "how-to-guides/integrations/plunk-email"
+            ]
+          },
+          {
             "group": "Data",
             "pages": [
               "how-to-guides/data/seed-database",

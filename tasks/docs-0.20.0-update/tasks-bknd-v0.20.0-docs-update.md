@@ -142,26 +142,26 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 9.11 Write "Best Practices" section (security, UX, deliverability, configuration, performance, monitoring, compliance, migration, testing)
   - [x] 9.12 Add cross-references to auth module reference, Plunk guide, create-first-user
 
-- [ ] 10.0 Week 2 Parallel: Plunk Email Driver Guide (Priority: MEDIUM)
-  - [ ] 10.1 Create `/docs/how-to-guides/integrations/` directory
-  - [ ] 10.2 Create `/docs/how-to-guides/integrations/plunk-email.md` with complete structure
-  - [ ] 10.3 Write "Overview" section (what is Plunk, why use it, features)
-  - [ ] 10.4 Write "Installation" section (Plunk SDK, API key setup)
-  - [ ] 10.5 Write "Configuration" section (email driver, Plunk settings, env vars)
-  - [ ] 10.6 Write "Integration with Email OTP" section
-  - [ ] 10.7 Write "Integration with Password Auth" section (password reset, verification)
-  - [ ] 10.8 Write "Email Templates" section (defaults, custom, variables)
-  - [ ] 10.9 Write "Testing" section (test sending, debug delivery)
-  - [ ] 10.10 Write "Best Practices" section (setup, templates, deliverability, performance, cost, security, monitoring, integration, troubleshooting, migration, advanced, compliance)
-  - [ ] 10.11 Write "Comparison: Plunk vs Resend" section
-  - [ ] 10.12 Write "Examples" section with complete email integration
-  - [ ] 10.13 Add cross-references to Email OTP guide, auth module reference, Resend docs
+- [x] 10.0 Week 2 Parallel: Plunk Email Driver Guide (Priority: MEDIUM)
+  - [x] 10.1 Create `/docs/how-to-guides/integrations/` directory
+  - [x] 10.2 Create `/docs/how-to-guides/integrations/plunk-email.md` with complete structure
+  - [x] 10.3 Write "Overview" section (what is Plunk, why use it, features)
+  - [x] 10.4 Write "Installation" section (Plunk SDK, API key setup)
+  - [x] 10.5 Write "Configuration" section (email driver, Plunk settings, env vars)
+  - [x] 10.6 Write "Integration with Email OTP" section
+  - [x] 10.7 Write "Integration with Password Auth" section (password reset, verification)
+  - [x] 10.8 Write "Email Templates" section (defaults, custom, variables)
+  - [x] 10.9 Write "Testing" section (test sending, debug delivery)
+  - [x] 10.10 Write "Best Practices" section (setup, templates, deliverability, performance, cost, security, monitoring, integration, troubleshooting, migration, advanced, compliance)
+  - [x] 10.11 Write "Comparison: Plunk vs Resend" section
+  - [x] 10.12 Write "Examples" section with complete email integration
+  - [x] 10.13 Add cross-references to Email OTP guide, auth module reference, Resend docs
 
 - [x] 11.0 Week 2 Parallel: Navigation - Add Email & Plunk Guides (Priority: MEDIUM)
-  - [ ] 11.1 Update `docs.json` to add "Integrations" group under How-to Guides
-  - [ ] 11.2 Add plunk-email to Integrations group
+  - [x] 11.1 Update `docs.json` to add "Integrations" group under How-to Guides
+  - [x] 11.2 Add plunk-email to Integrations group
   - [x] 11.3 Add email-otp to Authentication group (after public-access-guard)
-  - [ ] 11.4 Update `/docs/index.md` with Email OTP and Plunk links
+  - [x] 11.4 Update `/docs/index.md` with Email OTP and Plunk links
   - [ ] 11.5 Update `/docs/getting-started/add-authentication.md` with Email OTP alternatives section
 
 - [x] 12.0 Week 2 Parallel: Browser/SQLocal Integration Guide (Priority: MEDIUM)
