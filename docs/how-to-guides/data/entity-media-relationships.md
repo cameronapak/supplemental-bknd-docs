@@ -98,6 +98,39 @@ const postWithCover = await em.repository("posts").findOne({
 });
 ```
 
+### Media Upload with uploadToEntity
+
+For scenarios where you need to upload files directly to entity fields (e.g., profile pictures, cover images), use the Media API's `uploadToEntity` method:
+
+```typescript
+const { data, error } = await api.media.uploadToEntity(
+  "users",           // entity name
+  userId,             // entity ID
+  "avatar",           // entity field name
+  avatarFile,         // file to upload
+  { overwrite: true } // options
+);
+```
+
+**New in v0.20.0:** The `overwrite` parameter controls behavior when a file already exists:
+
+```typescript
+// Default: Error if file exists (overwrite not set)
+const result = await api.media.uploadToEntity("users", userId, "avatar", avatarFile);
+// Error: File already exists for users[userId].avatar
+
+// Allow overwriting existing file
+const result = await api.media.uploadToEntity("users", userId, "avatar", avatarFile, {
+  overwrite: true
+});
+// Success: Replaces existing file with new one
+```
+
+**Use Cases:**
+- Profile picture updates (replace old avatar)
+- Cover image changes (replace old cover)
+- Thumbnail regeneration (overwrite with optimized version)
+
 ## One-to-Many Relations
 
 Use for multiple media items like galleries, attachments, or related images.

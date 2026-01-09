@@ -536,3 +536,54 @@
   - **Code example consistency is critical**: Found and fixed incorrect `pgPostgres` references in configuration reference that showed wrong API for v0.20.0
   - **Migration notes should include adapter rename**: When documenting breaking changes, clearly state if function names changed, not just import paths (e.g., "adapter renamed from `pgPostgres` to `pg`")
   - **Source verification**: GitHub release page is authoritative source for official breaking changes and PR references
+
+## Task 25.2: Review All Integration Guides (v0.20.0)
+
+### What I learned:
+- **All 4 new integration guides are complete** with comprehensive sections:
+  - SvelteKit: 633 lines, covers adapter setup, API integration, load functions, admin UI, deployment
+  - Browser/SQLocal: 923 lines, covers SQLocal setup, OPFS storage, data operations, use cases, deployment
+  - Email OTP: 810 lines, covers configuration, email providers, API endpoints, security, best practices
+  - Plunk Email: 691 lines, covers configuration, OTP/password auth, templates, comparison, best practices
+- **Directory naming convention**: The directory is named "how-to-guides" (with "es" suffix), not "how-to-guides" - this appears to be intentional and consistent with docs.json
+- **Framework comparison includes new guides**: SvelteKit and Browser Mode are both documented in framework-comparison.md matrix
+- **Navigation properly configured**: All 4 guides are correctly positioned in docs.json under appropriate groups
+- **Task verification workflow**: When verifying integration guides are complete, check:
+  1. File exists in expected location (test -f command)
+  2. Guide is added to docs.json navigation
+  3. Guide is mentioned in framework-comparison.md (for framework integrations)
+  4. Related docs cross-reference to/from the guide
+- **Integration guide content structure**: Comprehensive guides include Overview, Installation, Configuration, Integration, Features, Examples, Best Practices, Troubleshooting, and Related Documentation
+ - **Completeness review process**: Systematically verify each guide has all required sections from PRD structure
+
+ ## Task 25.3: Review All New Features Are Documented (v0.20.0)
+
+ ### What I learned:
+ - **Comprehensive feature verification requires cross-referencing**: When verifying all new features are documented, check the release notes systematically and verify each feature has documentation in the appropriate location
+ - **Documentation locations vary by feature type**:
+    - New integrations (Email OTP, Plunk, SvelteKit, Browser/SQLocal): Dedicated guides in how-to-guides
+    - Configuration changes: Auth module reference, configuration reference
+    - API improvements: Data module reference, react-sdk reference
+    - Minor features: Scattered across multiple docs (hybrid mode in choose-your-mode, auto-join in query-system, etc.)
+ - **uploadToEntity overwrite parameter documentation gap**: Found that `uploadToEntity` method's `overwrite` parameter was documented in `data-module.md` but missing from `entity-media-relationships.md`, which is where users working with media relationships would look for it
+ - **Documentation completeness check workflow**:
+    1. Read release notes to list all new features
+    2. For each feature, locate appropriate documentation file
+    3. Use grep to verify the feature is documented
+    4. Check that examples, use cases, and version notes are present
+    5. Look for related documentation that should reference the feature
+ - **All v0.20.0 new features verified as documented**:
+    - License change to Apache 2.0: README.md and index.md
+    - PostgreSQL package merge: Migration guide and all integration guides
+    - MCP navigation: schema.md and how-bknd-works.md
+    - Improved hybrid mode: choose-your-mode.md with "New in v0.20.0" section
+    - Repository auto-join: query-system.md with performance considerations
+    - Email OTP plugin: Dedicated guide with comprehensive sections (809 lines)
+    - Plunk email driver: Dedicated guide with comparison to Resend (690 lines)
+    - SvelteKit adapter: Dedicated guide with load function integration (632 lines)
+    - uploadToEntity overwrite: data-module.md and now entity-media-relationships.md
+    - Browser/SQLocal support: Dedicated guide with use cases (922 lines)
+    - Auth improvements: default_role_register, minLength, logout redirect in auth-module.md
+    - Data module improvements: readOneBy in data-module.md
+ - **Documentation quality indicators**: Comprehensive guides have 600+ lines with sections on overview, configuration, integration, best practices, troubleshooting, and cross-references
+
