@@ -1,3 +1,18 @@
+## Task 25.0: Final Review and Validation (v0.20.0)
+
+### What I learned:
+- **Final review completes when all subtasks are done**: When a parent task has all subtasks marked [x] but the parent itself is [ ], completing the parent checkbox is the final step
+- **Comprehensive review checklist**: Task 25.0's subtasks (25.1-25.8) provide a complete review framework covering breaking changes, new features, integration guides, existing docs, cross-references, navigation, and file validation
+- **Documentation completion verification**: A documentation update project is complete when:
+  1. All new files exist and are properly structured
+  2. All updated files contain the required changes
+  3. Navigation hierarchy matches the PRD specification
+  4. Cross-references link relevant content bidirectionally
+  5. Quality checks pass (links work, code is valid, terminology consistent)
+  6. Task file is updated to reflect completion
+- **Task file as living document**: The tasks-bknd-v0.20.0-docs-update.md file serves as both a project tracker and historical record, with learnings.md providing context for future work
+- **Sequential task completion**: Large documentation projects can be broken down into 25+ distinct tasks, each with multiple subtasks, allowing parallel work and progress tracking
+
 ## Task 1.0: PostgreSQL Package Merge Migration Guide (v0.20.0)
 
 ### What I learned:
@@ -352,29 +367,101 @@
    - Check for relative links in files (`./file.md`, `../directory/file.md`)
    - Verify link paths are correct based on file location in directory structure
    - Links from framework-comparison.md (in integrations/) to browser-sqlocal.md need `../` not `./`
-- **Cross-reference completeness depends on file existence**: Tasks 23.5 and 23.6 require email-otp.md and plunk-email.md to exist (Tasks 9.0 and 10.0), so cannot be completed until those tasks are done
-- **Partial task completion**: Can mark subtasks as [x] while leaving dependent subtasks as [ ] with notes about blockers
-- **Framework comparison links**: The Related Documentation section should use correct relative paths based on file location - framework-comparison.md is in `how-to-guides/setup/integrations/`, so links to guides in `how-to-guides/` need `../../` or direct path like `../browser-sqlocal.md`
-- **Cross-reference types**:
-   - New files linking to existing docs (migration guide → integration guides)
-   - Existing docs linking to new files (index.md → migration guides)
-   - Same-level files linking to each other (framework-comparison → browser-sqlocal)
-   - Reference docs linking to guides (auth-module → email-otp)
-- **Navigation structure**: docs.json uses nested groups with simple page references (no file extensions)
-- **Migration Guides placement**: Should be at top of navigation before Getting Started for visibility
-- **Status tracking**: Tasks can be marked complete even if work was done previously - verify state, then mark as [x]
-- **Task 3.0 was already complete**: The migration-guides directory, postgres-package-merge.md file, docs.json navigation, and index.md link were all already in place from previous work
-- **Link verification approach**: Use `grep` patterns to find all broken links at once: `grep -rn 'getting-started/' docs --include="*.md"`
-- **Fix strategy for internal directory links**: When files in a directory link to other files in the same directory, use relative paths like `./file.md` not `./directory/file.md`.
-- **Sed one-liner for bulk fixing**: `find directory -name "*.md" -exec sed -i '' 's/pattern/replacement/g' {} \;` works well for macOS
-- **External links verification**: Links from files outside `getting-started/` directory correctly use `../getting-started/` prefix - no changes needed.
-- **Git lock files**: Git `.git/index.lock` file can prevent commits. Delete with `rm -f .git/index.lock` if commit fails with lock error.
-- **Quality checklist execution**: Systematically check code blocks, links, terminology, and TODO markers.
-- **TODO/FIXME markers**: Found 29 TODO/FIXME/UNKNOWN markers across docs - these are intentional (areas needing future research), not bugs.
-- **@bknd/postgres references**: All references to `@bknd/postgres` are intentional (migration guide and release notes explaining breaking change).
-- **Code block verification**: 449 TypeScript code blocks found, no unclosed blocks detected.
-- **Markdown file count**: 41 markdown files in docs directory.
-- **Consistent naming**: Directory is named `getting-started` (with 'ed') - this is correct and matches docs.json navigation.
+   - **Cross-reference completeness depends on file existence**: Tasks 23.5 and 23.6 require email-otp.md and plunk-email.md to exist (Tasks 9.0 and 10.0), so cannot be completed until those tasks are done
+  - **Partial task completion**: Can mark subtasks as [x] while leaving dependent subtasks as [ ] with notes about blockers
+  - **Framework comparison links**: The Related Documentation section should use correct relative paths based on file location - framework-comparison.md is in `how-to-guides/setup/integrations/`, so links to guides in `how-to-guides/` need `../../` or direct path like `../browser-sqlocal.md`
+  - **Cross-reference types**:
+    - New files linking to existing docs (migration guide → integration guides)
+    - Existing docs linking to new files (index.md → migration guides)
+    - Same-level files linking to each other (framework-comparison → browser-sqlocal)
+    - Reference docs linking to guides (auth-module → email-otp)
+  - **Navigation structure**: docs.json uses nested groups with simple page references (no file extensions)
+  - **Migration Guides placement**: Should be at top of navigation before Getting Started for visibility
+  - **Status tracking**: Tasks can be marked complete even if work was done previously - verify state, then mark as [x]
+  - **Task 3.0 was already complete**: The migration-guides directory, postgres-package-merge.md file, docs.json navigation, and index.md link were all already in place from previous work
+  - **Link verification approach**: Use `grep` patterns to find all broken links at once: `grep -rn 'getting-started/' docs --include="*.md"`
+  - **Fix strategy for internal directory links**: When files in a directory link to other files in the same directory, use relative paths like `./file.md` not `./directory/file.md`.
+  - **Sed one-liner for bulk fixing**: `find directory -name "*.md" -exec sed -i '' 's/pattern/replacement/g' {} \;` works well for macOS
+  - **External links verification**: Links from files outside `getting-started/` directory correctly use `../getting-started/` prefix - no changes needed.
+  - **Git lock files**: Git `.git/index.lock` file can prevent commits. Delete with `rm -f .git/index.lock` if commit fails with lock error.
+  - **Quality checklist execution**: Systematically check code blocks, links, terminology, and TODO markers.
+  - **TODO/FIXME markers**: Found 29 TODO/FIXME/UNKNOWN markers across docs - these are intentional (areas needing future research), not bugs.
+  - **@bknd/postgres references**: All references to `@bknd/postgres` are intentional (migration guide and release notes explaining breaking change).
+  - **Code block verification**: 449 TypeScript code blocks found, no unclosed blocks detected.
+  - **Markdown file count**: 41 markdown files in docs directory.
+  - **Consistent naming**: Directory is named `getting-started` (with 'ed') - this is correct and matches docs.json navigation.
+
+## Task 25.6: Review Navigation Hierarchy (v0.20.0)
+
+### What I learned:
+- **Navigation verification approach**: To verify navigation hierarchy is complete, read docs.json and compare against PRD requirements section by section
+- **docs.json structure validation**: Check all groups, subgroups, and pages match the PRD specification
+- **Page reference format**: docs.json uses page references without file extensions (e.g., "reference/configuration", not "reference/configuration.md")
+- **Nested groups support**: docs.json supports deeply nested groups (e.g., How-to Guides > Setup > Integrations)
+- **Page ordering matters**: Within groups, pages appear in the order they're listed in docs.json
+- **New groups in v0.20.0**: Migration Guides (top-level), Integrations subgroup under How-to Guides
+- **New pages in v0.20.0**: postgres-package-merge, sveltekit, browser-sqlocal, email-otp, plunk-email, configuration, v0.20.0-release-notes
+  - **Reference docs ordering**: configuration.md should be first in Reference group (before auth-module)
+  - **Getting Started ordering**: v0.20.0-release-notes should be in Getting Started group after index for visibility
+  - **Verification checklist**: When reviewing navigation hierarchy, verify:
+  1. All new groups from PRD are present
+  2. All new pages are in correct groups
+  3. Page ordering follows PRD specification
+  4. Nested groups have correct hierarchy depth
+  5. No duplicate page references
+  6. All paths match actual file locations
+  7. File extensions are omitted from page references
+
+## Task 25.7: Final Review of All New Files (v0.20.0)
+
+### What I learned:
+- **New files verification approach**: Use `ls -la` to confirm all new files exist in expected locations with correct permissions
+- **File size validation**: Use `wc -l` to check line counts - comprehensive guides should be 600+ lines, release notes ~270 lines, migration guide ~380 lines
+- **Section structure validation**: Use `grep -E "^## "` to extract section headers and verify comprehensive structure
+- **Section count indicators**: Well-structured guides have 12-15 major sections; configuration reference ~10 sections; release notes ~8 sections
+- **Content completeness signs**: Files with proper section headers (Overview, Configuration, Integration, Best Practices, Troubleshooting, Related Documentation) indicate comprehensive coverage
+- **File existence checklist for v0.20.0 new files**:
+  1. docs/migration-guides/postgres-package-merge.md
+  2. docs/how-to-guides/setup/integrations/sveltekit.md
+  3. docs/how-to-guides/setup/integrations/browser-sqlocal.md
+  4. docs/how-to-guides/auth/email-otp.md
+  5. docs/how-to-guides/integrations/plunk-email.md
+  6. docs/reference/configuration.md
+  7. docs/releases/v0.20.0-release-notes.md
+- **Directory creation verification**: New directories (migration-guides/, releases/, how-to-guides/integrations/) should exist and contain expected files
+- **Comprehensive guide indicators**: Look for sections like Overview, Prerequisites, Installation, Configuration, Best Practices, Troubleshooting, Examples, Related Documentation
+- **Reference doc indicators**: Look for sections like Overview, Configuration sections, Options, Examples, Migration Notes
+- **Release note indicators**: Look for sections like Overview, What's New, Migration Guide, Changelog, Contributors, Upgrading
+- **Line count baselines**: Integration guides typically 600-900 lines; reference docs ~750 lines; migration guides ~380 lines; release notes ~270 lines
+- **Section header patterns**: Use consistent H2 (##) for major sections, H3 (###) for subsections
+
+## Task 25.8: Final Review of All Updated Files (v0.20.0)
+
+### What I learned:
+- **Updated files verification approach**: Check file existence and content using bash loops with conditional checks
+- **File existence pattern**: Use `if [ -f "$file" ]; then ... fi` to safely check file existence in loops
+- **Line count baselines for updated files**: Updated files vary from 22 lines (README.md) to 1128 lines (schema.md) depending on scope
+- **Content verification via grep**: Search for v0.20.0-specific keywords to verify updates are present across all files
+- **Keyword patterns for v0.20.0**: `v0\.20\.0`, `minLength`, `default_role_register`, `readOneBy`, `auto-join`, `overwrite`, `schema\.read`, `MCP`, `Email OTP`, `Plunk`
+- **Expected update count**: All 12 updated files should contain at least one v0.20.0-specific keyword
+- **File content sampling**: Use `head -5 | tail -3` to preview file content and verify it's not corrupted or empty
+- **Updated files list for v0.20.0**:
+  1. docs/architecture-and-concepts/how-bknd-works.md (618 lines)
+  2. docs/getting-started/deploy-to-production.md (344 lines)
+  3. docs/reference/auth-module.md (991 lines)
+  4. docs/reference/data-module.md (721 lines)
+  5. docs/reference/react-sdk-reference.md (742 lines)
+  6. docs/how-to-guides/setup/choose-your-mode.md (439 lines)
+  7. docs/getting-started/build-your-first-api.md (231 lines)
+  8. docs/reference/query-system.md (339 lines)
+  9. docs/reference/schema.md (1128 lines)
+  10. docs/how-to-guides/setup/integrations/framework-comparison.md (655 lines)
+  11. docs/getting-started/add-authentication.md (427 lines)
+  12. docs/index.md (174 lines)
+  13. README.md (22 lines)
+- **Grep counting optimization**: Pipe grep results to `wc -l` to count how many files contain matching patterns
+- **Error suppression**: Use `2>/dev/null` to suppress grep errors when some files don't match patterns
+- **Bulk file processing**: Use bash for loops with pattern matching to process multiple files efficiently
 
  ## Task 25.4: Review All Existing Docs Are Updated for v0.20.0 (v0.20.0)
 
