@@ -199,13 +199,13 @@ Update the file after completing each sub-task, not just after completing an ent
   - [ ] 15.1 Update `/docs/getting-started/build-your-first-api.md` hybrid mode configuration
   - [ ] 15.2 Add note about sync_required flag in production deployments
 
-- [ ] 16.0 Week 2 Parallel: Minor Features - Auto-Join (Priority: MEDIUM)
-  - [ ] 16.1 Update `/docs/reference/query-system.md` Filtering section with auto-join examples
-  - [ ] 16.2 Update `/docs/reference/query-system.md` Performance section with auto-join considerations
-  - [ ] 16.3 Document query plan for auto-joined queries
-  - [ ] 16.4 Update `/docs/how-to-guides/data/entity-media-relationships.md`
-  - [ ] 16.5 Add "Automatic Join Filtering" section with examples
-  - [ ] 16.6 Document when auto-join is triggered
+- [x] 16.0 Week 2 Parallel: Minor Features - Auto-Join (Priority: MEDIUM)
+   - [x] 16.1 Update `/docs/reference/query-system.md` Filtering section with auto-join examples
+   - [x] 16.2 Update `/docs/reference/query-system.md` Performance section with auto-join considerations
+   - [x] 16.3 Document query plan for auto-joined queries
+   - [x] 16.4 Update `/docs/how-to-guides/data/entity-media-relationships.md`
+   - [x] 16.5 Add "Automatic Join Filtering" section with examples
+   - [x] 16.6 Document when auto-join is triggered
 
 - [ ] 17.0 Week 2 Parallel: Minor Features - MCP Navigation (Priority: MEDIUM)
   - [ ] 17.1 Update `/docs/architecture-and-concepts/how-bknd-works.md` Admin UI section

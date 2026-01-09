@@ -39,22 +39,48 @@
 
 ### What I learned:
 - **readOneBy method**: Alternative to findOne that uses findMany with limit: 1 internally
-  - Supports more query options (where, select, join, with) compared to findOne
-  - Excludes limit, offset, and sort (automatically set to limit: 1, offset: 0)
-  - Returns same result structure as findOne
-  - Use case: When you need field selection or joins in single-record queries
+   - Supports more query options (where, select, join, with) compared to findOne
+   - Excludes limit, offset, and sort (automatically set to limit: 1, offset: 0)
+   - Returns same result structure as findOne
+   - Use case: When you need field selection or joins in single-record queries
 - **Auto-join behavior**: Automatic joins triggered when filtering by related entity fields
-  - Uses dot notation in where clause (e.g., `{"author.username": "john"}`)
-  - Bknd automatically adds necessary joins behind the scenes
-  - Checks if related field exists in relationship before adding join
-  - Index warnings triggered for non-indexed related fields
-  - Performance considerations: Auto-joins are convenient but may load unnecessary data; manual joins with explicit field selection can be more efficient
+   - Uses dot notation in where clause (e.g., `{"author.username": "john"}`)
+   - Bknd automatically adds necessary joins behind the scenes
+   - Checks if related field exists in relationship before adding join
+   - Index warnings triggered for non-indexed related fields
+   - Performance considerations: Auto-joins are convenient but may load unnecessary data; manual joins with explicit field selection can be more efficient
 - **uploadToEntity overwrite parameter**: Media API method for uploading files to entity fields
-  - `overwrite` parameter (boolean) controls behavior when file already exists
-  - Default (overwrite not set): Error if file exists
-  - `overwrite: true`: Replaces existing file with new one
-  - Use case: Allow replacing profile pictures, cover images, etc. in update operations
+   - `overwrite` parameter (boolean) controls behavior when file already exists
+   - Default (overwrite not set): Error if file exists
+   - `overwrite: true`: Replaces existing file with new one
+   - Use case: Allow replacing profile pictures, cover images, etc. in update operations
 - **Documentation structure**: When adding new methods, place them logically near related methods
-  - readOneBy placed after findOne (both are single-record read methods)
-  - Auto-join section added after Eager Loading Relations (both relate to joins)
-  - Media Uploads added to Mutator API (Media API accessed through app.media)
+   - readOneBy placed after findOne (both are single-record read methods)
+   - Auto-join section added after Eager Loading Relations (both relate to joins)
+   - Media Uploads added to Mutator API (Media API accessed through app.media)
+
+## Task 16.0: Auto-Join Documentation (v0.20.0)
+
+### What I learned:
+- **Auto-join implementation details**:
+  - Triggered when using dot notation in where clause (e.g., `{"posts.title": "value"}`)
+  - Automatically validates that related entity exists and has a defined relationship
+  - Checks if field exists on related entity before adding join
+  - Adds join to validated options when filter conditions are processed (line 146 in Repository.ts)
+  - Throws InvalidSearchParamsException if relation doesn't exist or field is invalid
+- **Performance implications of auto-join**:
+  - Auto-join loads all columns from related table by default
+  - Can use explicit `join` parameter with `select` to load only needed columns
+  - Index warnings are issued for non-indexed related fields (checkIndex method)
+  - Best practice: Add `.index()` to fields used in auto-join filters
+  - Consider using `with` parameter for eager loading vs filtering
+- **Auto-join in media relationships**:
+  - Works with polymorphic relations (polyToOne, polyToMany)
+  - Can filter by media fields like mime_type, width, height
+  - Useful for finding entities with specific media types
+  - Same performance considerations apply - use explicit joins with select for optimization
+- **Documentation organization**:
+  - Auto-join section placed in Filtering section of query-system.md (logical location)
+  - Performance considerations added as dedicated section with examples
+  - Media-specific auto-join examples added to entity-media-relationships.md
+  - Cross-referenced best practices between general query docs and media-specific docs

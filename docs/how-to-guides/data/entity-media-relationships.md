@@ -203,6 +203,69 @@ const mediaUsage = await em.repository("media").findOne({
 });
 ```
 
+## Automatic Join Filtering
+
+When filtering by related entity fields (including media), Bknd automatically adds necessary joins using dot notation:
+
+### Filter by Media Fields
+
+```typescript
+// Find posts that have a cover image
+const postsWithCover = await em.repository("posts").findMany({
+  where: { 'cover.mime_type': { $isnull: false } }
+});
+// Auto-joins media table to filter by mime_type
+
+// Find products with specific image type
+const products = await em.repository("products").findMany({
+  where: {
+    'gallery.mime_type': { $startsWith: 'image/' }
+  }
+});
+// Auto-joins media through gallery relation
+```
+
+### Filter by Multiple Media Relations
+
+```typescript
+// Find posts with cover image and have at least 3 gallery images
+const posts = await em.repository("posts").findMany({
+  where: {
+    'cover.mime_type': { $startsWith: 'image/' },
+    'thumbnail.width': { $gte: 1200 }
+  }
+});
+```
+
+### Performance Considerations
+
+**Auto-join warnings for media fields:**
+```typescript
+// If media field is not indexed, you'll see:
+// Warning: Field "media.mime_type" used in "where" is not indexed
+```
+
+**Use explicit joins for better control:**
+```typescript
+// Auto-join: Simple but loads all media columns
+const posts = await em.repository("posts").findMany({
+  where: { 'cover.mime_type': 'image/jpeg' }
+});
+
+// Explicit join with select: Only load needed columns
+const postsOptimized = await em.repository("posts").findMany({
+  join: ['cover'],
+  select: ['id', 'title', 'cover.mime_type', 'cover.width'],
+  where: { 'cover.mime_type': 'image/jpeg' }
+});
+```
+
+**Best practices for media auto-join:**
+- Index media fields used in filters (e.g., `mime_type`)
+- Use explicit `select` when joining large media tables
+- Consider file size in joins - loading many rows with media data can be expensive
+- Use `with` parameter to load media data if you need it, not just for filtering
+
 ## Relation Operations
 
 ### Create ($create)
