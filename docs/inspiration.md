@@ -1,3 +1,8 @@
+---
+title: "Inspiration"
+description: "Resources and documentation that inspired Bknd's design and philosophy."
+---
+
 ## Inspiration Resources
 
 ### Full-stack Frameworks
@@ -7,6 +12,7 @@
 - [Laravel Docs](https://laravel.com/docs/master)
 - [Wasp Docs](https://wasp.sh/docs)
 - [Redwood SDK Docs](https://docs.rwsdk.com)
+- [Instant DB](https://www.instantdb.com/)
 
 ### ORM's
 

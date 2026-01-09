@@ -11,34 +11,6 @@ That's why I'm taking it upon myself to create some docs in hopes that it helps 
 > [!NOTE]
 > I'm no expert. However, I am a student who loves to learn and to help unlock others. 
 
-Here's the [potential Docs roadmap](./DOCUMENTATION_ROADMAP.md)
-
 — Cam
 
-## Docs
-
-### Specifics
-
-- [Drizzle → Prisma → bknd: Complete Schema Comparison](./docs/schema.md)
-- [How Bknd ORM Works - Schema Prototype API](./docs/orm.md)
-- [Bknd Query System](./docs/query-system.md)
-
-### Comparisons
-
-- [Bknd vs Pocketbase](./docs/bknd-comparison-pocketbase.md)
-
-## Things I want to document
-
-- How to set up permissions in Bknd
-- The different ways to use Bknd, whether it's code mode, UI mode, or hybrid mode
-- Bknd vs Firebase Comparison
-- Bknd vs Supabase Comparison
-- Bknd vs Trailblaze Comparison
-
-### Questions I have
-
-This will be a running list of questions that I have. I'll write here and then I can eventually document.
-
-- Q: Just like how Pocketbase and Trailblaze are single executable files, can we have an option for that with Bknd? I know Bun has single file executables. 
-
-[Here are resources I am using for inspiration.](./docs/inspiration.md)
+## [Open WIP Docs](./docs/index.md)
