@@ -396,11 +396,36 @@
   - Auto-mark used: Code marked with `used_at: new Date()` upon successful verification
 
 - **Plunk Email Driver** (from `app/src/core/drivers/email/plunk.ts`):
-  - Driver function: `plunkEmail({ apiKey, host, from })`
-  - Configuration options: apiKey (required), host (default: "https://api.useplunk.com/v1/send"), from (default from address)
-  - Send options: subscribed (boolean), name, from (override), reply, headers (Record<string, string>)
-  - Body format: Accepts string (plain text) or object `{ text, html }` - HTML used if object provided
-  - API endpoint: POST to configured host with Authorization header `Bearer ${apiKey}`
-  - Response structure: `{ success: boolean, emails: Array<{contact: {id, email}, email}>, timestamp: string }`
-  - Error handling: Throws error if response not ok with API error message
-  - Comparison with Resend: Both have similar API pattern, Plunk response includes contact ID tracking
+   - Driver function: `plunkEmail({ apiKey, host, from })`
+   - Configuration options: apiKey (required), host (default: "https://api.useplunk.com/v1/send"), from (default from address)
+   - Send options: subscribed (boolean), name, from (override), reply, headers (Record<string, string>)
+   - Body format: Accepts string (plain text) or object `{ text, html }` - HTML used if object provided
+   - API endpoint: POST to configured host with Authorization header `Bearer ${apiKey}`
+   - Response structure: `{ success: boolean, emails: Array<{contact: {id, email}, email}>, timestamp: string }`
+   - Error handling: Throws error if response not ok with API error message
+   - Comparison with Resend: Both have similar API pattern, Plunk response includes contact ID tracking
+
+## Task 9.0: Email OTP Authentication Guide (v0.20.0)
+
+### What I learned:
+- **Email OTP Plugin API**: The `emailOTP()` plugin function from `bknd/plugins` provides complete passwordless authentication with login and registration flows
+- **OTP configuration options**:
+  - `generateCode`: Custom code generator function (default: 6-digit random numeric 100000-999999)
+  - `apiBasePath`: Custom API base path (default: "/api/auth/otp")
+  - `ttl`: Code expiration time in seconds (default: 600 / 10 minutes)
+  - `entity`: Custom entity name for OTP storage (default: "users_otp")
+  - `entityConfig`: Additional entity configuration options
+  - `generateEmail`: Custom email template generator function
+  - `showActualErrors`: Enable detailed error messages for debugging (default: false)
+  - `allowExternalMutations`: Allow direct OTP entity mutations (default: false, security protection)
+  - `sendEmail`: Enable/disable email sending (default: true, useful for testing)
+- **OTP entity fields**: action (enum: "login" | "register"), code (text, required), email (text, required), created_at (datetime), expires_at (datetime, required), used_at (datetime)
+- **Automatic code invalidation**: `invalidateAllUserCodes()` function invalidates all previous unused codes for same email when new code is generated - prevents code hoarding attacks
+- **OTP validation requirements**: Code must match email, action type, not be expired (`expires_at > now`), and not be already used (`used_at` is null)
+- **Two authentication flows**: Login flow (existing user) and registration flow (creates new user with random password on successful verification)
+- **Event listener protection**: By default, `InsertBefore` and `UpdateBefore` event listeners on OTP entity block direct mutations from API/Admin UI for security
+- **Error handling**: Default generic "Invalid credentials" message prevents email enumeration; `showActualErrors: true` reveals specific errors ("Invalid code", "Code expired", "Code already used")
+- **Documentation structure**: Email OTP guide follows comprehensive structure with Overview, Configuration, Provider Setup, User Flow, API Endpoints, SDK Integration, Security, Customization, Troubleshooting, and Best Practices sections
+- **Best practices sections**: Include Security (code strength, TTL, rate limiting), User Experience (clear instructions, auto-focus, resend button), Email Deliverability (SPF/DKIM/DMARC, avoid spam triggers), Configuration (env vars, separate environments), Performance (indexing, async sending, caching), Monitoring and Logging (metrics, alerts, audit trails), and Testing (unit, integration, E2E, load testing)
+- **Cross-reference strategy**: Email OTP guide links to Auth Module Reference (configuration), Create First User (user management), Plunk Email Provider Guide (email setup), Configuration Reference (complete options), and Release Notes (v0.20.0 feature announcement)
+- **Navigation update**: Email OTP guide added to Authentication group in docs.json between Create First User and Public Access Guard
