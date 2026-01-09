@@ -63,13 +63,18 @@ app: (env) => ({
 Database connection configuration.
 
 ```typescript
+import { pg } from "bknd";
+import { Pool } from "pg";
+
 connection: {
   url: "file:data.db",  // SQLite
   // OR
   url: "postgres://user:pass@host:5432/db",  // PostgreSQL
   // OR
-  url: pgPostgres({
-    connectionString: env.POSTGRES_URL,
+  url: pg({
+    pool: new Pool({
+      connectionString: env.POSTGRES_URL,
+    }),
   }),
 }
 ```
@@ -638,14 +643,17 @@ export default {
 ### Production Configuration (PostgreSQL)
 
 ```typescript
-import { pgPostgres } from "bknd";
+import { pg } from "bknd";
+import { Pool } from "pg";
 import { secureRandomString } from "bknd/utils";
 
 export default {
   app: (env) => ({
     connection: {
-      url: pgPostgres({
-        connectionString: env.POSTGRES_URL,
+      url: pg({
+        pool: new Pool({
+          connectionString: env.POSTGRES_URL,
+        }),
       }),
     },
     config: {
@@ -704,7 +712,7 @@ export default hybrid<CloudflareBkndConfig>({
 ### Breaking Changes from v0.19.x
 
 1. **PostgreSQL adapters** moved from `@bknd/postgres` package to main `bknd` package
-2. **Import paths:** `pgPostgres` and `postgresJs` now imported from `"bknd"`
+2. **Import paths:** `pg` and `postgresJs` now imported from `"bknd"` (adapter renamed from `pgPostgres` to `pg`)
 3. **Password minLength** is now configurable (previously hardcoded to 8)
 
 ### Upgrading PostgreSQL Connection
@@ -722,10 +730,10 @@ connection: {
 
 **After (v0.20.0):**
 ```typescript
-import { pgPostgres } from "bknd";
+import { pg } from "bknd";
 
 connection: {
-  url: pgPostgres({
+  url: pg({
     connectionString: env.POSTGRES_URL,
   }),
 }
