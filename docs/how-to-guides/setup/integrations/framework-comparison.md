@@ -492,10 +492,10 @@ The following aspects need further investigation:
 
 ## Related Documentation
 
-- [Next.js Integration Guide](/how-to-guides/setup/integrations/nextjs.md)
-- [React Router Integration Guide](/how-to-guides/setup/integrations/react-router.md)
-- [Astro Integration Guide](/how-to-guides/setup/integrations/astro.md)
-- [Vite + React Integration Guide](/how-to-guides/setup/integrations/vite-react.md)
-- [Bun/Node Standalone Setup](/how-to-guides/setup/integrations/bun-node.md)
-- [Choose Your Mode](/how-to-guides/setup/choose-your-mode.md)
-- [Deploy to Production](/getting-started/deploy-to-production.md)
+- [Next.js Integration Guide](./how-to-guides/setup/integrations/nextjs.md)
+- [React Router Integration Guide](./how-to-guides/setup/integrations/react-router.md)
+- [Astro Integration Guide](./how-to-guides/setup/integrations/astro.md)
+- [Vite + React Integration Guide](./how-to-guides/setup/integrations/vite-react.md)
+- [Bun/Node Standalone Setup](./how-to-guides/setup/integrations/bun-node.md)
+- [Choose Your Mode](./how-to-guides/setup/choose-your-mode.md)
+- [Deploy to Production](./getting-started/deploy-to-production.md)

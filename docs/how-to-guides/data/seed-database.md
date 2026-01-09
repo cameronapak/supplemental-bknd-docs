@@ -11,7 +11,7 @@ Seeding allows you to populate your database with initial data on first boot. Th
 
 - Bknd installed and configured
 - Database connection established
-- Basic understanding of [Bknd configuration](/getting-started/build-your-first-api.md)
+- Basic understanding of [Bknd configuration](./getting-started/build-your-first-api.md)
 
 ## DB Mode (Default)
 

@@ -290,10 +290,10 @@ curl http://localhost:3000/api/your-entity
 
 ## Next Steps
 
-- **[Choose Your Mode](/how-to-guides/setup/choose-your-mode)** - Learn about configuration modes
-- **[Deploy to Production](/getting-started/deploy-to-production)** - Full deployment guide
-- **[Auth Module](/reference/auth-module)** - Authentication documentation
-- **[Data Module](/reference/data-module)** - Data operations documentation
+- **[Choose Your Mode](./how-to-guides/setup/choose-your-mode)** - Learn about configuration modes
+- **[Deploy to Production](./getting-started/deploy-to-production)** - Full deployment guide
+- **[Auth Module](./reference/auth-module)** - Authentication documentation
+- **[Data Module](./reference/data-module)** - Data operations documentation
 
 ## Troubleshooting
 

@@ -326,6 +326,6 @@ The example demonstrates:
 ## Related Documentation
 
 - [React Router Data Loading](https://reactrouter.com/start/data)
-- [Authentication Guide](/getting-started/add-authentication)
+- [Authentication Guide](./getting-started/add-authentication)
 - [React SDK](https://docs.bknd.io/usage/react)
 - [Admin UI](https://docs.bknd.io/extending/admin)

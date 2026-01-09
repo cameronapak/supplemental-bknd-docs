@@ -13,7 +13,7 @@ In this tutorial, you'll add email/password authentication with role-based acces
 
 ## Prerequisites
 
-- Complete [Build Your First API](/getting-started/build-your-first-api.md) tutorial
+- Complete [Build Your First API](./getting-started/build-your-first-api.md) tutorial
 - 20 minutes
 
 ## Step 1: Enable Auth Module
@@ -334,17 +334,17 @@ npm run dev
 
 ## Next Steps
 
-- Learn about [Public Access with Guard](/how-to-guides/permissions/public-access-guard.md) - Configure guest access
-- Explore [Data Permissions and RLS](/reference/auth-module#rls) - Row-level security
-- Read [Permission System](/reference/auth-module#permissions) - Advanced authorization patterns
-- Complete [Deploy to Production](/getting-started/deploy-to-production.md) - Launch your app
+- Learn about [Public Access with Guard](./how-to-guides/permissions/public-access-guard.md) - Configure guest access
+- Explore [Data Permissions and RLS](./reference/auth-module#rls) - Row-level security
+- Read [Permission System](./reference/auth-module#permissions) - Advanced authorization patterns
+- Complete [Deploy to Production](./getting-started/deploy-to-production.md) - Launch your app
 
 ## Related Guides
 
-- [Create First User](/how-to-guides/auth/create-first-user.md) - User creation methods (Admin UI, CLI, programmatic)
-- [Build Your First API](/getting-started/build-your-first-api.md) - Complete onboarding tutorial
-- [Auth Module Reference](/reference/auth-module.md) - Complete authentication configuration
-- [Seed Database](/how-to-guides/data/seed-database.md) - Seed users and roles with seed function
+- [Create First User](./how-to-guides/auth/create-first-user.md) - User creation methods (Admin UI, CLI, programmatic)
+- [Build Your First API](./getting-started/build-your-first-api.md) - Complete onboarding tutorial
+- [Auth Module Reference](./reference/auth-module.md) - Complete authentication configuration
+- [Seed Database](./how-to-guides/data/seed-database.md) - Seed users and roles with seed function
 
 ## What We Learned
 

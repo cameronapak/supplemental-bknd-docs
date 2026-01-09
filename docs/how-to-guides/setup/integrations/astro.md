@@ -471,6 +471,6 @@ The middleware pattern requires copying Bknd static assets manually. The page-ba
 
 ## Next Steps
 
-- [Deploy to Production Guide](/getting-started/deploy-to-production.md)
-- [Auth with Permissions Tutorial](/getting-started/add-authentication.md)
-- [Data Module Reference](/reference/data-module.md)
+- [Deploy to Production Guide](./getting-started/deploy-to-production.md)
+- [Auth with Permissions Tutorial](./getting-started/add-authentication.md)
+- [Data Module Reference](./reference/data-module.md)

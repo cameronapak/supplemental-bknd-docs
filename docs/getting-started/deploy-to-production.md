@@ -268,19 +268,19 @@ Before going live, verify:
 
 ## Next Steps
 
-- [Next.js Integration Guide](/how-to-guides/setup/integrations/nextjs.md) - Set up Next.js integration
-- [Choose Your Mode](/how-to-guides/setup/choose-your-mode.md) - Learn about configuration modes
-- [Seed Database](/how-to-guides/data/seed-database.md) - Seed your production database
-- [Troubleshooting](/troubleshooting/common-issues.md) - Debug common issues
+- [Next.js Integration Guide](./how-to-guides/setup/integrations/nextjs.md) - Set up Next.js integration
+- [Choose Your Mode](./how-to-guides/setup/choose-your-mode.md) - Learn about configuration modes
+- [Seed Database](./how-to-guides/data/seed-database.md) - Seed your production database
+- [Troubleshooting](./troubleshooting/common-issues.md) - Debug common issues
 
 ## Related Guides
 
-- [Add Authentication with Permissions](/getting-started/add-authentication.md) - Complete auth setup before deployment
-- [Build Your First API](/getting-started/build-your-first-api.md) - Complete onboarding tutorial
-- [Create First User](/how-to-guides/auth/create-first-user.md) - Set up admin users for production
-- [Cloudflare Workers Guide](/how-to-guides/setup/integrations/cloudflare-workers.md) - Alternative edge deployment
-- [AWS Lambda Guide](/how-to-guides/setup/integrations/aws-lambda.md) - Serverless deployment
-- [Docker Guide](/how-to-guides/setup/integrations/docker.md) - Container deployment
+- [Add Authentication with Permissions](./getting-started/add-authentication.md) - Complete auth setup before deployment
+- [Build Your First API](./getting-started/build-your-first-api.md) - Complete onboarding tutorial
+- [Create First User](./how-to-guides/auth/create-first-user.md) - Set up admin users for production
+- [Cloudflare Workers Guide](./how-to-guides/setup/integrations/cloudflare-workers.md) - Alternative edge deployment
+- [AWS Lambda Guide](./how-to-guides/setup/integrations/aws-lambda.md) - Serverless deployment
+- [Docker Guide](./how-to-guides/setup/integrations/docker.md) - Container deployment
 
 ## Additional Deployment Options
 
@@ -293,4 +293,4 @@ While this guide focuses on Vercel, Bknd also supports:
 - **Cloudflare Workers**: Use Cloudflare Workers integration guide
 - **Docker**: Use Docker deployment guide
 
-See the [Integration Guides](/how-to-guides/setup/integrations/) for more details.
+See the [Integration Guides](./how-to-guides/setup/integrations/) for more details.

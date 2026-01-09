@@ -17,8 +17,8 @@ Bknd's media system uses **polymorphic relationships** to connect media to any e
 ## Prerequisites
 
 - Media module enabled and configured with storage adapter
-- Basic understanding of [Bknd configuration](/getting-started/build-your-first-api.md)
-- Knowledge of [entity relationships](/reference/data-module#relationship-mutations)
+- Basic understanding of [Bknd configuration](./getting-started/build-your-first-api.md)
+- Knowledge of [entity relationships](./reference/data-module#relationship-mutations)
 
 ## How Media Relations Work
 
@@ -384,7 +384,7 @@ cover: medium(), // Virtual field
 
 ## Related Resources
 
-- [Media Storage Configuration](/reference/media-module) - Setting up media adapters
-- [Polymorphic Relations](/reference/data-module#polymorphic-relations) - Deep dive into polymorphic relationships
-- [File Upload with React](/reference/react-sdk#media-dropzone) - React components for media upload
-- [Data Module Reference](/reference/data-module) - Complete data module documentation
+- [Media Storage Configuration](./reference/media-module) - Setting up media adapters
+- [Polymorphic Relations](./reference/data-module#polymorphic-relations) - Deep dive into polymorphic relationships
+- [File Upload with React](./reference/react-sdk#media-dropzone) - React components for media upload
+- [Data Module Reference](./reference/data-module) - Complete data module documentation

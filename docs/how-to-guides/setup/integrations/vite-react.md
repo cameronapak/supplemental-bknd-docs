@@ -417,7 +417,7 @@ Should return JSON configuration.
 
 ## Next Steps
 
-- Learn about [Authentication](/getting-started/add-authentication)
-- Explore [Data Module](/reference/data-module)
-- Read about [Deployment](/getting-started/deploy-to-production)
-- Check [Query System](/reference/query-system)
+- Learn about [Authentication](./getting-started/add-authentication)
+- Explore [Data Module](./reference/data-module)
+- Read about [Deployment](./getting-started/deploy-to-production)
+- Check [Query System](./reference/query-system)
