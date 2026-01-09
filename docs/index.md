@@ -120,6 +120,7 @@ Running into issues? Check our troubleshooting resources:
 
 - [Bknd GitHub Repository](https://github.com/bknd-io/bknd) - Source code and releases
 - [Official Documentation](https://docs.bknd.io) - Latest docs and updates
+- [Apache-2.0 License](https://www.apache.org/licenses/LICENSE-2.0) - Bknd is licensed under Apache 2.0
 
 ## Next Steps
 
