@@ -652,4 +652,4 @@ The following aspects need further investigation:
 - [Bun/Node Standalone Setup](./how-to-guides/setup/integrations/bun-node.md)
 - [Choose Your Mode](./how-to-guides/setup/choose-your-mode.md)
 - [Deploy to Production](./getting-started/deploy-to-production.md)
-- [Browser + SQLocal Integration Guide](./browser-sqlocal.md) - Local-first offline apps
+- [Browser + SQLocal Integration Guide](../browser-sqlocal.md) - Local-first offline apps
