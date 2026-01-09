@@ -344,6 +344,22 @@
   - For docs.json changes: Read docs.json and verify the group/page exists
   - For new files: Test with `test -f` to confirm file exists
   - For cross-references: Use `grep` to verify links exist in files
+
+## Task 23.0: Cross-References (v0.20.0)
+
+### What I learned:
+- **Cross-reference verification workflow**: When checking cross-references, use `grep` to find exact patterns in files:
+  - Check for relative links in files (`./file.md`, `../directory/file.md`)
+  - Verify link paths are correct based on file location in directory structure
+  - Links from framework-comparison.md (in integrations/) to browser-sqlocal.md need `../` not `./`
+- **Cross-reference completeness depends on file existence**: Tasks 23.5 and 23.6 require email-otp.md and plunk-email.md to exist (Tasks 9.0 and 10.0), so cannot be completed until those tasks are done
+- **Partial task completion**: Can mark subtasks as [x] while leaving dependent subtasks as [ ] with notes about blockers
+- **Framework comparison links**: The Related Documentation section should use correct relative paths based on file location - framework-comparison.md is in `how-to-guides/setup/integrations/`, so links to guides in `how-to-guides/` need `../../` or direct path like `../browser-sqlocal.md`
+- **Cross-reference types**:
+  - New files linking to existing docs (migration guide → integration guides)
+  - Existing docs linking to new files (index.md → migration guides)
+  - Same-level files linking to each other (framework-comparison → browser-sqlocal)
+  - Reference docs linking to guides (auth-module → email-otp)
 - **Navigation structure**: docs.json uses nested groups with simple page references (no file extensions)
 - **Migration Guides placement**: Should be at top of navigation before Getting Started for visibility
 - **Status tracking**: Tasks can be marked complete even if work was done previously - verify state, then mark as [x]

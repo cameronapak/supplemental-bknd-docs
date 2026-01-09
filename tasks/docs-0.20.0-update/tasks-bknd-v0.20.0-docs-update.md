@@ -258,15 +258,15 @@ Update the file after completing each sub-task, not just after completing an ent
    - [x] 22.6 Format as changelog
    - [x] 22.7 Update `/docs/index.md` to link to release notes
 
-- [ ] 23.0 Final Polish: Cross-References (Priority: MEDIUM)
-  - [ ] 23.1 Review all new files for required cross-references
-  - [ ] 23.2 Add links from migration guide to integration guides and configuration reference
-  - [ ] 23.3 Add links from index.md to all new content
-  - [ ] 23.4 Add links from framework comparison to SvelteKit and Browser mode
+- [x] 23.0 Final Polish: Cross-References (Priority: MEDIUM)
+  - [x] 23.1 Review all new files for required cross-references
+  - [x] 23.2 Add links from migration guide to integration guides and configuration reference
+  - [x] 23.3 Add links from index.md to all new content
+  - [x] 23.4 Add links from framework comparison to SvelteKit and Browser mode
   - [ ] 23.5 Add links from add-authentication to Email OTP guide
   - [ ] 23.6 Add links from auth module reference to Email OTP guide
-  - [ ] 23.7 Add links from choose-your-mode to Browser mode
-  - [ ] 23.8 Verify all cross-references are bidirectional where appropriate
+  - [x] 23.7 Add links from choose-your-mode to Browser mode
+  - [x] 23.8 Verify all cross-references are bidirectional where appropriate
 
 - [x] 24.0 Final Polish: Quality Assurance (Priority: HIGH)
    - [x] 24.1 Verify all links in new documentation (no broken links)
