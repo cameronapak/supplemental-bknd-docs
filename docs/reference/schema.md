@@ -838,6 +838,127 @@ export default {
 | **Many-to-Many** | Junction table + relations | Implicit via arrays | `relation(table).manyToMany(other)` |
 | **Self-Reference** | `references((): any => table.id)` | Explicit relations | `relation(table).manyToOne(table)` |
 
+## Schema Security
+
+Schema operations (reading and modifying application schema) are protected by system-level permissions to ensure only authorized users can access sensitive configuration and schema information.
+
+### Permission Requirements
+
+Schema operations require `system.schema.read` permission:
+
+| Permission | Description | Context Filter |
+|------------|-------------|----------------|
+| `system.schema.read` | Read application schema and configuration | `{ module?: string }` - Optional filter to restrict access to specific module |
+
+**Context Filter:**
+
+The `module` context filter allows you to grant access to schema operations for specific modules only. For example, you can grant `system.schema.read` permission but restrict it to `data` module, preventing access to auth or system configuration.
+
+### Protected Endpoints
+
+The following schema-related endpoints are protected by `system.schema.read` permission:
+
+| Endpoint | Description | Module Scope |
+|----------|-------------|--------------|
+| `GET /api/system/schema` | Get current application schema | All modules |
+| `GET /api/system/config` | Get configuration (module-specific) | Respects `module` context filter |
+| `GET /api/data/schema` | Get data schema (entities, relationships, indices) | `data` module |
+| `GET /api/data/config` | Get data module configuration | `data` module |
+
+### Schema Permission Configuration
+
+#### Full Schema Access
+
+Grant complete schema access to admin users:
+
+```typescript
+{
+  auth: {
+    enabled: true,
+    roles: {
+      admin: {
+        is_default: false,
+        permissions: [
+          {
+            permission: "system.schema.read",
+            effect: "allow",
+          },
+        ],
+      },
+    },
+  },
+}
+```
+
+#### Module-Specific Schema Access
+
+Grant limited schema access to specific module only:
+
+```typescript
+{
+  auth: {
+    enabled: true,
+    roles: {
+      data_admin: {
+        is_default: false,
+        permissions: [
+          {
+            permission: "system.schema.read",
+            effect: "allow",
+            policies: [
+              {
+                condition: { module: "data" },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+}
+```
+
+In this example, `data_admin` role can read data schema (`/api/data/schema`) but cannot read auth configuration (`/api/system/config`).
+
+#### No Schema Access
+
+Default user roles typically do not have schema permissions. This restricts schema operations to admin roles only:
+
+```typescript
+{
+  auth: {
+    enabled: true,
+    roles: {
+      user: {
+        is_default: true,
+        permissions: [
+          {
+            permission: "entityRead",
+            effect: "allow",
+          },
+        ],
+      },
+    },
+  },
+}
+```
+
+### Security Considerations
+
+- **Schema access is sensitive**: Schema operations expose application structure and configuration
+- **Restrict to admin roles**: Only grant `system.schema.read` to trusted administrators
+- **Use module filtering**: When necessary, grant access to specific modules only
+- **Audit schema access**: Monitor who accesses schema endpoints via logs
+- **Default users don't have access**: Default roles typically lack schema permissions for security
+
+### Related Documentation
+
+- [Auth Module - Schema Permissions](./auth-module.md#schema-permissions)
+- [Guard and RBAC](../architecture-and-concepts/guard-rbac.md)
+- [Roles and Permissions](./auth-module.md#roles-and-permissions)
+
+---
+
 ## Admin Configuration
 
 The Admin UI provides a visual interface for managing your Bknd application, including schema, authentication, and configuration settings.

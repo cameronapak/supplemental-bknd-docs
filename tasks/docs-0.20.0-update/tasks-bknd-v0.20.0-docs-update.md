@@ -217,13 +217,13 @@ Update the file after completing each sub-task, not just after completing an ent
    - [x] 17.7 Update all integration guides Admin UI sections
    - [x] 17.8 Add note about route-aware MCP access
 
-- [ ] 18.0 Week 2 Parallel: Minor Features - Schema Permissions (Priority: MEDIUM)
-  - [ ] 18.1 Update `/docs/reference/schema.md` with Schema Security section
-  - [ ] 18.2 Document permission requirements
-  - [ ] 18.3 Document endpoint protection for schema operations
-  - [ ] 18.4 Update `/docs/reference/auth-module.md` schema permission documentation
-  - [ ] 18.5 Add schema-related permissions to permissions table
-  - [ ] 18.6 Provide examples of schema permission configuration
+- [x] 18.0 Week 2 Parallel: Minor Features - Schema Permissions (Priority: MEDIUM)
+   - [x] 18.1 Update `/docs/reference/schema.md` with Schema Security section
+   - [x] 18.2 Document permission requirements
+   - [x] 18.3 Document endpoint protection for schema operations
+   - [x] 18.4 Update `/docs/reference/auth-module.md` schema permission documentation
+   - [x] 18.5 Add schema-related permissions to permissions table
+   - [x] 18.6 Provide examples of schema permission configuration
 
 - [x] 19.0 Week 2 Parallel: Minor Features - License Update (Priority: LOW)
   - [x] 19.1 Update `/README.md` description section with Apache 2.0

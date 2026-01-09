@@ -1,3 +1,14 @@
+## Task 18.0: Schema Permissions (v0.20.0)
+
+### What I learned:
+- **Schema permissions protect sensitive operations**: Reading and modifying application schema requires `system.schema.read` permission
+- **Module-level context filtering**: The `system.schema.read` permission supports optional `module` context filter to restrict access to specific modules (e.g., `data` only, excluding `auth` or `system`)
+- **Protected endpoints**: Schema-related endpoints like `/api/system/schema`, `/api/data/schema`, `/api/system/config` are all protected by this permission
+- **Default user roles lack schema access**: Default roles typically do not have `system.schema.read` permission for security reasons
+- **Schema Security section placement**: In schema.md, the Schema Security section should be placed before Admin Configuration section (line 841)
+- **Documentation already existed**: auth-module.md already had comprehensive Schema Permissions section (lines 349-409), so task was primarily about ensuring schema.md also had the documentation
+- **Security best practices**: Schema access should be restricted to admin roles only, as schema operations expose application structure and configuration
+
 ## Task 19.0: License Update - Apache 2.0
 
 ### What I learned:
