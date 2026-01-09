@@ -178,14 +178,14 @@ Update the file after completing each sub-task, not just after completing an ent
    - [x] 12.11 Write "Examples" section with complete browser app
    - [x] 12.12 Add cross-references to data module reference, choose-your-mode
 
-- [ ] 13.0 Week 2 Parallel: Navigation - Add Browser Guide (Priority: MEDIUM)
-  - [ ] 13.1 Update `docs.json` to include Browser guide in Integration Guides
-  - [ ] 13.2 Position Browser guide after Docker (last integration guide)
-  - [ ] 13.3 Update `/docs/how-to-guides/setup/choose-your-mode.md` with Browser mode
-  - [ ] 13.4 Add Browser mode to decision tree
-  - [ ] 13.5 Add Browser mode to deployment approaches
-  - [ ] 13.6 Update `/docs/index.md` with Browser mode link
-  - [ ] 13.7 Update framework comparison with Browser mode row
+- [x] 13.0 Week 2 Parallel: Navigation - Add Browser Guide (Priority: MEDIUM)
+   - [x] 13.1 Update `docs.json` to include Browser guide in Integration Guides
+   - [x] 13.2 Position Browser guide after Docker (last integration guide)
+   - [x] 13.3 Update `/docs/how-to-guides/setup/choose-your-mode.md` with Browser mode
+   - [x] 13.4 Add Browser mode to decision tree
+   - [x] 13.5 Add Browser mode to deployment approaches
+   - [x] 13.6 Update `/docs/index.md` with Browser mode link
+   - [x] 13.7 Update framework comparison with Browser mode row
 
 - [x] 14.0 Week 2 Parallel: Minor Features - Hybrid Mode (Priority: MEDIUM)
    - [x] 14.1 Update `/docs/how-to-guides/setup/choose-your-mode.md` Hybrid Mode section

@@ -415,11 +415,14 @@ Use this flow to decide on your deployment approach:
 Building a full-stack app?
 ├─ Yes → Framework Embedded
 │   └─ Next.js, React Router, Astro, etc.
-└─ No → Need global edge deployment?
-    ├─ Yes → Serverless/Edge
-    │   └─ Cloudflare Workers, Vercel Edge
-    └─ No → CLI Standalone
-        └─ Prototyping or shared backend
+└─ No → Need offline/local-only app?
+    ├─ Yes → Browser Mode
+    │   └─ Offline-first, local development, PWAs
+    └─ No → Need global edge deployment?
+        ├─ Yes → Serverless/Edge
+        │   └─ Cloudflare Workers, Vercel Edge
+        └─ No → CLI Standalone
+            └─ Prototyping or shared backend
 ```
 
 ## Related Guides
