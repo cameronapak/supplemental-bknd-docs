@@ -984,6 +984,7 @@ Based on source code analysis, following limitations are known:
 ## Related Documentation
 
 - [Add Authentication with Permissions Tutorial](../getting-started/add-authentication.md)
+- [Email OTP Authentication Guide](../how-to-guides/auth/email-otp.md)
 - [Enable Public Access with Guard Guide](../how-to-guides/auth/public-access-guard.md)
 - [Create First User Guide](../how-to-guides/auth/create-first-user.md)
 - [Guard and RBAC](../architecture-and-concepts/guard-rbac.md)
