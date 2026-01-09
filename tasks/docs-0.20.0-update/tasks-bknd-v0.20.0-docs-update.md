@@ -162,7 +162,7 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 11.2 Add plunk-email to Integrations group
   - [x] 11.3 Add email-otp to Authentication group (after public-access-guard)
   - [x] 11.4 Update `/docs/index.md` with Email OTP and Plunk links
-  - [ ] 11.5 Update `/docs/getting-started/add-authentication.md` with Email OTP alternatives section
+  - [x] 11.5 Update `/docs/getting-started/add-authentication.md` with Email OTP alternatives section
 
 - [x] 12.0 Week 2 Parallel: Browser/SQLocal Integration Guide (Priority: MEDIUM)
    - [x] 12.1 Create `/docs/how-to-guides/setup/integrations/browser-sqlocal.md` with complete structure
