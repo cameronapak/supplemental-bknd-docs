@@ -323,8 +323,8 @@ Before going live, verify:
 
 ## Related Guides
 
-- [Add Authentication with Permissions](./getting-started/add-authentication.md) - Complete auth setup before deployment
-- [Build Your First API](./getting-started/build-your-first-api.md) - Complete onboarding tutorial
+- [Add Authentication with Permissions](./add-authentication.md) - Complete auth setup before deployment
+- [Build Your First API](./build-your-first-api.md) - Complete onboarding tutorial
 - [Create First User](./how-to-guides/auth/create-first-user.md) - Set up admin users for production
 - [Cloudflare Workers Guide](./how-to-guides/setup/integrations/cloudflare-workers.md) - Alternative edge deployment
 - [AWS Lambda Guide](./how-to-guides/setup/integrations/aws-lambda.md) - Serverless deployment
