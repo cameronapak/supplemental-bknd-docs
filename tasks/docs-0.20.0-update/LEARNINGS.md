@@ -262,14 +262,14 @@
 - **Verification is key before starting**: Before completing Task 13.0, I verified what was already done by reading all relevant files (docs.json, choose-your-mode.md, framework-comparison.md, index.md). Most subtasks were already complete.
 - **Decision tree hierarchy matters**: When adding a new deployment mode to the decision tree, it should be placed at the appropriate decision point. Browser mode was added as the first branch after "Building a full-stack app?" because it's a distinct use case (offline/local-only) that should be considered before edge deployment.
 - **Decision tree flow logic**: The deployment decision tree follows a hierarchical decision structure:
-  1. First decision: Full-stack app? (Framework Embedded vs others)
-  2. Second decision (if not full-stack): Offline/local-only? (Browser Mode vs server-based)
-  3. Third decision (if server-based): Global edge deployment? (Serverless/Edge vs CLI Standalone)
+   1. First decision: Full-stack app? (Framework Embedded vs others)
+   2. Second decision (if not full-stack): Offline/local-only? (Browser Mode vs server-based)
+   3. Third decision (if server-based): Global edge deployment? (Serverless/Edge vs CLI Standalone)
 - **Task verification approach**: When completing a navigation task, check these files:
-  - docs.json: Navigation structure
-  - choose-your-mode.md: Mode and deployment sections + decision tree
-  - framework-comparison.md: Comparison table
-  - index.md: Main page links
+   - docs.json: Navigation structure
+   - choose-your-mode.md: Mode and deployment sections + decision tree
+   - framework-comparison.md: Comparison table
+   - index.md: Main page links
 - **Incremental progress tracking**: The tasks file tracks all subtasks individually. When completing a task, mark all subtasks as complete with [x] even if they were already done in previous work.
 
 ## Task 7.0: SvelteKit Integration Guide (v0.20.0)
@@ -306,13 +306,13 @@
 - **Source code verification is critical**: Before updating documentation, verify actual implementation from source code. The bknd source shows that the export is `pg` (not `pgPostgres`), while release notes mentioned `pgPostgres`. Always verify with opensrc and check actual exports in `app/src/index.ts`.
 - **Adapter names in v0.20.0**: The correct export names from `bknd` package are `pg` (for node-postgres driver) and `postgresJs` (for postgres-js driver). Both adapters are now available from main `bknd` package without needing separate `@bknd/postgres` package.
 - **Documentation update workflow**: When updating multiple files for a breaking change:
-  1. First, verify the correct API from official release notes and source code
-  2. Update architecture/concept docs with the adapter reference
-  3. Add detailed "PostgreSQL Adapter Options" sections to integration guides showing both adapters with use cases
-  4. Update deployment guides with PostgreSQL adapter guidance
-  5. Update configuration reference with correct import paths and adapter names
-  6. Cross-reference to the migration guide for detailed migration steps
- - **Migration guide already existed**: The migration guide (postgres-package-merge.md) was already complete from Task 1.0, which made this task much easier since I could reference it for migration steps and cross-link it from updated docs.
+   1. First, verify the correct API from official release notes and source code
+   2. Update architecture/concept docs with the adapter reference
+   3. Add detailed "PostgreSQL Adapter Options" sections to integration guides showing both adapters with use cases
+   4. Update deployment guides with PostgreSQL adapter guidance
+   5. Update configuration reference with correct import paths and adapter names
+   6. Cross-reference to the migration guide for detailed migration steps
+  - **Migration guide already existed**: The migration guide (postgres-package-merge.md) was already complete from Task 1.0, which made this task much easier since I could reference it for migration steps and cross-link it from updated docs.
 - **Consistent note format**: Add a clear note box at the end of updated sections indicating "As of v0.20.0, PostgreSQL adapters (`pg`, `postgresJs`) are available directly from `bknd` package" with cross-link to the migration guide.
 - **Adapter choice guidance**: When documenting PostgreSQL adapters, always provide guidance on when to use each:
   
@@ -329,9 +329,9 @@
 - **Index.md updates**: Add a prominent notice box in index.md linking to release notes to catch users before they start (similar to migration guide notice)
 - **Version-specific releases**: Create a `/docs/releases/` directory for version-specific release notes to maintain history
 - **Research approach**: Use GitHub release page as primary source for accurate release information, including full changelog, contributors, and PR links
-  - `pg()` adapter: Best for traditional Node.js applications with connection pooling (uses Pool from pg package)
-  - `postgresJs()` adapter: Best for edge runtimes (Vercel Edge Functions, Cloudflare Workers) - lightweight and minimal
-  - Custom connections: For managed providers like Neon, Xata that provide their own dialects
+   - `pg()` adapter: Best for traditional Node.js applications with connection pooling (uses Pool from pg package)
+   - `postgresJs()` adapter: Best for edge runtimes (Vercel Edge Functions, Cloudflare Workers) - lightweight and minimal
+   - Custom connections: For managed providers like Neon, Xata that provide their own dialects
 ## Task 24.0: Quality Assurance (v0.20.0)
 
 ### What I learned:
@@ -341,25 +341,25 @@
 
 ### What I learned:
 - **Task verification approach**: When checking if a task is complete, verify all subtasks by checking actual file state:
-  - For docs.json changes: Read docs.json and verify the group/page exists
-  - For new files: Test with `test -f` to confirm file exists
-  - For cross-references: Use `grep` to verify links exist in files
+   - For docs.json changes: Read docs.json and verify the group/page exists
+   - For new files: Test with `test -f` to confirm file exists
+   - For cross-references: Use `grep` to verify links exist in files
 
 ## Task 23.0: Cross-References (v0.20.0)
 
 ### What I learned:
 - **Cross-reference verification workflow**: When checking cross-references, use `grep` to find exact patterns in files:
-  - Check for relative links in files (`./file.md`, `../directory/file.md`)
-  - Verify link paths are correct based on file location in directory structure
-  - Links from framework-comparison.md (in integrations/) to browser-sqlocal.md need `../` not `./`
+   - Check for relative links in files (`./file.md`, `../directory/file.md`)
+   - Verify link paths are correct based on file location in directory structure
+   - Links from framework-comparison.md (in integrations/) to browser-sqlocal.md need `../` not `./`
 - **Cross-reference completeness depends on file existence**: Tasks 23.5 and 23.6 require email-otp.md and plunk-email.md to exist (Tasks 9.0 and 10.0), so cannot be completed until those tasks are done
 - **Partial task completion**: Can mark subtasks as [x] while leaving dependent subtasks as [ ] with notes about blockers
 - **Framework comparison links**: The Related Documentation section should use correct relative paths based on file location - framework-comparison.md is in `how-to-guides/setup/integrations/`, so links to guides in `how-to-guides/` need `../../` or direct path like `../browser-sqlocal.md`
 - **Cross-reference types**:
-  - New files linking to existing docs (migration guide → integration guides)
-  - Existing docs linking to new files (index.md → migration guides)
-  - Same-level files linking to each other (framework-comparison → browser-sqlocal)
-  - Reference docs linking to guides (auth-module → email-otp)
+   - New files linking to existing docs (migration guide → integration guides)
+   - Existing docs linking to new files (index.md → migration guides)
+   - Same-level files linking to each other (framework-comparison → browser-sqlocal)
+   - Reference docs linking to guides (auth-module → email-otp)
 - **Navigation structure**: docs.json uses nested groups with simple page references (no file extensions)
 - **Migration Guides placement**: Should be at top of navigation before Getting Started for visibility
 - **Status tracking**: Tasks can be marked complete even if work was done previously - verify state, then mark as [x]
@@ -380,20 +380,20 @@
 
 ### What I learned:
 - **Email OTP Plugin API** (from `app/src/plugins/auth/email-otp.plugin.ts`):
-  - Plugin function: `emailOTP({ generateCode, apiBasePath, ttl, entity, entityConfig, generateEmail, showActualErrors, allowExternalMutations, sendEmail })`
-  - Default TTL: 600 seconds (10 minutes), configurable via `ttl` parameter
-  - Default entity name: "users_otp", customizable via `entity` parameter
-  - Base path default: "/api/auth/otp", customizable via `apiBasePath`
-  - Email sending enabled by default, can be disabled with `sendEmail: false`
-  - Two OTP actions: "login" and "register" (enum values)
-  - OTP fields: action, code (text, required), email (text, required), created_at (datetime), expires_at (datetime, required), used_at (datetime)
-  - Rate limiting: Auto-invalidation of previous codes when generating new code via `invalidateAllUserCodes()`
-  - Code generation: Default is random 6-digit numeric (100000-999999), customizable via `generateCode` function
-  - Email customization: `generateEmail` callback receives otp object with all fields, returns `{ subject, body }` where body can be string or `{ text, html }`
-  - Error messages: Generic "Invalid credentials" by default, enable actual errors with `showActualErrors: true`
-  - Security: Mutations to OTP entity blocked by default (event listeners on InsertBefore/UpdateBefore), enable with `allowExternalMutations: true`
-  - Validation: Checks code exists, not expired, not already used before allowing login/register
-  - Auto-mark used: Code marked with `used_at: new Date()` upon successful verification
+   - Plugin function: `emailOTP({ generateCode, apiBasePath, ttl, entity, entityConfig, generateEmail, showActualErrors, allowExternalMutations, sendEmail })`
+   - Default TTL: 600 seconds (10 minutes), configurable via `ttl` parameter
+   - Default entity name: "users_otp", customizable via `entity` parameter
+   - Base path default: "/api/auth/otp", customizable via `apiBasePath`
+   - Email sending enabled by default, can be disabled with `sendEmail: false`
+   - Two OTP actions: "login" and "register" (enum values)
+   - OTP fields: action, code (text, required), email (text, required), created_at (datetime), expires_at (datetime, required), used_at (datetime)
+   - Rate limiting: Auto-invalidation of previous codes when generating new code via `invalidateAllUserCodes()`
+   - Code generation: Default is random 6-digit numeric (100000-999999), customizable via `generateCode` function
+   - Email customization: `generateEmail` callback receives otp object with all fields, returns `{ subject, body }` where body can be string or `{ text, html }`
+   - Error messages: Generic "Invalid credentials" by default, enable actual errors with `showActualErrors: true`
+   - Security: Mutations to OTP entity blocked by default (event listeners on InsertBefore/UpdateBefore), enable with `allowExternalMutations: true`
+   - Validation: Checks code exists, not expired, not already used before allowing login/register
+   - Auto-mark used: Code marked with `used_at: new Date()` upon successful verification
 
 - **Plunk Email Driver** (from `app/src/core/drivers/email/plunk.ts`):
    - Driver function: `plunkEmail({ apiKey, host, from })`
@@ -405,27 +405,86 @@
    - Error handling: Throws error if response not ok with API error message
    - Comparison with Resend: Both have similar API pattern, Plunk response includes contact ID tracking
 
-## Task 9.0: Email OTP Authentication Guide (v0.20.0)
+ ## Task 9.0: Email OTP Authentication Guide (v0.20.0)
 
-### What I learned:
-- **Email OTP Plugin API**: The `emailOTP()` plugin function from `bknd/plugins` provides complete passwordless authentication with login and registration flows
-- **OTP configuration options**:
-  - `generateCode`: Custom code generator function (default: 6-digit random numeric 100000-999999)
-  - `apiBasePath`: Custom API base path (default: "/api/auth/otp")
-  - `ttl`: Code expiration time in seconds (default: 600 / 10 minutes)
-  - `entity`: Custom entity name for OTP storage (default: "users_otp")
-  - `entityConfig`: Additional entity configuration options
-  - `generateEmail`: Custom email template generator function
-  - `showActualErrors`: Enable detailed error messages for debugging (default: false)
-  - `allowExternalMutations`: Allow direct OTP entity mutations (default: false, security protection)
-  - `sendEmail`: Enable/disable email sending (default: true, useful for testing)
-- **OTP entity fields**: action (enum: "login" | "register"), code (text, required), email (text, required), created_at (datetime), expires_at (datetime, required), used_at (datetime)
-- **Automatic code invalidation**: `invalidateAllUserCodes()` function invalidates all previous unused codes for same email when new code is generated - prevents code hoarding attacks
-- **OTP validation requirements**: Code must match email, action type, not be expired (`expires_at > now`), and not be already used (`used_at` is null)
-- **Two authentication flows**: Login flow (existing user) and registration flow (creates new user with random password on successful verification)
-- **Event listener protection**: By default, `InsertBefore` and `UpdateBefore` event listeners on OTP entity block direct mutations from API/Admin UI for security
-- **Error handling**: Default generic "Invalid credentials" message prevents email enumeration; `showActualErrors: true` reveals specific errors ("Invalid code", "Code expired", "Code already used")
-- **Documentation structure**: Email OTP guide follows comprehensive structure with Overview, Configuration, Provider Setup, User Flow, API Endpoints, SDK Integration, Security, Customization, Troubleshooting, and Best Practices sections
-- **Best practices sections**: Include Security (code strength, TTL, rate limiting), User Experience (clear instructions, auto-focus, resend button), Email Deliverability (SPF/DKIM/DMARC, avoid spam triggers), Configuration (env vars, separate environments), Performance (indexing, async sending, caching), Monitoring and Logging (metrics, alerts, audit trails), and Testing (unit, integration, E2E, load testing)
-- **Cross-reference strategy**: Email OTP guide links to Auth Module Reference (configuration), Create First User (user management), Plunk Email Provider Guide (email setup), Configuration Reference (complete options), and Release Notes (v0.20.0 feature announcement)
-- **Navigation update**: Email OTP guide added to Authentication group in docs.json between Create First User and Public Access Guard
+ ### What I learned:
+ - **Email OTP Plugin API**: The `emailOTP()` plugin function from `bknd/plugins` provides complete passwordless authentication with login and registration flows
+ - **OTP configuration options**:
+   - `generateCode`: Custom code generator function (default: 6-digit random numeric 100000-999999)
+   - `apiBasePath`: Custom API base path (default: "/api/auth/otp")
+   - `ttl`: Code expiration time in seconds (default: 600 / 10 minutes)
+   - `entity`: Custom entity name for OTP storage (default: "users_otp")
+   - `entityConfig`: Additional entity configuration options
+   - `generateEmail`: Custom email template generator function
+   - `showActualErrors`: Enable detailed error messages for debugging (default: false)
+   - `allowExternalMutations`: Allow direct OTP entity mutations (default: false, security protection)
+   - `sendEmail`: Enable/disable email sending (default: true, useful for testing)
+ - **OTP entity fields**: action (enum: "login" | "register"), code (text, required), email (text, required), created_at (datetime), expires_at (datetime, required), used_at (datetime)
+ - **Automatic code invalidation**: `invalidateAllUserCodes()` function invalidates all previous unused codes for same email when new code is generated - prevents code hoarding attacks
+ - **OTP validation requirements**: Code must match email, action type, not be expired (`expires_at > now`), and not be already used (`used_at` is null)
+ - **Two authentication flows**: Login flow (existing user) and registration flow (creates new user with random password on successful verification)
+ - **Event listener protection**: By default, `InsertBefore` and `UpdateBefore` event listeners on OTP entity block direct mutations from API/Admin UI for security
+ - **Error handling**: Default generic "Invalid credentials" message prevents email enumeration; `showActualErrors: true` reveals specific errors ("Invalid code", "Code expired", "Code already used")
+ - **Documentation structure**: Email OTP guide follows comprehensive structure with Overview, Configuration, Provider Setup, User Flow, API Endpoints, SDK Integration, Security, Customization, Troubleshooting, and Best Practices sections
+ - **Best practices sections**: Include Security (code strength, TTL, rate limiting), User Experience (clear instructions, auto-focus, resend button), Email Deliverability (SPF/DKIM/DMARC, avoid spam triggers), Configuration (env vars, separate environments), Performance (indexing, async sending, caching), Monitoring and Logging (metrics, alerts, audit trails), and Testing (unit, integration, E2E, load testing)
+ - **Cross-reference strategy**: Email OTP guide links to Auth Module Reference (configuration), Create First User (user management), Plunk Email Provider Guide (email setup), Configuration Reference (complete options), and Release Notes (v0.20.0 feature announcement)
+ - **Navigation update**: Email OTP guide added to Authentication group in docs.json between Create First User and Public Access Guard
+
+  ## Task 10.0: Plunk Email Driver Guide (v0.20.0)
+
+  ### What I learned:
+  - **Plunk email driver API**: The `plunkEmail()` function from `bknd` provides email sending with simple API
+  - **Plunk configuration options**: `apiKey` (required), `host` (default: `https://api.useplunk.com/v1/send`), `from` (optional default sender)
+  - **Plunk send options**: `subscribed` (boolean - add to contacts), `name` (contact name), `from` (override default), `reply` (reply-to address), `headers` (custom email headers)
+  - **Body format support**: Supports string (plain text), object with `{ text, html }` for both formats, or string that's treated as HTML by Plunk
+  - **Response structure**: Returns `{ success: boolean, emails: Array<{contact: {id, email}, email}>, timestamp: string }`
+  - **Error handling**: Throws error if API response not ok with Plunk API error message
+  - **Self-hosting support**: Can configure custom `host` URL for self-hosted Plunk instances
+  - **Comparison with Resend**: Both drivers have similar API pattern (send method with to, subject, body, options)
+  - **Key differences**: Plunk has contact management built-in, returns contact IDs, lacks BCC/CC and attachments that Resend has
+  - **Email OTP integration**: Use `plunkEmail()` in `options.email` when configuring `emailOTP()` plugin
+  - **Password auth integration**: Use `plunkEmail()` in password strategy `email` option for password reset/verification emails
+  - **Documentation structure**: Comprehensive guide with Overview, Installation, Configuration, Integration (OTP/password), Templates, Testing, Best Practices (11 sections), Comparison, Examples, Troubleshooting, Related Documentation
+  - **Best practices coverage**: Setup (API keys, env vars, separate envs), Templates (mobile-first, dark mode, plain text fallback, consistent branding, preheader), Deliverability (custom domain, SPF/DKIM/DMARC, warming, bounce handling), Performance (async, batch, retry, queue, rate limiting), Cost (monitor usage, free tier, email size, segmentation), Security (scoped keys, validation, rate limiting, log sanitization, HTTPS, email injection), Monitoring (delivery, open, click, bounce, complaint rates, response time, error alerts), Integration (error handling, fallback, transaction IDs, idempotency, webhooks), Troubleshooting (checklist for each issue type), Migration (contacts, templates, deliverability, costs, dual sending), Advanced (webhooks, custom domain, metadata, segmentation, automations), Compliance (GDPR, unsubscribe, retention, privacy policy, CAN-SPAM)
+  - **Navigation updates**: Added new "Integrations" group in docs.json under How-to Guides, placed plunk-email.md in that group
+  - **Index.md placement**: Added Plunk link under Authentication & Permissions section, after Email OTP
+  - **Cross-references**: Plunk guide links to Email OTP Guide (for OTP integration), Auth Module Reference (for password auth config), Configuration Reference (for complete config), and Resend documentation (for comparison)
+  - **Learning from source code**: Read Plunk driver implementation (plunk.ts) and tests (plunk.spec.ts) to understand API and options
+  - **Git lock files**: Git `.git/index.lock` file can prevent commits - delete with `rm -f .git/index.lock` if commit fails with lock error
+
+  ## Task 11.5: Add Email OTP Alternatives to Authentication Guide (v0.20.0)
+
+  ### What I learned:
+  - **Alternatives sections improve discoverability**: When a main guide covers one approach (password auth), adding an "Alternatives" section helps users find other approaches (Email OTP) that might better suit their use case
+  - **Positioning matters**: The "Alternatives to Password Auth" section should be placed after the main content but before "Related Guides" so users see it at the end of the tutorial flow
+  - **Quick start examples for alternatives**: Provide a minimal but complete configuration example showing the alternative approach (Email OTP with `emailOTP` plugin and `resendEmail` driver)
+  - **Decision guidance**: Include "When to use" bullet points to help users understand when to choose each alternative (Email OTP for consumer apps, high security, simplicity-focused use cases)
+  - **Cross-linking strategy**: Alternatives section should link to the comprehensive guide with "For complete documentation... see [Guide Name](path)"
+  - **Related Guides updates**: When adding an alternatives section, also update the "Related Guides" section to include the new alternative guide with a descriptive link text
+  - **Future-proofing**: Mention other alternatives that are planned or supported but not yet documented (e.g., OAuth providers coming soon) so users know the full range of options
+  - **Task dependencies**: Task 11.5 depends on Task 9.0 (Email OTP guide) being complete - need to verify the guide exists before adding references to it
+
+  ## Task 25.1: Review All Breaking Changes (v0.20.0)
+
+  ### What I learned:
+  - **Breaking change verification requires checking multiple sources**: When verifying breaking changes are documented, check migration guides, release notes, and reference docs
+  - **Git lock files can block commits**: Git `.git/index.lock` file can prevent commits when another process or crash occurs. Delete with `rm -f .git/index.lock` if commit fails with lock error.
+  - **Adapter name changes must be documented everywhere**: When function names change (e.g., `pgPostgres` → `pg`), update ALL code examples including those in "Before/After" comparison sections
+  - **Breaking change documentation completeness check**:
+     1. Migration guide exists and is comprehensive
+     2. Release notes prominently list breaking changes with migration links
+     3. Reference docs show correct v0.20.0 API in all examples
+     4. Index.md has prominent notice box for breaking changes
+     5. Cross-references link from breaking change docs to relevant feature docs
+  - **PostgreSQL package merge breaking change** fully documented:
+     - Migration guide with detailed steps
+     - Release notes with prominent breaking changes section
+     - Updated configuration reference (fixed incorrect `pgPostgres` → `pg` examples)
+     - Prominent notices in index.md and getting-started guides
+  - **Schema permission breaking change** fully documented:
+     - Release notes mention `system.schema.read` requirement
+     - Auth module reference documents permission with optional module filter
+     - Schema reference documents which endpoints are protected
+  - **Code example consistency is critical**: Found and fixed incorrect `pgPostgres` references in configuration reference that showed wrong API for v0.20.0
+  - **Migration notes should include adapter rename**: When documenting breaking changes, clearly state if function names changed, not just import paths (e.g., "adapter renamed from `pgPostgres` to `pg`")
+  - **Source verification**: GitHub release page is authoritative source for official breaking changes and PR references
