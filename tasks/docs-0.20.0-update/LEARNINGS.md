@@ -376,34 +376,49 @@
 - **Markdown file count**: 41 markdown files in docs directory.
 - **Consistent naming**: Directory is named `getting-started` (with 'ed') - this is correct and matches docs.json navigation.
 
-## Task 0.0: Research - Answer Open Questions (v0.20.0)
+ ## Task 25.4: Review All Existing Docs Are Updated for v0.20.0 (v0.20.0)
 
-### What I learned:
-- **Email OTP Plugin API** (from `app/src/plugins/auth/email-otp.plugin.ts`):
-   - Plugin function: `emailOTP({ generateCode, apiBasePath, ttl, entity, entityConfig, generateEmail, showActualErrors, allowExternalMutations, sendEmail })`
-   - Default TTL: 600 seconds (10 minutes), configurable via `ttl` parameter
-   - Default entity name: "users_otp", customizable via `entity` parameter
-   - Base path default: "/api/auth/otp", customizable via `apiBasePath`
-   - Email sending enabled by default, can be disabled with `sendEmail: false`
-   - Two OTP actions: "login" and "register" (enum values)
-   - OTP fields: action, code (text, required), email (text, required), created_at (datetime), expires_at (datetime, required), used_at (datetime)
-   - Rate limiting: Auto-invalidation of previous codes when generating new code via `invalidateAllUserCodes()`
-   - Code generation: Default is random 6-digit numeric (100000-999999), customizable via `generateCode` function
-   - Email customization: `generateEmail` callback receives otp object with all fields, returns `{ subject, body }` where body can be string or `{ text, html }`
-   - Error messages: Generic "Invalid credentials" by default, enable actual errors with `showActualErrors: true`
-   - Security: Mutations to OTP entity blocked by default (event listeners on InsertBefore/UpdateBefore), enable with `allowExternalMutations: true`
-   - Validation: Checks code exists, not expired, not already used before allowing login/register
-   - Auto-mark used: Code marked with `used_at: new Date()` upon successful verification
+ ### What I learned:
+ - **Systematic review approach**: When verifying all existing docs are updated for a version release, use grep to search for version-specific patterns across all markdown files
+ - **Verification checklist categories**: Break down review into categories: breaking changes, new features, configuration updates, and integration changes
+ - **Grep patterns for verification**: Use patterns like `v0\.20\.0`, `@bknd/postgres`, `minLength`, `default_role_register`, `readOneBy`, `auto-join`, `overwrite parameter`, `schema\.read`, `MCP` to find relevant updates
+ - **Reference docs verification**: Check that reference docs (auth-module, data-module, react-sdk-reference, query-system, schema) have all new methods and parameters documented with examples
+ - **Integration guides verification**: Ensure all integration guides have breaking change notes (PostgreSQL package merge) and new adapter examples
+ - **Getting started verification**: Check that tutorials have notes about new features that affect onboarding (hybrid mode, sync_required)
+ - **Framework comparison verification**: Verify new integrations (SvelteKit, Browser mode) are included in comparison matrix with use cases and strengths
+ - **Cross-reference verification**: Confirm that add-authentication.md has alternatives section linking to Email OTP guide
+ - **Documentation completeness signs**: When all grep searches show appropriate coverage across files, it indicates thorough update of existing docs
+ - **Version-specific updates look like**: Notes with "New in v0.20.0:", migration notes from `@bknd/postgres` to `bknd`, new parameter documentation (minLength, overwrite), and new feature mentions (Email OTP, Plunk, MCP)
+ - **Documentation quality indicators**: Code examples for new features, clear migration notes, and comprehensive best practices sections indicate good documentation updates
 
-- **Plunk Email Driver** (from `app/src/core/drivers/email/plunk.ts`):
-   - Driver function: `plunkEmail({ apiKey, host, from })`
-   - Configuration options: apiKey (required), host (default: "https://api.useplunk.com/v1/send"), from (default from address)
-   - Send options: subscribed (boolean), name, from (override), reply, headers (Record<string, string>)
-   - Body format: Accepts string (plain text) or object `{ text, html }` - HTML used if object provided
-   - API endpoint: POST to configured host with Authorization header `Bearer ${apiKey}`
-   - Response structure: `{ success: boolean, emails: Array<{contact: {id, email}, email}>, timestamp: string }`
-   - Error handling: Throws error if response not ok with API error message
-   - Comparison with Resend: Both have similar API pattern, Plunk response includes contact ID tracking
+ ## Task 0.0: Research - Answer Open Questions (v0.20.0)
+
+ ### What I learned:
+ - **Email OTP Plugin API** (from `app/src/plugins/auth/email-otp.plugin.ts`):
+    - Plugin function: `emailOTP({ generateCode, apiBasePath, ttl, entity, entityConfig, generateEmail, showActualErrors, allowExternalMutations, sendEmail })`
+    - Default TTL: 600 seconds (10 minutes), configurable via `ttl` parameter
+    - Default entity name: "users_otp", customizable via `entity` parameter
+    - Base path default: "/api/auth/otp", customizable via `apiBasePath`
+    - Email sending enabled by default, can be disabled with `sendEmail: false`
+    - Two OTP actions: "login" and "register" (enum values)
+    - OTP fields: action, code (text, required), email (text, required), created_at (datetime), expires_at (datetime, required), used_at (datetime)
+    - Rate limiting: Auto-invalidation of previous codes when generating new code via `invalidateAllUserCodes()`
+    - Code generation: Default is random 6-digit numeric (100000-999999), customizable via `generateCode` function
+    - Email customization: `generateEmail` callback receives otp object with all fields, returns `{ subject, body }` where body can be string or `{ text, html }`
+    - Error messages: Generic "Invalid credentials" by default, enable actual errors with `showActualErrors: true`
+    - Security: Mutations to OTP entity blocked by default (event listeners on InsertBefore/UpdateBefore), enable with `allowExternalMutations: true`
+    - Validation: Checks code exists, not expired, not already used before allowing login/register
+    - Auto-mark used: Code marked with `used_at: new Date()` upon successful verification
+
+ - **Plunk Email Driver** (from `app/src/core/drivers/email/plunk.ts`):
+    - Driver function: `plunkEmail({ apiKey, host, from })`
+    - Configuration options: apiKey (required), host (default: "https://api.useplunk.com/v1/send"), from (default from address)
+    - Send options: subscribed (boolean), name, from (override), reply, headers (Record<string, string>)
+    - Body format: Accepts string (plain text) or object `{ text, html }` - HTML used if object provided
+    - API endpoint: POST to configured host with Authorization header `Bearer ${apiKey}`
+    - Response structure: `{ success: boolean, emails: Array<{contact: {id, email}, email}>, timestamp: string }`
+    - Error handling: Throws error if response not ok with API error message
+    - Comparison with Resend: Both have similar API pattern, Plunk response includes contact ID tracking
 
  ## Task 9.0: Email OTP Authentication Guide (v0.20.0)
 
