@@ -121,7 +121,7 @@ The Admin UI allows you to:
 
 Since we defined our `todos` entity in `bknd.config.ts`, it's automatically available in the Admin UI. No additional configuration needed.
 
-**Note:** In this tutorial, we're using `code mode` (schema defined in code). If you prefer to define entities visually, you can switch to `db mode` by removing the `config` object from your `bknd.config.ts` and creating entities through the Admin UI. See [Choose Your Mode](./how-to-guides/setup/choose-your-mode.md) for details.
+**Note:** In this tutorial, we're using `code mode` (schema defined in code). If you prefer to define entities visually, you can switch to `db mode` by removing the `config` object from your `bknd.config.ts` and creating entities through the Admin UI. For production deployments using hybrid mode, the `sync_required` flag automatically handles schema synchronization in development. See [Choose Your Mode](./how-to-guides/setup/choose-your-mode.md) for details on hybrid mode improvements in v0.20.0.
 
 ## Step 6: Enable Auth Module
 

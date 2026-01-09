@@ -100,6 +100,11 @@ export default {
 
 This mode allows you to configure your backend visually while in development, and uses the produced configuration in a Code-only mode for maximum performance.
 
+**New in v0.20.0:**
+- **Reader returns objects**: The `reader` function can now return objects directly (not just strings), enabling direct JSON imports
+- **Automatic schema syncing**: Development automatically syncs schema when `sync_required` flag is triggered
+- **Performance optimization**: Validation is skipped in production for faster startup
+
 **Setup:**
 ```typescript
 import type { BkndConfig } from "bknd";
@@ -116,10 +121,40 @@ export default {
 } satisfies BkndConfig;
 ```
 
+**v0.20.0 improvements:**
+```typescript
+import { hybrid, type HybridMode } from "bknd/modes";
+import { type BunBkndConfig, writer, reader } from "bknd/adapter/bun";
+
+const config = {
+  connection: { url: "file:test.db" },
+  writer,  // Required for type/config syncing
+  reader,  // Reader can return string OR object
+  secrets: await Bun.file(".env.local").json(),
+  isProduction: Bun.env.NODE_ENV === "production",
+  typesFilePath: "bknd-types.d.ts",
+  configFilePath: "bknd-config.json",
+  syncSecrets: {
+    outFile: ".env.local",
+    format: "env",
+    includeSecrets: true,
+  },
+  syncSchema: {
+    force: true,  // Syncs schema when sync_required flag is true
+    drop: true,
+  },
+} satisfies HybridMode<BunBkndConfig>;
+
+export default hybrid(config);
+```
+
 **Benefits:**
 - Best of both worlds: visual development + code-controlled production
 - Automatic mode switching based on environment
 - Built-in syncing tools for config, secrets, and types
+- v0.20.0: Automatic schema syncing in development
+- v0.20.0: Object-based config loading (no JSON.parse needed)
+- v0.20.0: Faster production startup (validation skipped)
 
 **Trade-offs:**
 - More complex setup
@@ -298,7 +333,7 @@ import { type BunBkndConfig, writer, reader } from "bknd/adapter/bun";
 const config = {
   connection: { url: "file:test.db" },
   writer,  // Required for type/config syncing
-  reader,  // Required for reading config
+  reader,  // Reader can return string OR object (v0.20.0 improvement)
   secrets: await Bun.file(".env.local").json(),
   isProduction: Bun.env.NODE_ENV === "production",
   typesFilePath: "bknd-types.d.ts",
@@ -309,7 +344,7 @@ const config = {
     includeSecrets: true,
   },
   syncSchema: {
-    force: true,
+    force: true,  // Syncs schema when sync_required flag is true (v0.20.0)
     drop: true,
   },
 } satisfies HybridMode<BunBkndConfig>;
@@ -319,9 +354,10 @@ export default hybrid(config);
 
 Mode helpers provide:
 - Built-in syncing of config, types, and secrets
-- Automatic schema syncing in development
+- Automatic schema syncing in development (sync_required flag)
 - Automatic mode switching in hybrid (db → code)
-- Automatic config validation skip in production for performance
+- Automatic config validation skip in production for performance (v0.20.0)
+- Reader returns objects directly, no JSON.parse needed (v0.20.0)
 
 ## Decision Tree
 

@@ -187,17 +187,17 @@ Update the file after completing each sub-task, not just after completing an ent
   - [ ] 13.6 Update `/docs/index.md` with Browser mode link
   - [ ] 13.7 Update framework comparison with Browser mode row
 
-- [ ] 14.0 Week 2 Parallel: Minor Features - Hybrid Mode (Priority: MEDIUM)
-  - [ ] 14.1 Update `/docs/how-to-guides/setup/choose-your-mode.md` Hybrid Mode section
-  - [ ] 14.2 Document "reader returns objects" improvement
-  - [ ] 14.3 Document sync_required flag behavior
-  - [ ] 14.4 Document better config handling improvements
-  - [ ] 14.5 Update code examples for v0.20.0 API
-  - [ ] 14.6 Clarify sync behavior with new flags
+- [x] 14.0 Week 2 Parallel: Minor Features - Hybrid Mode (Priority: MEDIUM)
+   - [x] 14.1 Update `/docs/how-to-guides/setup/choose-your-mode.md` Hybrid Mode section
+   - [x] 14.2 Document "reader returns objects" improvement
+   - [x] 14.3 Document sync_required flag behavior
+   - [x] 14.4 Document better config handling improvements
+   - [x] 14.5 Update code examples for v0.20.0 API
+   - [x] 14.6 Clarify sync behavior with new flags
 
-- [ ] 15.0 Week 2 Parallel: Minor Features - Build First API (Priority: MEDIUM)
-  - [ ] 15.1 Update `/docs/getting-started/build-your-first-api.md` hybrid mode configuration
-  - [ ] 15.2 Add note about sync_required flag in production deployments
+- [x] 15.0 Week 2 Parallel: Minor Features - Build First API (Priority: MEDIUM)
+   - [x] 15.1 Update `/docs/getting-started/build-your-first-api.md` hybrid mode configuration
+   - [x] 15.2 Add note about sync_required flag in production deployments
 
 - [x] 16.0 Week 2 Parallel: Minor Features - Auto-Join (Priority: MEDIUM)
    - [x] 16.1 Update `/docs/reference/query-system.md` Filtering section with auto-join examples

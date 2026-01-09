@@ -84,3 +84,36 @@
   - Performance considerations added as dedicated section with examples
   - Media-specific auto-join examples added to entity-media-relationships.md
   - Cross-referenced best practices between general query docs and media-specific docs
+
+## Task 14.0 & 15.0: Hybrid Mode Improvements (v0.20.0)
+
+### What I learned:
+- **Reader returns objects improvement (v0.20.0)**:
+  - The `reader` function in hybrid mode now accepts objects directly, not just strings
+  - Previously required `JSON.parse()` on string return values
+  - Now can return objects directly from async functions, enabling direct JSON imports
+  - Simplifies config loading: `reader: async () => (await import("./config.json")).default`
+  - Backwards compatible with string returns (still works with `reader` from adapters)
+- **sync_required flag behavior**:
+  - Flag is set by `ModuleHelper.ts` when schema changes are detected (lines 29, 40, 44, 62, 70)
+  - Triggers automatic schema sync in hybrid mode during development (not in production)
+  - Checked in `hybrid.ts` line 78: `if (ctx.flags.sync_required && !isProd && syncSchemaOptions.force)`
+  - Allows seamless schema updates during development without manual sync commands
+  - Reset to false after sync completes (ModuleHelper.ts lines 40, 44)
+- **Better config handling**:
+  - Production validation is skipped for performance improvement (hybrid.ts line 74: `skipValidation: isProd`)
+  - Configuration is loaded from file using `reader` function (hybrid.ts line 50-51)
+  - If no config file found, default config is created automatically (hybrid.ts line 54)
+  - `writer` function is required for type/config syncing to work
+  - Secrets are merged into configuration from `secrets` option
+- **Documentation approach**:
+  - Added "New in v0.20.0" section at top of Hybrid Mode section for visibility
+  - Provided separate code example showing v0.20.0 improvements with detailed comments
+  - Updated existing "Hybrid mode helper" section with v0.20.0 annotations
+  - Added reference to hybrid mode in build-your-first-api.md production note
+  - Marked items as completed in tasks-bknd-v0.20.0-docs-update.md
+- **Key implementation details**:
+  - `isProduction` flag determines mode: `db` in dev, `code` in production (hybrid.ts line 70)
+  - `syncSchemaOptions.force` controls whether sync happens when `sync_required` is true
+  - Config file path defaults to "bknd-config.json" but can be customized via `configFilePath`
+  - Types file path defaults to "bknd-types.d.ts" but can be customized via `typesFilePath`
