@@ -230,19 +230,19 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 19.2 Update `/README.md` licensing section with Apache 2.0 information
   - [x] 19.3 Update `/docs/index.md` official resources with license mention
 
-- [ ] 20.0 Week 2 Parallel: Configuration Reference (Priority: MEDIUM)
-  - [ ] 20.1 Create `/docs/reference/configuration.md` with complete structure
-  - [ ] 20.2 Write "Overview" section (configuration file structure)
-  - [ ] 20.3 Write "Top-level Options" section (connection, config, options)
-  - [ ] 20.4 Write "Connection Configuration" section (database URL formats, adapters)
-  - [ ] 20.5 Write "Config Sections" section (data, auth, media, admin)
-  - [ ] 20.6 Write "Auth Configuration" section (comprehensive: JWT, cookie, strategies, roles, email providers)
-  - [ ] 20.7 Write "Options" section (mode, seed, manager)
-  - [ ] 20.8 Write "New in v0.20.0" section (default_role_register, minLength, MCP, hybrid mode)
-  - [ ] 20.9 Write "Environment Variables" section (all supported vars, defaults)
-  - [ ] 20.10 Write "Examples" section with complete configuration files
-  - [ ] 20.11 Write "Migration Notes" section (changes from previous versions)
-  - [ ] 20.12 Add cross-references to all reference docs and how-to guides
+- [x] 20.0 Week 2 Parallel: Configuration Reference (Priority: MEDIUM)
+   - [x] 20.1 Create `/docs/reference/configuration.md` with complete structure
+   - [x] 20.2 Write "Overview" section (configuration file structure)
+   - [x] 20.3 Write "Top-level Options" section (connection, config, options)
+   - [x] 20.4 Write "Connection Configuration" section (database URL formats, adapters)
+   - [x] 20.5 Write "Config Sections" section (data, auth, media, admin)
+   - [x] 20.6 Write "Auth Configuration" section (comprehensive: JWT, cookie, strategies, roles, email providers)
+   - [x] 20.7 Write "Options" section (mode, seed, manager)
+   - [x] 20.8 Write "New in v0.20.0" section (default_role_register, minLength, MCP, hybrid mode)
+   - [x] 20.9 Write "Environment Variables" section (all supported vars, defaults)
+   - [x] 20.10 Write "Examples" section with complete configuration files
+   - [x] 20.11 Write "Migration Notes" section (changes from previous versions)
+   - [x] 20.12 Add cross-references to all reference docs and how-to guides
 
 - [ ] 21.0 Week 2 Parallel: Navigation - Add Configuration Reference (Priority: MEDIUM)
   - [ ] 21.1 Update `docs.json` to include configuration reference in Reference group
