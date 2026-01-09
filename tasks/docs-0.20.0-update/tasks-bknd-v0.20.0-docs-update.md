@@ -207,15 +207,15 @@ Update the file after completing each sub-task, not just after completing an ent
    - [x] 16.5 Add "Automatic Join Filtering" section with examples
    - [x] 16.6 Document when auto-join is triggered
 
-- [ ] 17.0 Week 2 Parallel: Minor Features - MCP Navigation (Priority: MEDIUM)
-  - [ ] 17.1 Update `/docs/architecture-and-concepts/how-bknd-works.md` Admin UI section
-  - [ ] 17.2 Add MCP navigation documentation
-  - [ ] 17.3 Update Request Lifecycle section with MCP route handling
-  - [ ] 17.4 Update `/docs/reference/schema.md` Admin Configuration section
-  - [ ] 17.5 Add MCP navigation settings
-  - [ ] 17.6 Add example of customizing MCP route
-  - [ ] 17.7 Update all integration guides Admin UI sections
-  - [ ] 17.8 Add note about route-aware MCP access
+- [x] 17.0 Week 2 Parallel: Minor Features - MCP Navigation (Priority: MEDIUM)
+   - [x] 17.1 Update `/docs/architecture-and-concepts/how-bknd-works.md` Admin UI section
+   - [x] 17.2 Add MCP navigation documentation
+   - [x] 17.3 Update Request Lifecycle section with MCP route handling
+   - [x] 17.4 Update `/docs/reference/schema.md` Admin Configuration section
+   - [x] 17.5 Add MCP navigation settings
+   - [x] 17.6 Add example of customizing MCP route
+   - [x] 17.7 Update all integration guides Admin UI sections
+   - [x] 17.8 Add note about route-aware MCP access
 
 - [ ] 18.0 Week 2 Parallel: Minor Features - Schema Permissions (Priority: MEDIUM)
   - [ ] 18.1 Update `/docs/reference/schema.md` with Schema Security section

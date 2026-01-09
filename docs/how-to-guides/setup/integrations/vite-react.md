@@ -273,6 +273,36 @@ export default serve({
 });
 ```
 
+### Enabling MCP
+
+Model Context Protocol (MCP) allows AI assistants to interact with your Bknd instance:
+
+**Via Configuration:**
+```typescript
+export default {
+  config: {
+    server: {
+      mcp: {
+        enabled: true,
+      },
+    },
+  },
+} satisfies ViteBkndConfig;
+```
+
+**Via Admin UI:**
+1. Access Admin UI at `http://localhost:5174/`
+2. Click user menu (top right) → Settings → Server
+3. Enable "Mcp" checkbox
+4. Save configuration
+
+**Accessing MCP:**
+- MCP UI: `http://localhost:5174/mcp`
+- Admin menu: Click user menu → MCP
+- MCP API: `http://localhost:5174/api/system/mcp`
+
+**Note:** MCP is experimental in v0.20.0 and may change in future versions.
+
 ### Static File Serving
 
 Configure static file serving:

@@ -838,6 +838,122 @@ export default {
 | **Many-to-Many** | Junction table + relations | Implicit via arrays | `relation(table).manyToMany(other)` |
 | **Self-Reference** | `references((): any => table.id)` | Explicit relations | `relation(table).manyToOne(table)` |
 
+## Admin Configuration
+
+The Admin UI provides a visual interface for managing your Bknd application, including schema, authentication, and configuration settings.
+
+### Enabling Admin UI
+
+Admin UI is enabled by default. Access it via:
+
+**Direct URL:**
+```
+http://localhost:3000/admin
+```
+
+**Programmatic (Next.js example):**
+```typescript
+import { Admin } from "bknd/ui";
+import { getApi } from "@/bknd";
+import "bknd/dist/styles.css";
+
+export default async function AdminPage() {
+  const api = await getApi({ verify: true });
+
+  return (
+    <Admin
+      withProvider={{ user: api.getUser() }}
+      config={{
+        basepath: "/admin",
+        logo_return_path: "/../",
+        theme: "system",
+      }}
+    />
+  );
+}
+```
+
+### Admin Configuration Options
+
+```typescript
+export default {
+  config: {
+    server: {
+      admin: {
+        basepath: "/admin",
+      },
+      mcp: {
+        enabled: true,
+      },
+    }
+  }
+} satisfies BkndConfig;
+```
+
+| Option | Type | Default | Description |
+|--------|------|----------|-------------|
+| `basepath` | string | `"/admin"` | Admin UI route path |
+| `mcp.enabled` | boolean | `false` | Enable MCP server integration |
+
+### MCP Navigation
+
+Model Context Protocol (MCP) is an open standard for connecting AI applications to external systems. When enabled, MCP is accessible from:
+
+**Direct URL:** `/mcp` (relative to Admin basepath)
+**Admin UI Menu:** Click user menu (top right) → "MCP"
+
+**Example URLs:**
+- Default: `http://localhost:3000/admin/mcp`
+- Custom path: `http://localhost:3000/my-admin/mcp`
+
+**Enabling MCP via Config:**
+```typescript
+export default {
+  config: {
+    server: {
+      mcp: {
+        enabled: true,
+      }
+    }
+  }
+} satisfies BkndConfig;
+```
+
+**Enabling MCP via Admin UI:**
+1. Navigate to `/settings/server` or user menu → Settings → Server
+2. Enable "Mcp" checkbox
+3. Save configuration
+
+**Important:** MCP server is currently experimental and may change in future versions.
+
+### Route-Aware Access
+
+Admin UI respects route configuration:
+- **Admin UI location:** Controlled by `config.server.admin.basepath`
+- **MCP UI location:** Always `{adminBasepath}/mcp`
+- **MCP API endpoint:** Always `/api/system/mcp` (independent of Admin path)
+
+**Example: Custom Admin Path**
+```typescript
+export default {
+  config: {
+    server: {
+      admin: {
+        basepath: "/my-admin",
+      },
+      mcp: {
+        enabled: true,
+      }
+    }
+  }
+} satisfies BkndConfig;
+```
+
+Resulting URLs:
+- Admin UI: `http://localhost:3000/my-admin`
+- MCP UI: `http://localhost:3000/my-admin/mcp`
+- MCP API: `http://localhost:3000/api/system/mcp`
+
 ---
 
 ## Syntax Comparison Cheat Sheet

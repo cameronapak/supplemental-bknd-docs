@@ -186,6 +186,27 @@ export default async function AdminPage() {
 }
 ```
 
+**Accessing Admin UI:**
+- Navigate to `http://localhost:3000/admin`
+- MCP integration available at `/admin/mcp` (if enabled)
+- User menu (top right) → MCP for AI assistant integration
+
+**Enabling MCP:**
+```typescript
+// In bknd.config.ts
+export default {
+  config: {
+    server: {
+      mcp: {
+        enabled: true,
+      },
+    },
+  },
+} satisfies NextjsBkndConfig;
+```
+
+Or enable via Admin UI: Settings → Server → Enable "Mcp" checkbox.
+
 ## Client-Side with React SDK
 
 ### Setup Client Provider

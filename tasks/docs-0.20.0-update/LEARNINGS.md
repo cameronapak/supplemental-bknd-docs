@@ -7,6 +7,34 @@
 - License information should be prominent in documentation repositories to set clear expectations for users
 - Always verify license from official sources (GitHub LICENSE.md file, not just assumptions)
 
+## Task 17.0: MCP Navigation (v0.20.0)
+
+### What I learned:
+- **MCP (Model Context Protocol)** is an open standard introduced by Anthropic in November 2024 for connecting AI applications to external systems
+- **MCP server in Bknd**: Built-in experimental feature that enables AI assistants and IDEs to interact with Bknd instances
+- **Enabling MCP**: Can be enabled via config (`config.server.mcp.enabled: true`) or through Admin UI (Settings → Server → Mcp checkbox)
+- **MCP access points**:
+  - MCP UI: `/mcp` (relative to Admin UI basepath)
+  - Admin UI menu: Click user menu (top right) → MCP
+  - MCP API endpoint: `/api/system/mcp` (independent of Admin path)
+- **Route-aware configuration**:
+  - Admin UI path controlled by `config.server.admin.basepath` (default: `/admin`)
+  - MCP UI always at `{adminBasepath}/mcp`
+  - MCP API endpoint always at `/api/system/mcp`
+  - Example: If admin basepath is `/my-admin`, then MCP UI is `/my-admin/mcp`
+- **MCP transports**: Bknd supports both Streamable HTTP (`/api/system/mcp`) and STDIO (`npx bknd mcp`) transports
+- **Authentication**: MCP uses same authentication as main API (JWT tokens), ensuring permissions work consistently
+  - HTTP: Pass `Authorization: Bearer <token>` header to client
+  - STDIO: Use `--token <token>` or `BEARER_TOKEN` environment variable
+- **External tool integration**: MCP can be used with IDEs and AI assistants like Cursor, VS Code, Claude Desktop through config files
+- **Dynamic tool generation**: Bknd MCP server automatically generates tools and resources from schema-defined entities, Hono routes, and manual definitions
+- **Built-in MCP client**: Bknd provides `McpClient` from `bknd/utils` for direct usage without external clients
+- **Experimental status**: MCP is currently experimental in v0.20.0 and may change in future versions
+- **Documentation update locations**:
+  - `docs/architecture-and-concepts/how-bknd-works.md`: Added MCP section to Request Lifecycle
+  - `docs/reference/schema.md`: Added Admin Configuration section with MCP settings
+  - Integration guides: Updated Admin UI sections to mention MCP availability and configuration
+
 ## Task 4.0: Auth Module Updates (v0.20.0)
 
 ### What I learned:
