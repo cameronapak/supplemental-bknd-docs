@@ -164,19 +164,19 @@ Update the file after completing each sub-task, not just after completing an ent
   - [ ] 11.4 Update `/docs/index.md` with Email OTP and Plunk links
   - [ ] 11.5 Update `/docs/getting-started/add-authentication.md` with Email OTP alternatives section
 
-- [ ] 12.0 Week 2 Parallel: Browser/SQLocal Integration Guide (Priority: MEDIUM)
-  - [ ] 12.1 Create `/docs/how-to-guides/setup/integrations/browser-sqlocal.md` with complete structure
-  - [ ] 12.2 Write "Overview" section (Browser mode, SQLocal, use cases)
-  - [ ] 12.3 Write "Installation" section (dependencies, SQLocal setup)
-  - [ ] 12.4 Write "Configuration" section (BkndBrowserApp, OpfsStorageAdapter, DB location)
-  - [ ] 12.5 Write "Getting Started" section (basic setup, loading DBs, persisting)
-  - [ ] 12.6 Write "Features Available" section (CRUD, relationships, query system, limitations)
-  - [ ] 12.7 Write "Admin UI" section (browser-based access)
-  - [ ] 12.8 Write "Use Cases" section (offline apps, local dev, prototyping)
-  - [ ] 12.9 Write "Data Migration" section (export/import)
-  - [ ] 12.10 Write "Limitations" section (no auth, no API, performance)
-  - [ ] 12.11 Write "Examples" section with complete browser app
-  - [ ] 12.12 Add cross-references to data module reference, choose-your-mode
+- [x] 12.0 Week 2 Parallel: Browser/SQLocal Integration Guide (Priority: MEDIUM)
+   - [x] 12.1 Create `/docs/how-to-guides/setup/integrations/browser-sqlocal.md` with complete structure
+   - [x] 12.2 Write "Overview" section (Browser mode, SQLocal, use cases)
+   - [x] 12.3 Write "Installation" section (dependencies, SQLocal setup)
+   - [x] 12.4 Write "Configuration" section (BkndBrowserApp, OpfsStorageAdapter, DB location)
+   - [x] 12.5 Write "Getting Started" section (basic setup, loading DBs, persisting)
+   - [x] 12.6 Write "Features Available" section (CRUD, relationships, query system, limitations)
+   - [x] 12.7 Write "Admin UI" section (browser-based access)
+   - [x] 12.8 Write "Use Cases" section (offline apps, local dev, prototyping)
+   - [x] 12.9 Write "Data Migration" section (export/import)
+   - [x] 12.10 Write "Limitations" section (no auth, no API, performance)
+   - [x] 12.11 Write "Examples" section with complete browser app
+   - [x] 12.12 Add cross-references to data module reference, choose-your-mode
 
 - [ ] 13.0 Week 2 Parallel: Navigation - Add Browser Guide (Priority: MEDIUM)
   - [ ] 13.1 Update `docs.json` to include Browser guide in Integration Guides

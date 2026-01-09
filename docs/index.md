@@ -78,6 +78,7 @@ Works with any frontend framework: React, Next.js, Vue, Svelte, Astro, and vanil
 - [Next.js Integration](./how-to-guides/setup/integrations/nextjs.md) - Server components and App Router
 - [Vite + React Integration](./how-to-guides/setup/integrations/vite-react.md) - Standalone SPA setup
 - [React Router Integration](./how-to-guides/setup/integrations/react-router.md) - Loader/Action pattern
+- [Browser + SQLocal](./how-to-guides/setup/integrations/browser-sqlocal.md) - Local-first offline apps
 - [Cloudflare Workers](./how-to-guides/setup/integrations/cloudflare-workers.md) - Edge deployment
 
 ### Authentication & Permissions

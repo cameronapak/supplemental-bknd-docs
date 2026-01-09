@@ -17,6 +17,7 @@ Choose the right framework for your Bknd integration based on your project requi
 | **Astro** | Content sites, marketing pages | Framework | ✅ Yes | ✅ Yes | Low |
 | **Bun/Node** | Standalone APIs, microservices | Runtime | ❌ No | ✅ Watch | Low |
 | **Cloudflare Workers** | Edge deployment, global APIs | Runtime | ❌ No | ❌ No | High |
+| **Browser Mode** | Offline apps, local dev, PWAs | Browser-only | ❌ No | ✅ Yes | Low |
 
 ## Detailed Framework Comparison
 
@@ -321,6 +322,82 @@ serve({ connection: { url: "file:data.db" } });
 
 ---
 
+### Browser Mode
+
+**Integration Pattern:** Browser adapter with `BkndBrowserApp` component
+
+**Best Use Cases:**
+- Offline-first applications (Progressive Web Apps)
+- Local development without backend
+- Client-side demos and interactive tutorials
+- Privacy-focused apps (data never leaves browser)
+- Embedded tools and admin panels
+
+**Strengths:**
+- ✅ No server required
+- ✅ Works offline
+- ✅ Full CRUD operations
+- ✅ Admin UI for visual management
+- ✅ Database export/import for backup
+- ✅ SQLite in browser via WASM (SQLocal)
+- ✅ OPFS for media storage
+
+**Considerations:**
+- ❌ No authentication (auth plugins not supported)
+- ❌ No API routes (no HTTP server)
+- ⚠️ Performance limited by browser and WASM
+- ⚠️ Data can be cleared by browser
+- ⚠️ Storage limits vary by browser
+
+**Key Integration Features:**
+```typescript
+// App setup
+import { BkndBrowserApp, type BrowserBkndConfig } from "bknd/adapter/browser";
+
+const config: BrowserBkndConfig = {
+  config: {
+    data: schema.toJSON(),
+  },
+  adminConfig: {
+    basepath: "/admin",
+  },
+};
+
+export default function App() {
+  return (
+    <BkndBrowserApp {...config}>
+      <Route path="/" component={HomePage} />
+    </BkndBrowserApp>
+  );
+}
+
+// Data operations
+const { app } = useApp();
+const { data } = await app.em.findMany("todos");
+
+// Database export
+const connection = app.em.connection as SQLocalConnection;
+const file = await connection.client.getDatabaseFile();
+```
+
+**Database Options:**
+- **Storage:** SQLocal (SQLite WASM) + OPFS for media
+- **Connection:** `:localStorage:` (default), `:memory:`, or custom path
+- **Export/Import:** `getDatabaseFile()` / `loadDatabaseFile()`
+
+**Limitations:**
+- No auth plugins or user management
+- No HTTP API endpoints
+- No MCP integration
+- Performance depends on browser capabilities
+
+**Deployment:**
+- **Primary:** Vercel, Netlify, GitHub Pages (static hosting)
+- **PWA:** Can be converted to Progressive Web App
+- **Storage:** Browser-local only (can export for backup)
+
+---
+
 ## Integration Pattern Comparison
 
 ### Data Fetching Approaches
@@ -332,6 +409,7 @@ serve({ connection: { url: "file:data.db" } });
 | **Astro** | ✅ Frontmatter | ⚠️ Unknown | `getApi(Astro)` in pages |
 | **Vite + React** | ❌ No | ✅ SDK | `new Api()` client-side |
 | **Bun/Node** | N/A (backend only) | Client SDK | REST API calls |
+| **Browser Mode** | N/A (browser only) | useApp() hook | `app.em.findMany()` in browser |
 
 ### API Route Setup
 
@@ -363,6 +441,7 @@ serve({ connection: { url: "file:data.db" } });
 - ✅ Team already knows Next.js
 - ✅ Want Vercel deployment (one-click)
 - ✅ Need server components for performance
+| **Browser Mode** | N/A | localStorage | Not supported | N/A |
 
 ### Choose React Router if:
 - ✅ Want full-stack React without Next.js complexity
@@ -398,6 +477,14 @@ serve({ connection: { url: "file:data.db" } });
 - ✅ Need low latency worldwide
 - ✅ Want pay-per-use pricing
 - ✅ Comfortable with Workers
+
+
+### Choose Browser Mode if:
+- ✅ Building offline-first application (PWA)
+- ✅ Need local development without backend
+- ✅ Creating client-side demos or tutorials
+- ✅ Want privacy-focused app (data never leaves browser)
+- ✅ Building embedded tools or admin panels
 
 ---
 
@@ -442,6 +529,7 @@ serve({ connection: { url: "file:data.db" } });
 | **Vite + React** | ❌ | ❌ | ~300-500ms |
 | **Bun/Node** | N/A | ❌ | ~50-100ms |
 
+| **Browser Mode** | ❌ | ❌ | ~200-400ms |
 ---
 
 ## Team Expertise Matrix
@@ -499,3 +587,4 @@ The following aspects need further investigation:
 - [Bun/Node Standalone Setup](./how-to-guides/setup/integrations/bun-node.md)
 - [Choose Your Mode](./how-to-guides/setup/choose-your-mode.md)
 - [Deploy to Production](./getting-started/deploy-to-production.md)
+- [Browser + SQLocal Integration Guide](./browser-sqlocal.md) - Local-first offline apps

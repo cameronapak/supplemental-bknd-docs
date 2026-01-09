@@ -49,7 +49,8 @@
                   "how-to-guides/setup/integrations/bun-node",
                   "how-to-guides/setup/integrations/cloudflare-workers",
                   "how-to-guides/setup/integrations/aws-lambda",
-                  "how-to-guides/setup/integrations/docker"
+                  "how-to-guides/setup/integrations/docker",
+                  "how-to-guides/setup/integrations/browser-sqlocal"
                 ]
               }
             ]

@@ -155,4 +155,89 @@
   - `isProduction` flag determines mode: `db` in dev, `code` in production (hybrid.ts line 70)
   - `syncSchemaOptions.force` controls whether sync happens when `sync_required` is true
   - Config file path defaults to "bknd-config.json" but can be customized via `configFilePath`
-  - Types file path defaults to "bknd-types.d.ts" but can be customized via `typesFilePath`
+   - Types file path defaults to "bknd-types.d.ts" but can be customized via `typesFilePath`
+
+## Task 20.0: Configuration Reference (v0.20.0)
+
+### What I learned:
+- **Configuration file structure**: Bknd uses a top-level export with `app(env)` function that receives environment variables and returns connection, config, secrets, isProduction, and adminOptions
+- **Connection options**:
+  - SQLite is default with `url: "file:data.db"` or `env.DB_URL ?? "file:data.db"`
+  - PostgreSQL supports both `pgPostgres` and `postgresJs` adapters from main `bknd` package (v0.20.0 change)
+  - Custom PostgreSQL dialects via `createCustomPostgresConnection` for Neon, Xata, etc.
+- **Auth configuration is comprehensive**:
+  - JWT: secret, alg, expires, issuer, fields for token payload
+  - Cookie: domain, path, sameSite, secure, httpOnly, expires, partitioned, renew, pathSuccess, pathLoggedOut
+  - Password strategy: hashing (plain, sha256, bcrypt) and minLength (default: 8, min: 1)
+  - Roles and permissions with default role assignment
+  - default_role_register (v0.20.0) for setting default role on registration
+- **Media configuration**: Enable module and configure adapter (Local, S3, etc.)
+- **Server configuration**:
+  - Admin: basepath for UI route
+  - MCP: enable flag (v0.20.0)
+- **Mode helpers**:
+  - `code()` for serverless deployments with schema in code
+  - `hybrid()` for development with file-based config and production with code mode
+- **Hybrid mode specific options**:
+  - `reader` function now returns objects directly (v0.20.0 improvement), not just strings
+  - `writer` function required for type/config syncing
+  - `typesFilePath` and `configFilePath` customizable
+  - `syncSecrets` for extracting secrets to .env.example files
+- **Seed function**: Executed only if database is empty, receives `ctx.em` and `ctx.app.module.auth` for database and user operations
+- **Environment variables**: DB_URL, POSTGRES_URL, JWT_SECRET, ENVIRONMENT, and provider-specific vars (NEON, XATA_URL, etc.)
+- **Documentation organization for configuration reference**:
+  - Start with overview and top-level options
+  - Break down by section (connection, config sections, options)
+   - Include migration notes for breaking changes
+   - Provide complete examples for common scenarios
+   - Cross-reference related documentation files
+   - **Research approach**: Use opensrc examples to understand actual configuration patterns and imports, then verify with existing docs
+
+## Task 12.0: Browser/SQLocal Integration Guide (v0.20.0)
+
+### What I learned:
+- **Browser mode runs entirely in browser**: Uses SQLocal (SQLite WASM) for database and OPFS (Origin Private File System) for media storage
+- **SQLocal integration**: Requires `sqlocal/vite` plugin in vite.config.ts for WASM loading; `sqlocal` dependency must be excluded from optimizeDeps
+- **BkndBrowserApp component**: Main entry point for browser mode, wraps app with React context and router (Wouter-based)
+- **Configuration options**:
+  - `connection`: Database path (default: `:localStorage:`), accepts `:memory:` for non-persistent DB
+  - `adminConfig.basepath`: Admin UI route path (default: `/admin`)
+  - `options.seed`: Function to seed data (only runs if database is empty)
+  - `config.auth`: Not supported in browser mode (auth plugins not available)
+- **Database export/import**: Use `SQLocalConnection.client.getDatabaseFile()` to export, `loadDatabaseFile(file)` to import
+- **Media storage**: `OpfsStorageAdapter` automatically registered for OPFS file storage; can configure custom root directory via `config.media.adapter.config.root`
+- **useApp hook**: Provides access to `app.em` for data operations and `app.emgr` for entity manager
+- **useEntityQuery hook**: React SDK hook for simplified data fetching with built-in CRUD methods (create, update, delete)
+- **Limitations**:
+  - No authentication (no auth plugins, JWT, or user management)
+  - No API routes (no HTTP server, no MCP integration)
+  - Performance limited by browser WASM and OPFS
+  - Data can be cleared by browser (localStorage clearing, incognito mode)
+  - Storage quotas vary by browser (~60% of disk on Chrome, ~1GB on Safari)
+- **Vite plugin configuration**: SQLocal plugin must come before React plugin in plugins array for proper WASM handling
+- **Navigation**: Browser mode uses Wouter for client-side routing; Admin UI integrated at configured basepath
+- **Type safety**: Works same as other modes - register schema with `declare module "bknd"` for global types
+- **Use cases**: Offline-first apps (PWAs), local development without backend, client-side demos, privacy-focused apps, embedded tools
+- **Deployment**: Can deploy as static site (Vercel, Netlify, GitHub Pages); convert to PWA for offline capability
+- **Best practices**: Seed sample data in development, implement database export for backups, use pagination for performance, add indexes to frequently queried fields
+- **Documentation placement**: Should be added to docs.json integration guides, linked from index.md, mentioned in choose-your-mode and framework-comparison
+
+## Task 21.0: Navigation - Add Configuration Reference (v0.20.0)
+
+### What I learned:
+- **Configuration reference positioning**: Should be placed first in Reference group (before auth-module) because it's the foundational document users need when setting up any bknd project
+- **Cross-linking strategy**: When adding a new central reference document, add links from:
+  - All getting-started guides (build-your-first-api, add-authentication, deploy-to-production)
+  - Decision/setup guides (choose-your-mode)
+  - Framework integration guides (nextjs, vite-react, etc.)
+- **Navigation structure updates**: docs.json uses nested groups with simple page references (no file extensions)
+- **Path consistency**: When adding cross-links from different directory levels, use relative paths correctly:
+  - Same directory: `./page-name.md`
+  - Up one level: `../page-name.md`
+  - Up two levels: `../../page-name.md`
+  - Root reference docs: `../../../reference/configuration.md`
+- **Cross-linking completeness**: Don't need to link from every single file - focus on:
+  - High-traffic pages (getting-started)
+  - Decision/setup pages (choose-your-mode)
+  - Framework integration guides (nextjs, vite-react)
+  - Skip: specific feature guides (data seeding, entity relationships, etc.) unless configuration is directly relevant

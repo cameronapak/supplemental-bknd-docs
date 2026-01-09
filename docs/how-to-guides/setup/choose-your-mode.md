@@ -247,6 +247,38 @@ export default {
 - Platform-specific database adapters (D1, Neon, etc.)
 - Cold start optimization
 
+### Browser Mode
+
+Run Bknd entirely in browser using SQLocal for local-first, offline-capable applications.
+
+**Quick start:**
+```bash
+npx bknd create -i browser my-app
+cd my-app
+npm run dev
+```
+
+**When to use:**
+- Offline-first applications (Progressive Web Apps)
+- Local development without backend setup
+- Client-side demos and interactive tutorials
+- Privacy-focused apps (data never leaves browser)
+- Embedded tools and admin panels
+
+**What you get:**
+- Full CRUD operations in browser
+- SQLite database via WebAssembly (SQLocal)
+- Origin Private File System (OPFS) for media storage
+- Admin UI for visual management
+- Database export/import for backup and migration
+- No server required
+
+**Limitations:**
+- No authentication (auth plugins not supported)
+- No API routes (no HTTP server)
+- Performance limited by browser and WASM
+- Data can be cleared by browser
+
 ## Recommended Workflow: Mode Switching
 
 A common pattern is to use **UI-only mode in development** and **Code-only mode in production** (Hybrid mode).
