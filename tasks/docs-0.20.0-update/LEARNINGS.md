@@ -470,12 +470,60 @@
   - **Breaking change verification requires checking multiple sources**: When verifying breaking changes are documented, check migration guides, release notes, and reference docs
   - **Git lock files can block commits**: Git `.git/index.lock` file can prevent commits when another process or crash occurs. Delete with `rm -f .git/index.lock` if commit fails with lock error.
   - **Adapter name changes must be documented everywhere**: When function names change (e.g., `pgPostgres` → `pg`), update ALL code examples including those in "Before/After" comparison sections
-  - **Breaking change documentation completeness check**:
-     1. Migration guide exists and is comprehensive
-     2. Release notes prominently list breaking changes with migration links
-     3. Reference docs show correct v0.20.0 API in all examples
-     4. Index.md has prominent notice box for breaking changes
-     5. Cross-references link from breaking change docs to relevant feature docs
+   - **Breaking change documentation completeness check**:
+       1. Migration guide exists and is comprehensive
+       2. Release notes prominently list breaking changes with migration links
+       3. Reference docs show correct v0.20.0 API in all examples
+       4. Index.md has prominent notice box for breaking changes
+       5. Cross-references link from breaking change docs to relevant feature docs
+
+   ## Task 0.3: Research Browser/SQLocal Implementation (v0.20.0)
+
+   ### What I learned:
+   - **BkndBrowserApp API**: Main component for browser mode that wraps React app with Wouter router and ClientProvider
+     - Props: children, header, loading, notFound, adminConfig, and config options (excluding connection, app)
+     - Uses SQLocalKysely for database connection with default `:localStorage:` path
+     - Auto-registers OpfsStorageAdapter for media storage
+     - Supports custom loading, notFound, and header components
+     - Provides React context through BkndBrowserAppContext
+   - **useApp hook**: Returns `{ app: App, hash: string }` from BkndBrowserAppContext
+     - `app.em` for entity manager and data operations
+     - `app.emgr` for entity management
+     - `hash` is checksum of app state for React key optimization
+   - **useEntityQuery hook**: React SDK hook for simplified data fetching with built-in CRUD
+     - Parameters: entity name, optional id, query options, SWR configuration
+     - Returns: create, read, update, _delete methods with SWR data/error/loading states
+     - Built-in cache management with mutate() for revalidation
+     - Integrates with SWR for automatic refetching and caching
+   - **SQLocal Connection**: SQLocalConnection extends SqliteConnection with SQLocalKysely client
+     - Default connection path: `:localStorage:` for persistent browser storage
+     - Supports `:memory:` for non-persistent in-memory database
+     - Accepts custom DatabasePath string for custom locations
+   - **OpfsStorageAdapter**: Media storage adapter using Origin Private File System API
+     - Configuration: `root` option (string) for custom directory path
+     - Supports file upload/download, listing, deletion, and existence checking
+     - Range request support for partial file downloads
+     - Automatic ETag generation using SHA-256 hash
+     - MIME type guessing from file extensions
+   - **Browser mode routing**: Uses Wouter for client-side routing with React
+     - Admin UI accessible at configured basepath (default: `/admin`)
+     - 404 handling with custom notFound component
+     - View transitions support for smooth route changes
+   - **Browser mode initialization**: Setup function handles initialization on mount
+     - Registers OpfsStorageAdapter with media registry
+     - Creates App with SQLocal connection
+     - Calls beforeBuild, builds app with sync: true, calls onBuilt callback
+     - Prevents double initialization with `initialized` flag
+   - **Limitations**: No server-side code, no auth plugins, no HTTP server, no MCP
+
+## Task 23.6: Add Link from Auth Module Reference to Email OTP Guide (v0.20.0)
+
+### What I learned:
+- **Cross-reference verification workflow**: Before adding a cross-reference, always verify the target file exists using `test -f <file>` command
+- **Link placement logic**: When adding links to Related Documentation sections, place them in logical order - typically getting-started first, then specialized guides, then reference docs
+- **Relative path importance**: Use correct relative paths based on file location - auth-module.md is in `docs/reference/` so uses `../how-to-guides/auth/email-otp.md`
+- **Task status tracking**: After completing a subtask, update the tasks-bknd-v0.20.0-docs-update.md file to mark it as [x] completed
+- **Verification after edit**: Use `grep -n` to verify the link was actually added to the file at the expected line number
   - **PostgreSQL package merge breaking change** fully documented:
      - Migration guide with detailed steps
      - Release notes with prominent breaking changes section
