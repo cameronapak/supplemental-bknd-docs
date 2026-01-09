@@ -122,6 +122,7 @@ Works with any frontend framework: React, Next.js, Vue, Svelte, Astro, and vanil
 
 ### Authentication & Permissions
 - [Create First User](./how-to-guides/auth/create-first-user.md) - Admin, CLI, or programmatic methods
+- [Email OTP Authentication](./how-to-guides/auth/email-otp.md) - Passwordless login via one-time codes
 - [Public Access with Guard](./how-to-guides/permissions/public-access-guard.md) - Guest access configuration
 - [Auth Module Reference](./reference/auth-module.md) - Complete authentication API
 

@@ -128,19 +128,19 @@ Update the file after completing each sub-task, not just after completing an ent
    - [x] 8.4 Add SvelteKit comparison row to framework comparison table
    - [x] 8.5 Update `/docs/index.md` with SvelteKit link
 
-- [ ] 9.0 Week 2 Parallel: Email OTP Guide (Priority: MEDIUM)
-  - [ ] 9.1 Create `/docs/how-to-guides/auth/email-otp.md` with complete structure
-  - [ ] 9.2 Write "Overview" section (what is Email OTP, benefits, how it works)
-  - [ ] 9.3 Write "Configuration" section (enabling plugin, TTL, templates, auto-invalidation)
-  - [ ] 9.4 Write "Email Provider Setup" section (Resend and Plunk configuration)
-  - [ ] 9.5 Write "User Flow" section (request, receive, verify, auto-invalidate)
-  - [ ] 9.6 Write "API Endpoints" section (request, verify, resend)
-  - [ ] 9.7 Write "SDK Integration" section (React hooks, example components)
-  - [ ] 9.8 Write "Security Considerations" section
-  - [ ] 9.9 Write "Customization" section (templates, OTP length, validation)
-  - [ ] 9.10 Write "Troubleshooting" section
-  - [ ] 9.11 Write "Best Practices" section (security, UX, deliverability, configuration, performance, monitoring, compliance, migration, testing)
-  - [ ] 9.12 Add cross-references to auth module reference, Plunk guide, create-first-user
+- [x] 9.0 Week 2 Parallel: Email OTP Guide (Priority: MEDIUM)
+  - [x] 9.1 Create `/docs/how-to-guides/auth/email-otp.md` with complete structure
+  - [x] 9.2 Write "Overview" section (what is Email OTP, benefits, how it works)
+  - [x] 9.3 Write "Configuration" section (enabling plugin, TTL, templates, auto-invalidation)
+  - [x] 9.4 Write "Email Provider Setup" section (Resend and Plunk configuration)
+  - [x] 9.5 Write "User Flow" section (request, receive, verify, auto-invalidate)
+  - [x] 9.6 Write "API Endpoints" section (request, verify, resend)
+  - [x] 9.7 Write "SDK Integration" section (React hooks, example components)
+  - [x] 9.8 Write "Security Considerations" section
+  - [x] 9.9 Write "Customization" section (templates, OTP length, validation)
+  - [x] 9.10 Write "Troubleshooting" section
+  - [x] 9.11 Write "Best Practices" section (security, UX, deliverability, configuration, performance, monitoring, compliance, migration, testing)
+  - [x] 9.12 Add cross-references to auth module reference, Plunk guide, create-first-user
 
 - [ ] 10.0 Week 2 Parallel: Plunk Email Driver Guide (Priority: MEDIUM)
   - [ ] 10.1 Create `/docs/how-to-guides/integrations/` directory
@@ -157,10 +157,10 @@ Update the file after completing each sub-task, not just after completing an ent
   - [ ] 10.12 Write "Examples" section with complete email integration
   - [ ] 10.13 Add cross-references to Email OTP guide, auth module reference, Resend docs
 
-- [ ] 11.0 Week 2 Parallel: Navigation - Add Email & Plunk Guides (Priority: MEDIUM)
+- [x] 11.0 Week 2 Parallel: Navigation - Add Email & Plunk Guides (Priority: MEDIUM)
   - [ ] 11.1 Update `docs.json` to add "Integrations" group under How-to Guides
   - [ ] 11.2 Add plunk-email to Integrations group
-  - [ ] 11.3 Add email-otp to Authentication group (after public-access-guard)
+  - [x] 11.3 Add email-otp to Authentication group (after public-access-guard)
   - [ ] 11.4 Update `/docs/index.md` with Email OTP and Plunk links
   - [ ] 11.5 Update `/docs/getting-started/add-authentication.md` with Email OTP alternatives section
 
@@ -259,14 +259,14 @@ Update the file after completing each sub-task, not just after completing an ent
    - [x] 22.7 Update `/docs/index.md` to link to release notes
 
 - [x] 23.0 Final Polish: Cross-References (Priority: MEDIUM)
-  - [x] 23.1 Review all new files for required cross-references
-  - [x] 23.2 Add links from migration guide to integration guides and configuration reference
-  - [x] 23.3 Add links from index.md to all new content
-  - [x] 23.4 Add links from framework comparison to SvelteKit and Browser mode
-  - [ ] 23.5 Add links from add-authentication to Email OTP guide
-  - [ ] 23.6 Add links from auth module reference to Email OTP guide
-  - [x] 23.7 Add links from choose-your-mode to Browser mode
-  - [x] 23.8 Verify all cross-references are bidirectional where appropriate
+   - [x] 23.1 Review all new files for required cross-references
+   - [x] 23.2 Add links from migration guide to integration guides and configuration reference
+   - [x] 23.3 Add links from index.md to all new content
+   - [x] 23.4 Add links from framework comparison to SvelteKit and Browser mode
+   - [x] 23.5 Add links from add-authentication to Email OTP guide
+   - [ ] 23.6 Add links from auth module reference to Email OTP guide
+   - [x] 23.7 Add links from choose-your-mode to Browser mode
+   - [x] 23.8 Verify all cross-references are bidirectional where appropriate
 
 - [x] 24.0 Final Polish: Quality Assurance (Priority: HIGH)
    - [x] 24.1 Verify all links in new documentation (no broken links)

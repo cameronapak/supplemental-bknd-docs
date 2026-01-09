@@ -67,6 +67,7 @@
             "group": "Authentication",
             "pages": [
               "how-to-guides/auth/create-first-user",
+              "how-to-guides/auth/email-otp",
               "how-to-guides/permissions/public-access-guard"
             ]
           },
