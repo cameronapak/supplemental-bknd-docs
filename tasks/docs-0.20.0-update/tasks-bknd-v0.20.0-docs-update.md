@@ -91,16 +91,16 @@ Update the file after completing each sub-task, not just after completing an ent
    - [x] 4.5 Update `/docs/reference/auth-module.md` Roles and Permissions section (schema permissions)
    - [x] 4.6 Add new endpoints to API Endpoints table if any
 
-- [ ] 5.0 Week 1 Critical Path: Data Module Updates (Priority: HIGH)
-  - [ ] 5.1 Update `/docs/reference/data-module.md` Repository API (readOneBy method)
-  - [ ] 5.2 Add note about readOneBy as alternative to findOne
-  - [ ] 5.3 Provide code examples comparing readOneBy vs findOne
-  - [ ] 5.4 Update `/docs/reference/data-module.md` Query System (auto-join behavior)
-  - [ ] 5.5 Update `/docs/reference/data-module.md` Filtering section (related entity filtering)
-  - [ ] 5.6 Update `/docs/reference/data-module.md` findMany options (with parameter)
-  - [ ] 5.7 Add warning about performance implications of auto-joins
-  - [ ] 5.8 Update `/docs/reference/data-module.md` Mutator API (uploadToEntity overwrite parameter)
-  - [ ] 5.9 Add overwrite parameter documentation and examples
+- [x] 5.0 Week 1 Critical Path: Data Module Updates (Priority: HIGH)
+   - [x] 5.1 Update `/docs/reference/data-module.md` Repository API (readOneBy method)
+   - [x] 5.2 Add note about readOneBy as alternative to findOne
+   - [x] 5.3 Provide code examples comparing readOneBy vs findOne
+   - [x] 5.4 Update `/docs/reference/data-module.md` Query System (auto-join behavior)
+   - [x] 5.5 Update `/docs/reference/data-module.md` Filtering section (related entity filtering)
+   - [x] 5.6 Update `/docs/reference/data-module.md` findMany options (with parameter)
+   - [x] 5.7 Add warning about performance implications of auto-joins
+   - [x] 5.8 Update `/docs/reference/data-module.md` Mutator API (uploadToEntity overwrite parameter)
+   - [x] 5.9 Add overwrite parameter documentation and examples
 
 - [ ] 6.0 Week 1 Critical Path: React SDK Updates (Priority: HIGH)
   - [ ] 6.1 Update `/docs/reference/react-sdk-reference.md` API Methods (auth.logout())
