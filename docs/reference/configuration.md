@@ -493,8 +493,8 @@ export default hybrid<CloudflareBkndConfig>({
 
 **Hybrid Mode Options:**
 | Option | Type | Description |
-|--------|------|-------------|
-| `reader` | function | Function to read config (returns object, not just string in v0.20.0) |
+|---|------|-------------|
+| `reader` | function | Function to read config. **Breaking change in v0.20.0:** Now returns parsed object instead of JSON string. Migrate readers that return raw strings to use `JSON.parse()` or update to return objects directly. |
 | `writer` | function | Function to write config/types (required for sync) |
 | `typesFilePath` | string | Path to generated types file (default: `"bknd-types.d.ts"`) |
 | `configFilePath` | string | Path to config file (default: `"bknd-config.json"`) |

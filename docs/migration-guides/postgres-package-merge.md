@@ -162,6 +162,28 @@ connection: {
 - Need connection pooling
 - Migrating from existing pg-based applications
 
+### Connection Structure Note
+
+**Important:** In v0.20.0, PostgreSQL adapter configuration uses a **consistent structure** across all adapters. Use one of these patterns:
+
+**Pattern 1: Direct adapter (recommended for most cases)**
+```typescript
+connection: {
+  url: pg({ pool: new Pool({ connectionString: env.POSTGRES_URL }) },
+}
+```
+
+**Pattern 2: Wrapped with url field (for advanced scenarios)**
+```typescript
+connection: {
+  url: pg({
+    pool: new Pool({ connectionString: env.POSTGRES_URL }),
+  }),
+}
+```
+
+The migration guide shows both patterns for clarity. Choose the pattern that matches your needs.
+
 ### postgresJs Adapter
 
 **Driver:** `postgres` (postgres-js)  
