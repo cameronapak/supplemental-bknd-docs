@@ -3,8 +3,6 @@ title: "Seed Database"
 description: "Populate database with initial data using seed functions for development and testing."
 ---
 
-# Seed Database
-
 Seeding allows you to populate your database with initial data on first boot. This is useful for development, testing, and preparing production databases.
 
 ## Prerequisites

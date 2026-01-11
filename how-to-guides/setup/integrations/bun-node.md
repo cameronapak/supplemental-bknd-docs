@@ -3,8 +3,6 @@ title: "Bun/Node Standalone"
 description: "Run Bknd as a standalone server with Bun or Node.js runtimes."
 ---
 
-# Bun/Node Standalone Setup
-
 A quick guide to running bknd as a standalone server with Bun or Node.js runtimes.
 
 ## What You'll Build

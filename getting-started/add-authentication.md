@@ -2,8 +2,6 @@
 description: Add email/password authentication with role-based permissions in 20 minutes
 ---
 
-# Add Authentication with Permissions
-
 In this tutorial, you'll add email/password authentication with role-based access control (RBAC) to your Bknd API. You'll learn how to:
 
 - Configure password-based authentication

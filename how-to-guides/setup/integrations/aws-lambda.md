@@ -3,8 +3,6 @@ title: AWS Lambda Integration
 description: Deploy Bknd as a serverless backend on AWS Lambda with automatic scaling and pay-per-use pricing.
 ---
 
-# AWS Lambda Integration
-
 Deploy Bknd on AWS Lambda for a serverless backend that automatically scales and only charges for actual usage.
 
 ## Overview

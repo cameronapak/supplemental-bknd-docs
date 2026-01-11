@@ -3,8 +3,6 @@ title: Astro Integration
 description: How to integrate Bknd with Astro for content-focused websites
 ---
 
-# Astro Integration
-
 Bknd provides a seamless integration with Astro for building content-focused websites with SSR capabilities.
 
 ## What This Integration Provides

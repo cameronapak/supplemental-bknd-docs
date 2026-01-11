@@ -1,9 +1,9 @@
 ---
-title: Vite + React Integration
+title: "Vite + React Integration"
 description: Set up Bknd with Vite and React for standalone SPA applications
 ---
 
-Integrate Bknd with Vite + React for standalone Single Page Applications (SPAs). This integration provides a development-friendly setup with hot module replacement (HMR) and full type safety.
+Set up Bknd with Vite + React for standalone Single Page Applications (SPAs). This integration provides a development-friendly setup with hot module replacement (HMR) and full type safety.
 
 ## Overview
 

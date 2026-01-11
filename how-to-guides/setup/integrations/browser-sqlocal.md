@@ -3,7 +3,7 @@ title: Browser + SQLocal Integration
 description: Run Bknd entirely in the browser using SQLocal for local-first applications
 ---
 
-Run Bknd entirely in the browser with SQLocal for local-first, offline-capable applications. This integration provides a complete backend experience without requiring a server.
+This integration provides a complete backend experience without requiring a server.
 
 ## Overview
 

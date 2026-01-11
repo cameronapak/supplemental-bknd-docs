@@ -3,8 +3,6 @@ title: "What is Bknd?"
 description: "Lightweight embeddable backend framework for JavaScript. Instant REST API, auth, and database management in any environment."
 ---
 
-# What is Bknd?
-
 **Bknd** is a lightweight, infrastructure-agnostic backend system that runs in any JavaScript environment. It provides an instant backend with a full REST API, authentication, database management, media handling, and workflows.
 
 ## Core Philosophy

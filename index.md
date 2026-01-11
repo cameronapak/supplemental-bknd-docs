@@ -3,8 +3,6 @@ title: "Welcome to Bknd"
 description: "Embeddable backend for modern web applications. Build full-stack apps with your frontend framework of choice."
 ---
 
-# Welcome to Bknd
-
 Bknd is an embeddable backend framework that lets you build full-stack applications using your existing frontend setup. No separate backend server required—Bknd runs embedded in your application.
 
 ## Quick Start

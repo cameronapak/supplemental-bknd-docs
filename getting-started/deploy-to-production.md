@@ -2,10 +2,6 @@
 description: Deploy your Bknd application to production on Vercel in 15 minutes
 ---
 
-# Deploy to Production
-
-Complete guide for deploying a Bknd application to Vercel production environment.
-
 ## Prerequisites
 
 Before starting, ensure you have:

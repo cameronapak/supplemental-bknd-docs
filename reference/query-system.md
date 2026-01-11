@@ -3,8 +3,6 @@ title: "Query System"
 description: "Advanced querying with where filters, relations (with), sorting, pagination, and complex operators."
 ---
 
-## Bknd Query System
-
 Bknd didn't invent a completely new query language—it built a **type-safe query builder** on top of [Kysely](https://kysely.dev/). The query system consists of three core components:
 1. **Repository** - Your query entry point
 2. **WhereBuilder** - Builds filter conditions

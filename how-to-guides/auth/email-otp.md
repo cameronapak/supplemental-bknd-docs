@@ -3,8 +3,6 @@ title: "Email OTP Authentication"
 description: "Complete guide for passwordless authentication using one-time passwords sent via email."
 ---
 
-# Email OTP Authentication
-
 Email OTP (One-Time Password) provides a passwordless authentication method where users receive a temporary code via email to log in or register. This approach improves security by eliminating password storage while providing a smooth user experience.
 
 ## Overview

@@ -1,6 +1,7 @@
-# Data Module
-
-Complete reference for Bknd's Data module, covering CRUD operations, the Repository pattern, Mutator API, query system, and entity relationships.
+---
+title: "Data Module"
+description: "Complete reference for Bknd's Data module, covering CRUD operations, the Repository pattern, Mutator API, query system, and entity relationships."
+---
 
 ## Overview
 

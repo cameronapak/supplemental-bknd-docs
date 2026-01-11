@@ -3,8 +3,6 @@ title: Docker Integration
 description: Deploy bknd in Docker containers with persistent storage and remote database support
 ---
 
-# Docker Integration
-
 Deploy bknd in a Docker container for isolated, portable deployments. This guide covers building images, running containers, and configuring persistent storage.
 
 ## Overview

@@ -1,10 +1,7 @@
 ---
+title: "Enable Public Access with Guard"
 description: Configure public access using guard for guest users without authentication
 ---
-
-# Enable Public Access with Guard
-
-Configure guest access using the Guard authorization system to allow unauthenticated users to access specific endpoints while protecting others.
 
 ## Overview
 

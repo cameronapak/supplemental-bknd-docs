@@ -3,10 +3,6 @@ title: "Next.js Integration"
 description: "Complete guide for integrating Bknd with Next.js App Router including server components and API routes."
 ---
 
-# Next.js Integration Guide
-
-Complete guide for integrating Bknd with Next.js using the App Router.
-
 ## Overview
 
 Bknd provides deep integration with Next.js through:

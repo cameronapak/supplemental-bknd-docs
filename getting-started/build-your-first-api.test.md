@@ -3,10 +3,6 @@ title: "Build Your First API - Test Checklist"
 description: "Validation checklist to verify the Build Your First API tutorial works end-to-end."
 ---
 
-# Build Your First API - Test Checklist
-
-Use this checklist to validate that the tutorial works end-to-end.
-
 ## Prerequisites Check
 
 - [ ] Node.js 22+ is installed (`node -v`)

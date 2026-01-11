@@ -1,9 +1,7 @@
 ---
-title: "Schema"
+title: "Schema Comparison"
 description: "Type-safe entity definition with fields, relationships, and constraints for Bknd data models."
 ---
-
-# Drizzle → Prisma → bknd: Complete Schema Comparison
 
 Here's the complete comparison with all three ORMs for every scenario.
 

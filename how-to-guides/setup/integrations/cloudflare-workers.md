@@ -3,8 +3,6 @@ title: Cloudflare Workers Integration Guide
 description: Deploy Bknd to Cloudflare Workers with D1 database and R2 storage for global edge deployment
 ---
 
-# Cloudflare Workers Integration Guide
-
 Deploy Bknd to Cloudflare Workers for global edge deployment with zero-configuration database access via D1 bindings.
 
 ## What You'll Learn

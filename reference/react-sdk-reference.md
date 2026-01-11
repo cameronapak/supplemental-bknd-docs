@@ -3,8 +3,6 @@ title: React SDK Reference
 description: Complete reference for React hooks and components provided by bknd/client
 ---
 
-# React SDK Reference
-
 The Bknd React SDK (`bknd/client`) provides hooks and components for building React applications that interact with Bknd. All components are built on top of the [TypeScript SDK](/reference/sdk) and use [SWR](https://swr.vercel.app) for caching and state management.
 
 ## Setup

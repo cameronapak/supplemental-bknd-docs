@@ -2,8 +2,6 @@
 description: Understanding Bknd's primary key formats and when to use each one.
 ---
 
-# Schema IDs vs UUIDs
-
 Bknd supports two primary key formats for your entities: **integer IDs** and **UUIDs**. This guide explains the differences, trade-offs, and how to configure each format for your use case.
 
 ## Overview

@@ -1,9 +1,7 @@
 ---
-title: "Framework Comparison"
+title: "Framework Comparison Guide"
 description: "Compare integration approaches across React, Next.js, Vue, Astro, and other frameworks."
 ---
-
-# Framework Comparison Guide
 
 Choose the right framework for your Bknd integration based on your project requirements, team expertise, and deployment needs.
 

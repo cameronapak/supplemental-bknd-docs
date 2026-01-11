@@ -3,8 +3,6 @@ title: "Postgres Package Merge Migration Guide"
 description: "Migrate from @bknd/postgres to main bknd package"
 ---
 
-# PostgreSQL Package Merge Migration Guide
-
 **Version:** v0.20.0  
 **Impact:** Breaking change for users with PostgreSQL connections
 

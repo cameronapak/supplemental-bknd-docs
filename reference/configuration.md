@@ -3,8 +3,6 @@ title: "Configuration"
 description: "Complete reference for Bknd configuration options, including connection, auth, media, admin, and runtime settings."
 ---
 
-# Configuration Reference
-
 Complete reference for all Bknd configuration options in your `bknd.config.ts` file.
 
 ## Overview

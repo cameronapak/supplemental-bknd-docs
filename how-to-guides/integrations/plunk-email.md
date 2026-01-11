@@ -1,6 +1,7 @@
-# Plunk Email Provider
-
-Complete guide for using Plunk as your email provider with Bknd.
+---
+title: "Plunk Email Provider"
+description: "Complete guide for using Plunk as your email provider with Bknd."
+---
 
 ## Overview
 
