@@ -7,55 +7,35 @@ Welcome to Bknd! This guide helps you get started quickly based on your goals an
 
 ## Choose Your Path
 
-<div className="grid gap-4 grid-cols-1 md:grid-cols-3">
+<Columns cols={3}>
+  <Card title="I'm New to Backend Development" href="/getting-started/build-your-first-api" icon="book-open">
+    **Time: 30 minutes**
 
-  <div className="flex flex-col gap-2 p-4 rounded-lg border border-border">
-    
-### I'm New to Backend Development
+    Start here if you're new to building backends. You'll learn:
+    - What a backend framework is
+    - How Bknd works (embeddable architecture)
+    - Build your first API with React
+  </Card>
 
-**Time: 30 minutes**
+  <Card title="I Know Backend, New to Bknd" href="/getting-started/build-your-first-api" icon="code">
+    **Time: 15 minutes**
 
-Start here if you're new to building backends. You'll learn:
-- What a backend framework is
-- How Bknd works (embeddable architecture)
-- Build your first API with React
+    Skip the basics and jump straight to implementation:
+    - Set up Bknd with your preferred framework
+    - Define entities and enable auth
+    - Deploy to production
+  </Card>
 
-[Start Learning →](/getting-started/build-your-first-api)
+  <Card title="I'm Integrating Bknd into Existing App" href="/how-to-guides/setup/integrations/framework-comparison" icon="plug">
+    **Time: 20 minutes**
 
-  </div>
-
-  <div className="flex flex-col gap-2 p-4 rounded-lg border border-border">
-    
-### I Know Backend, New to Bknd
-
-**Time: 15 minutes**
-
-Skip the basics and jump straight to implementation:
-- Set up Bknd with your preferred framework
-- Define entities and enable auth
-- Deploy to production
-
-[Build Your First API →](/getting-started/build-your-first-api)
-
-  </div>
-
-  <div className="flex flex-col gap-2 p-4 rounded-lg border border-border">
-    
-### I'm Integrating Bknd into Existing App
-
-**Time: 20 minutes**
-
-Choose your framework and integrate:
-- [Next.js](/how-to-guides/setup/integrations/nextjs)
-- [Vite + React](/how-to-guides/setup/integrations/vite-react)
-- [React Router](/how-to-guides/setup/integrations/react-router)
-- [Astro](/how-to-guides/setup/integrations/astro)
-
-[All Integration Guides →](/how-to-guides/setup/integrations/framework-comparison)
-
-  </div>
-
-</div>
+    Choose your framework and integrate:
+    - [Next.js](/how-to-guides/setup/integrations/nextjs)
+    - [Vite + React](/how-to-guides/setup/integrations/vite-react)
+    - [React Router](/how-to-guides/setup/integrations/react-router)
+    - [Astro](/how-to-guides/setup/integrations/astro)
+  </Card>
+</Columns>
 
 ## Core Onboarding Checklist
 
