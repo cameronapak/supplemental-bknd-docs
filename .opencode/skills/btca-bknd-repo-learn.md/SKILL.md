@@ -20,10 +20,7 @@ bun add -g btca opencode-ai
 
 ### 2. Configure AI Model
 ```bash
-# Recommended: Claude Haiku 4.5 (fast, affordable)
-btca config model -p opencode -m claude-haiku-4-5
-
-# Or use free Big Pickle model
+# Recommended: Use free Big Pickle model
 btca config model -p opencode -m big-pickle
 ```
 
@@ -40,7 +37,7 @@ Or create `btca.config.jsonc` in your project:
 ```jsonc
 {
   "$schema": "https://btca.dev/btca.schema.json",
-  "model": "claude-haiku-4-5",
+  "model": "big-pickle",
   "provider": "opencode",
   "providerTimeoutMs": 300000,
   "resources": [
