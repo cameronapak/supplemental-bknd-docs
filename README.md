@@ -12,12 +12,23 @@ I'm going to create [skills](https://agentskills.io) that make it easier to deve
 
 ## Available Skills
 
-Install via 
+Start Claude Code CLI
+
+```bash
+claude
+```
+
+Install via Claude Code
 
 ```bash
 /plugin marketplace add cameronapak/supplemental-bknd-docs
 ```
 
+Then install the research skill
+
+```bash
+/plugin install bknd-research-skills@bknd-expert
+```
 
 ### [btca-bknd-repo-learn](https://github.com/cameronapak/supplemental-bknd-docs/tree/main/.opencode/skills/btca-bknd-repo-learn.md)
 

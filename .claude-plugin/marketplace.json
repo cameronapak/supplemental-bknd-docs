@@ -10,7 +10,7 @@
   },
   "plugins": [
     {
-      "name": "bknd-framework-skills",
+      "name": "bknd-research-skills",
       "description": "Skills for learning and working with the bknd backend framework using btca (Better Context App)",
       "source": "./",
       "strict": false,
